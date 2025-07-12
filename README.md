@@ -1,12 +1,12 @@
-# Cat Cafe Directory 🐱☕
+# Self Service Car Wash Finder 🚗💧
 
-A comprehensive directory of cat cafes across the United States, built with Next.js and deployed on Cloudflare Pages.
+A comprehensive directory of self-service car washes across the United States, built with Next.js and deployed on Cloudflare Pages.
 
 ## Features
 
-- **State-by-State Directory**: Browse cat cafes organized by state
-- **City Pages**: Detailed listings for each city with cat cafes
-- **Individual Cafe Pages**: Comprehensive information for each cat cafe
+- **State-by-State Directory**: Browse self-service car washes organized by state
+- **City Pages**: Detailed listings for each city with self-service car washes
+- **Individual Car Wash Pages**: Comprehensive information for each self-service car wash
 - **SEO Optimized**: Built with Next.js SEO best practices
 - **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 - **Fast Performance**: Optimized for speed and user experience
@@ -32,7 +32,7 @@ A comprehensive directory of cat cafes across the United States, built with Next
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd cat-cafe
+cd self-car-wash-finder
 ```
 
 2. Install dependencies:
@@ -55,7 +55,7 @@ Open [http://localhost:3003](http://localhost:3003) to view the application.
 ## Project Structure
 
 ```
-cat-cafe/
+self-car-wash-finder/
 ├── app/                    # Next.js App Router pages
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout

@@ -21,36 +21,36 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
       
       const social = generateSocialPreview({
-        title: `Cat Cafes Near ${zip} | Find Local Cat Cafes & Adoption Spots`,
-        description: `Discover cat cafes, adoption centers, and feline-friendly spaces near ${zip}. Get directions, hours, and contact information for local cat cafes.`,
+        title: `Self Service Car Washes Near ${zip} | Find Local Self Service Car Washes`,
+        description: `Discover self-service car washes, auto washes, and car wash locations near ${zip}. Get directions, hours, and contact information for local self-service car washes.`,
         image,
-        url: `https://catcafedirectory.com/cat-cafe-near-me?zip=${zip}`,
+        url: `https://www.selfcarwashfinder.com/self-service-car-wash-near-me?zip=${zip}`,
       })
       return {
         ...social,
         alternates: {
-          canonical: `https://catcafedirectory.com/cat-cafe-near-me?zip=${zip}`,
+          canonical: `https://www.selfcarwashfinder.com/self-service-car-wash-near-me?zip=${zip}`,
         },
       }
     } catch (error) {
       // Fallback to default metadata
     }
   }
-  // Default metadata for cat-cafe-near-me page
+  // Default metadata for self-service-car-wash-near-me page
   const locations = await getLocations({})
   const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
   
   const social = generateSocialPreview({
-    title: 'Cat Cafes Near Me | Find Local Cat Cafes & Adoption Spots',
-    description: 'Discover cat cafes, adoption centers, and feline-friendly spaces in your area. Get directions, hours, and contact information for local cat cafes.',
+    title: 'Self Service Car Wash Near Me | Find Local Self Service Car Washes',
+    description: 'Discover self-service car washes, auto washes, and car wash locations in your area. Get directions, hours, and contact information for local self-service car washes.',
     image,
-    url: 'https://catcafedirectory.com/cat-cafe-near-me',
+    url: 'https://www.selfcarwashfinder.com/self-service-car-wash-near-me',
   })
   return {
     ...social,
     alternates: {
-      canonical: 'https://catcafedirectory.com/cat-cafe-near-me',
+      canonical: 'https://www.selfcarwashfinder.com/self-service-car-wash-near-me',
     },
   }
 }

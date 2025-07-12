@@ -77,7 +77,7 @@ export default function Footer() {
 
   const quickLinks = [
     { name: 'Browse States', href: '/states' },
-    { name: 'Cat Cafes Near Me', href: '/cat-cafe-near-me' },
+    { name: 'Self Service Car Washes Near Me', href: '/self-service-car-wash-near-me' },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Terms of Service', href: '/terms' },
     { name: 'Sitemap', href: '/sitemap.xml' },
@@ -97,13 +97,13 @@ export default function Footer() {
               />
               <div>
                 <h4 className="text-lg font-semibold">About Our Directory</h4>
-                <p className="text-gray-400 text-xs">Find Local Cat Cafes</p>
+                <p className="text-gray-400 text-xs">Find Local Self Service Car Washes</p>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Your comprehensive directory for finding the best cat cafes across
-              the United States. Discover local cat cafes where you can enjoy
-              coffee, adopt cats, and experience feline companionship.
+              Your comprehensive directory for finding the best self-service car washes across
+              the United States. Discover local self-service car washes where you can wash
+              your car with professional equipment on your own schedule.
             </p>
           </div>
 
@@ -140,7 +140,7 @@ export default function Footer() {
                         href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
                         className="text-gray-400 hover:text-white transition-colors text-sm"
                       >
-                        {state} Cat Cafes
+                        {state} Self Service Car Washes
                       </Link>
                     </li>
                   ))
@@ -163,7 +163,7 @@ export default function Footer() {
                         href={`/cities/${slugify(city)}-${slugify(state)}`}
                         className="text-gray-400 hover:text-white transition-colors text-sm"
                       >
-                        {city}, {state} Cat Cafes
+                        {city}, {state} Self Service Car Washes
                       </Link>
                     </li>
                   ))
@@ -176,15 +176,15 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-sm">
-              © {currentYear} Cat Cafe Directory. All rights reserved.
+              © {currentYear} Self Service Car Wash Finder. All rights reserved.
             </p>
             <div className="flex items-center space-x-4 text-sm text-gray-400">
               <span>
-                Helping cat lovers find the best local cat cafes since 2025
+                Helping car owners find the best local self-service car washes since 2025
               </span>
               <span>•</span>
               <a
-                href="https://www.google.com/search?q=cat+cafe+directory"
+                href="https://www.google.com/search?q=self+service+car+wash+finder"
                 className="hover:text-white transition-colors flex items-center"
                 target="_blank"
                 rel="noopener noreferrer"

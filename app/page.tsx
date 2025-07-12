@@ -6,18 +6,18 @@ import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cafes = await getLocations({})
-  const firstCafe = cafes && Array.isArray(cafes.data) && cafes.data.length > 0 ? cafes.data[0] : null
-  const image = firstCafe && firstCafe.photo_url ? firstCafe.photo_url : null
+  const locations = await getLocations({})
+  const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
+  const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
   
   return generateSocialPreview({
-    title: 'Cat Cafe Directory - Find Local Cat Cafes Nationwide',
-    description: 'Discover the best cat cafes across the United States. Find adoption centers, cat cafes, and feline-friendly spaces near you.',
+    title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+    description: 'Discover the best self-service car washes across the United States. Find self-service car washes, auto washes, and car wash locations near you.',
     image,
   })
 }
 
-async function getFeaturedCafes() {
+async function getFeaturedLocations() {
   try {
     const supabase = getSupabaseClient()
     
@@ -106,7 +106,7 @@ async function getStats() {
     const supabase = getSupabaseClient()
     
     // Get total count of locations
-    const { count: totalCafes, error: countError } = await supabase
+    const { count: totalLocations, error: countError } = await supabase
       .from('locations')
       .select('*', { count: 'exact', head: true })
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
@@ -164,11 +164,11 @@ async function getStats() {
       totalStates = statesData?.[0]?.state_count || 0
     }
     
-    const finalTotalCafes = totalCafes || 0
+    const finalTotalLocations = totalLocations || 0
     const finalHighRatedCount = highRatedCount || 0
-    const highRatedPercent = finalTotalCafes > 0 ? Math.round((finalHighRatedCount / finalTotalCafes) * 100) : 0
+    const highRatedPercent = finalTotalLocations > 0 ? Math.round((finalHighRatedCount / finalTotalLocations) * 100) : 0
 
-    return { totalCafes: finalTotalCafes, totalStates, highRatedCount: finalHighRatedCount, highRatedPercent }
+    return { totalLocations: finalTotalLocations, totalStates, highRatedCount: finalHighRatedCount, highRatedPercent }
   } catch (error) {
     console.error('Error fetching stats:', error)
     return { totalCafes: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0 }
@@ -176,8 +176,8 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [featuredCafes, stats] = await Promise.all([
-    getFeaturedCafes(),
+  const [featuredLocations, stats] = await Promise.all([
+    getFeaturedLocations(),
     getStats()
   ])
 
@@ -189,13 +189,13 @@ export default async function HomePage() {
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Find Your Perfect
-              <span className="text-lavender-600"> Cat Cafe</span>
+              <span className="text-lavender-600"> Self Service Car Wash</span>
               <br />
               <span className="text-2xl md:text-3xl font-normal text-gray-700">Across the United States</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Discover cozy cat cafes across the United States where you can enjoy coffee, 
-              meet adorable cats, and potentially find your new best friend.
+              Discover convenient self-service car washes across the United States where you can wash your car 
+              with professional equipment on your own schedule.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -210,7 +210,7 @@ export default async function HomePage() {
                 href="#featured"
                 className="bg-white/80 border border-lavender-300 text-lavender-700 px-8 py-4 rounded-lg font-semibold hover:bg-lavender-100 hover:text-lavender-900 transition-colors shadow-soft"
               >
-                See Top-Rated Cafes
+                See Top-Rated Car Washes
               </Link>
             </div>
           </div>
@@ -222,8 +222,8 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-lavender-600 mb-2">{stats.totalCafes}</div>
-              <div className="text-gray-600">Cat Cafes Nationwide</div>
+              <div className="text-4xl font-bold text-lavender-600 mb-2">{stats.totalLocations}</div>
+              <div className="text-gray-600">Self Service Car Washes Nationwide</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-peach-600 mb-2">{stats.totalStates}</div>
@@ -238,22 +238,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Cafes */}
-      {featuredCafes.length > 0 && (
+      {/* Featured Car Washes */}
+      {featuredLocations.length > 0 && (
         <section id="featured" className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Top-Rated Cat Cafes
+                Top-Rated Self Service Car Washes
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Discover the highest-rated cat cafes across the country, 
+                Discover the highest-rated self-service car washes across the country, 
                 featuring real reviews and curated information.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {featuredCafes.map((location) => (
+              {featuredLocations.map((location: any) => (
                 <LocationCard
                   key={location.id}
                   id={location.id}
@@ -293,10 +293,10 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Visit A Cat Cafe?
+              Why Choose Self Service Car Washes?
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Cat cafes offer a unique experience combining coffee culture with feline companionship.
+              Self-service car washes offer convenience, control, and cost-effectiveness for keeping your vehicle clean.
             </p>
           </div>
           
@@ -305,9 +305,9 @@ export default async function HomePage() {
               <div className="bg-lavender-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Coffee className="h-8 w-8 text-lavender-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Quality Coffee</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Equipment</h3>
               <p className="text-gray-600">
-                Enjoy expertly crafted coffee and beverages in a relaxed, cat-friendly environment.
+                Access high-quality car wash equipment and supplies for a thorough cleaning.
               </p>
             </div>
             
@@ -315,9 +315,9 @@ export default async function HomePage() {
               <div className="bg-peach-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Heart className="h-8 w-8 text-peach-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Cat Companionship</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Convenience & Control</h3>
               <p className="text-gray-600">
-                Spend time with adorable cats while enjoying your favorite drink and snacks.
+                Wash your car on your own schedule with full control over the cleaning process.
               </p>
             </div>
             
@@ -325,9 +325,9 @@ export default async function HomePage() {
               <div className="bg-mint-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                 <Users className="h-8 w-8 text-mint-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Cat Adoption Centers</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Cost Effective</h3>
               <p className="text-gray-600">
-                Many cat cafes partner with shelters to help cats find their forever homes.
+                Save money compared to full-service car washes while getting professional results.
               </p>
             </div>
           </div>
@@ -342,7 +342,7 @@ export default async function HomePage() {
               Frequently Asked Questions
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Everything you need to know about cat cafes and how to find the perfect one for you.
+              Everything you need to know about self-service car washes and how to find the perfect one for you.
             </p>
           </div>
           
@@ -353,16 +353,16 @@ export default async function HomePage() {
                   <div className="w-10 h-10 bg-lavender-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
                     <Coffee className="h-5 w-5 text-white" />
                   </div>
-                  What is a cat cafe?
+                  What is a self-service car wash?
                 </h3>
               </div>
               <div className="p-6">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  A cat cafe is a unique establishment that combines a traditional coffee shop with a space where visitors can interact with cats. These cafes typically feature a separate area where cats roam freely, allowing guests to enjoy their coffee, tea, or snacks while spending time with friendly felines.
+                  A self-service car wash is a facility where you can wash your own vehicle using professional equipment and supplies. These locations typically feature high-pressure washers, soap dispensers, wax applicators, and vacuum stations, allowing you to clean your car thoroughly on your own schedule.
                 </p>
                 <div className="bg-lavender-50 rounded-lg p-4 border-l-4 border-lavender-500">
                   <p className="text-sm text-gray-600">
-                    <strong>Fun fact:</strong> Cat cafes originated in Taiwan in 1998 and have since become popular worldwide, offering a relaxing environment for cat lovers who may not be able to have pets at home.
+                    <strong>Fun fact:</strong> Self-service car washes became popular in the 1950s and offer a cost-effective alternative to full-service car washes while giving you complete control over the cleaning process.
                   </p>
                 </div>
               </div>
@@ -374,20 +374,20 @@ export default async function HomePage() {
                   <div className="w-10 h-10 bg-peach-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
                     <MapPin className="h-5 w-5 text-white" />
                   </div>
-                  Is there a cat cafe near me?
+                  Is there a self-service car wash near me?
                 </h3>
               </div>
               <div className="p-6">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  There's a good chance there is! Cat cafes have been growing in popularity across the United States, with locations in most major cities and many smaller communities. You can use our comprehensive directory to search for cat cafes in your area by entering your city or zip code.
+                  There's a good chance there is! Self-service car washes are widely available across the United States, with locations in most cities and towns. You can use our comprehensive directory to search for self-service car washes in your area by entering your city or zip code.
                 </p>
                 <div className="bg-peach-50 rounded-lg p-4 border-l-4 border-peach-500">
                   <p className="text-sm text-gray-600 mb-3">
-                    <strong>Quick tip:</strong> We maintain an up-to-date database of cat cafes nationwide, including their locations, hours, and contact information.
+                    <strong>Quick tip:</strong> We maintain an up-to-date database of self-service car washes nationwide, including their locations, hours, and contact information.
                   </p>
-                  <Link href="/cat-cafe-near-me" className="inline-flex items-center bg-peach-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-peach-700 transition-colors">
+                  <Link href="/self-service-car-wash-near-me" className="inline-flex items-center bg-peach-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-peach-700 transition-colors">
                     <MapPin className="h-4 w-4 mr-2" />
-                    Find cat cafes near you
+                    Find self-service car washes near you
                   </Link>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default async function HomePage() {
                   <div className="w-10 h-10 bg-mint-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
                     <span className="text-white font-bold text-lg">$</span>
                   </div>
-                  How much does a cat cafe cost?
+                  How much does a self-service car wash cost?
                 </h3>
               </div>
               <div className="p-6">
@@ -409,22 +409,22 @@ export default async function HomePage() {
                     <ul className="space-y-2 text-sm text-gray-700">
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
-                        Session fee: $10-$25 per person
+                        Basic wash: $3-$8 per session
                       </li>
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
-                        Duration: 30 minutes to 1 hour
+                        Duration: 10-20 minutes
                       </li>
                       <li className="flex items-center">
                         <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
-                        Includes: Beverage + cat interaction
+                        Includes: Soap, rinse, and basic cleaning
                       </li>
                     </ul>
                   </div>
                   <div className="bg-mint-50 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 mb-2">Special Offers:</h4>
                     <p className="text-sm text-gray-600">
-                      Many cafes offer reduced rates for children, students, seniors, and longer sessions. Food and additional beverages available separately.
+                      Many locations offer additional services like waxing, tire cleaning, and interior vacuuming for extra fees. Some offer loyalty programs and bulk discounts.
                     </p>
                   </div>
                 </div>
@@ -437,20 +437,21 @@ export default async function HomePage() {
                   <div className="w-10 h-10 bg-lavender-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
                     <Heart className="h-5 w-5 text-white" />
                   </div>
-                  Can I adopt at a cat cafe?
+                  What equipment is available at self-service car washes?
                 </h3>
               </div>
               <div className="p-6">
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  Yes! Many cat cafes partner with local animal shelters and rescue organizations to facilitate cat adoptions. The cats you meet at cat cafes are often available for adoption, and the cafe serves as a comfortable environment for potential adopters to get to know the cats before making a decision.
+                  Self-service car washes typically offer a variety of professional equipment including high-pressure washers, foam brushes, soap dispensers, wax applicators, tire cleaners, and vacuum stations. Most locations also provide towels and other cleaning supplies for a complete car wash experience.
                 </p>
                 <div className="bg-lavender-50 rounded-lg p-4 border-l-4 border-lavender-500">
-                  <h4 className="font-semibold text-gray-900 mb-2">Adoption Process:</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2">Available Equipment:</h4>
                   <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Fill out an application</li>
-                    <li>• Meet with cafe staff or shelter representatives</li>
-                    <li>• Pay adoption fee (covers vaccinations & spaying/neutering)</li>
-                    <li>• Some cafes offer special adoption events</li>
+                    <li>• High-pressure water sprayers</li>
+                    <li>• Foam brushes and soap dispensers</li>
+                    <li>• Wax and sealant applicators</li>
+                    <li>• Tire and wheel cleaners</li>
+                    <li>• Interior vacuum stations</li>
                   </ul>
                 </div>
               </div>
@@ -463,16 +464,16 @@ export default async function HomePage() {
       <section className="py-16 bg-soft-gradient border-t border-lavender-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Find Your Local Cat Cafe?
+            Ready to Find Your Local Self Service Car Wash?
           </h2>
           <p className="text-xl text-gray-900 mb-8 max-w-2xl mx-auto">
-            Browse our comprehensive directory of cat cafes across all 50 states and find the perfect spot near you.
+            Browse our comprehensive directory of self-service car washes across all 50 states and find the perfect spot near you.
           </p>
           <Link
             href="/states"
             className="inline-flex items-center bg-lavender-500 text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300 mx-auto"
           >
-            Find Cat Cafes Now
+            Find Self Service Car Washes Now
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </div>

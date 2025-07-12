@@ -63,16 +63,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
 
   const social = generateSocialPreview({
-    title: `${stateName} Cat Cafes - Find Local Cat Cafes | Cat Cafe Directory`,
-    description: `Explore cat cafes in ${stateName}. Find locations, hours, reviews, and more on Cat Cafe Directory.`,
+    title: `${stateName} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
+    description: `Explore self-service car washes in ${stateName}. Find locations, hours, reviews, and more on Self Service Car Wash Finder.`,
     image,
-    url: `https://catcafedirectory.com/states/${params.state}`,
+    url: `https://www.selfcarwashfinder.com/states/${params.state}`,
   })
 
   return {
     ...social,
     alternates: {
-      canonical: `https://catcafedirectory.com/states/${params.state}`,
+      canonical: `https://www.selfcarwashfinder.com/states/${params.state}`,
     },
   }
 }
@@ -135,12 +135,12 @@ export default async function StatePage({ params }: PageProps) {
         <div className="bg-soft-gradient rounded-xl shadow-lg p-8 mb-8 border border-lavender-200">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Cat Cafes in {stateName}
+              Self Service Car Washes in {stateName}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore {locations.length} purr-fect cat cafes across {stateName} - from cozy neighborhood spots to bustling city hangouts. 
-              Whether you're a local looking for your new favorite spot or a visitor seeking a unique {stateName} experience, 
-              discover where coffee meets companionship in the {stateName} cat cafe scene.
+              Explore {locations.length} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
+              Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, 
+              discover where you can wash your car with professional equipment in the {stateName} self-service car wash scene.
             </p>
           </div>
           
@@ -154,8 +154,8 @@ export default async function StatePage({ params }: PageProps) {
               </div>
               <p className="text-gray-600 text-sm">
                 {otherCitiesCount > 0
-                  ? `Check out cat cafes in ${topCities} and ${otherCitiesCount} other cities — your next favorite spot in ${stateName} might be here!`
-                  : `Check out cat cafes in ${topCities} — your next favorite spot in ${stateName} might be here!`}
+                  ? `Check out self-service car washes in ${topCities} and ${otherCitiesCount} other cities — your next car wash spot in ${stateName} might be here!`
+                  : `Check out self-service car washes in ${topCities} — your next car wash spot in ${stateName} might be here!`}
               </p>
             </div>
             
@@ -167,7 +167,7 @@ export default async function StatePage({ params }: PageProps) {
                 <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
               </div>
               <p className="text-gray-600 text-sm">
-                All {locations.length} cat cafes have been curated with accurate contact info, hours, and current business details.
+                All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
               </p>
             </div>
             
@@ -176,28 +176,28 @@ export default async function StatePage({ params }: PageProps) {
                 <div className="bg-mint-100 p-3 rounded-full mr-4">
                   <Coffee className="h-6 w-6 text-mint-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Adoption & Relaxation</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Professional Equipment</h3>
               </div>
               <p className="text-gray-600 text-sm">
-                Whether you're looking to adopt a cat or just enjoy coffee with feline friends, find your perfect spot.
+                Whether you're looking to wash your car quickly or take your time with detailed cleaning, find your perfect self-service spot.
               </p>
             </div>
           </div>
           
           <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <Star className="h-5 w-5 text-yellow-500 mr-2 fill-current" />
-              Why Choose {stateName} Cat Cafes?
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Comprehensive directory of all curated cat cafes in {stateName}</span>
-              </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Detailed information on adoption programs and services</span>
-              </div>
+                          <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                <Star className="h-5 w-5 text-yellow-500 mr-2 fill-current" />
+                Why Choose {stateName} Self Service Car Washes?
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                <div className="flex items-start">
+                  <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  <span>Comprehensive directory of all curated self-service car washes in {stateName}</span>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  <span>Detailed information on equipment, services, and facilities</span>
+                </div>
               <div className="flex items-start">
                 <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                 <span>Real customer reviews and ratings for each location</span>

@@ -23,7 +23,7 @@ export default function Search() {
   const [showResults, setShowResults] = useState(false)
 
   useEffect(() => {
-    const searchCafes = async () => {
+    const searchLocations = async () => {
       if (query.length < 2) {
         setResults([])
         return
@@ -42,7 +42,7 @@ export default function Search() {
       }
     }
 
-    const debounce = setTimeout(searchCafes, 300)
+    const debounce = setTimeout(searchLocations, 300)
     return () => clearTimeout(debounce)
   }, [query])
 
@@ -110,13 +110,13 @@ export default function Search() {
           ) : query.length >= 2 ? (
             <div className="px-4 py-3">
               <div className="text-gray-500 mb-2">
-                No cat cafes found for "{query}"
+                No self-service car washes found for "{query}"
               </div>
               <div className="text-sm text-gray-400 space-y-1">
                 <div>• Try searching by city name (e.g., "Miami")</div>
                 <div>• Try searching by state name (e.g., "Florida")</div>
                 <div>• Try searching by zip code (e.g., "32801")</div>
-                <div>• Try searching by cafe name (e.g., "Kitty")</div>
+                <div>• Try searching by car wash name (e.g., "Quick")</div>
               </div>
             </div>
           ) : null}
@@ -163,7 +163,7 @@ export function HeroSearch() {
         <div className="flex-1">
           <input
             type="text"
-            placeholder="Search cat cafes..."
+            placeholder="Search self-service car washes..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lavender-500 focus:border-lavender-500 bg-white text-gray-900"

@@ -11,7 +11,7 @@ import { getStatesWithLocations } from '@/lib/stateUtils'
 
 const inter = Inter({ subsets: ['latin'] })
 
-async function getFeaturedCafeImage() {
+async function getFeaturedImage() {
   try {
     const { data, error } = await getLocations()
       .not('google_rating', 'is', null)
@@ -26,54 +26,54 @@ async function getFeaturedCafeImage() {
 
     return data.photo_url
   } catch (error) {
-    console.error('Error fetching featured cafe image:', error)
+    console.error('Error fetching featured image:', error)
     return null
   }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const featuredImage = await getFeaturedCafeImage()
+  const featuredImage = await getFeaturedImage()
   
   return {
-    title: 'Cat Cafe Directory - Find Local Cat Cafes Nationwide',
-    description: 'Discover the best cat cafes across the United States. Find adoption centers, cat cafes, and feline-friendly spaces near you.',
-    keywords: 'cat cafe, cat cafes, cat adoption, cat cafe directory, cat cafe near me, cat cafe USA',
-    authors: [{ name: 'Cat Cafe Directory' }],
-    creator: 'Cat Cafe Directory',
-    publisher: 'Cat Cafe Directory',
+    title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+    description: 'Discover the best self-service car washes across the United States. Find self-service car washes, auto washes, and car wash locations near you.',
+    keywords: 'self service car wash, self service car wash near me, self serve auto wash, local self serve car wash, self car wash near me',
+    authors: [{ name: 'Self Service Car Wash Finder' }],
+    creator: 'Self Service Car Wash Finder',
+    publisher: 'Self Service Car Wash Finder',
     formatDetection: {
       email: false,
       address: false,
       telephone: false,
     },
-    metadataBase: new URL('https://catcafedirectory.com'),
+    metadataBase: new URL('https://www.selfcarwashfinder.com'),
     openGraph: {
       type: 'website',
       locale: 'en_US',
-      url: 'https://catcafedirectory.com',
-      title: 'Cat Cafe Directory - Find Local Cat Cafes Nationwide',
-      description: 'Discover the best cat cafes across the United States. Find adoption centers, cat cafes, and feline-friendly spaces near you.',
-      siteName: 'Cat Cafe Directory',
+      url: 'https://www.selfcarwashfinder.com',
+      title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+      description: 'Discover the best self-service car washes across the United States. Find self-service car washes, auto washes, and car wash locations near you.',
+      siteName: 'Self Service Car Wash Finder',
       images: featuredImage ? [
         {
           url: featuredImage,
           width: 1200,
           height: 630,
-          alt: 'Featured Cat Cafe - Cat Cafe Directory',
+          alt: 'Featured Self Service Car Wash - Self Service Car Wash Finder',
         },
       ] : [
         {
           url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&h=630&fit=crop&crop=center',
           width: 1200,
           height: 630,
-          alt: 'Cat Cafe Directory - Find Local Cat Cafes Nationwide',
+          alt: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Cat Cafe Directory - Find Local Cat Cafes Nationwide',
-      description: 'Discover the best cat cafes across the United States. Find adoption centers, cat cafes, and feline-friendly spaces near you.',
+      title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+      description: 'Discover the best self-service car washes across the United States. Find self-service car washes, auto washes, and car wash locations near you.',
       images: featuredImage ? [featuredImage] : ['https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1200&h=630&fit=crop&crop=center'],
     },
     robots: {
@@ -88,7 +88,7 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     },
     alternates: {
-      canonical: 'https://catcafedirectory.com',
+      canonical: 'https://www.selfcarwashfinder.com',
     },
     verification: {
       google: 'your-google-verification-code',
@@ -111,7 +111,7 @@ export default async function RootLayout({
     gtag('config', '${GA_MEASUREMENT_ID}');
   `;
 
-  // Fetch states with cafes for the header dropdown
+  // Fetch states with car washes for the header dropdown
   const states = await getStatesWithLocations()
 
   return (

@@ -82,7 +82,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
         <div className="relative h-48 bg-gray-200 overflow-hidden">
           <img
             src={shopImage}
-            alt={`${name} cat cafe in ${city}, ${state}`}
+            alt={`${name} self service car wash in ${city}, ${state}`}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             loading="lazy"
           />

@@ -12,14 +12,14 @@ export function generateSocialPreview({
   title,
   description,
   image = '/og-default.jpg', // Default image
-  url = 'https://catcafedirectory.com',
+  url = 'https://www.selfcarwashfinder.com',
   type = 'website'
 }: SocialPreviewProps): Metadata {
   // Handle null image by using default
   const imageToUse = image || '/og-default.jpg'
   
   // Ensure image URL is absolute
-  const imageUrl = imageToUse.startsWith('http') ? imageToUse : `https://catcafedirectory.com${imageToUse}`
+  const imageUrl = imageToUse.startsWith('http') ? imageToUse : `https://www.selfcarwashfinder.com${imageToUse}`
   
   return {
     title,
@@ -28,7 +28,7 @@ export function generateSocialPreview({
       title,
       description,
       url,
-      siteName: 'Cat Cafe Directory',
+      siteName: 'Self Service Car Wash Finder',
       images: [
         {
           url: imageUrl,
@@ -44,7 +44,7 @@ export function generateSocialPreview({
       title,
       description,
       images: [imageUrl],
-      creator: '@catcafedirectory', // Optional: your Twitter handle
+      creator: '@selfcarwashfinder', // Optional: your Twitter handle
     },
   }
 } 

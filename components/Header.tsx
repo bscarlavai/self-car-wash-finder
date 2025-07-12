@@ -27,10 +27,10 @@ export default function Header({ states = [] }: HeaderProps) {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <img src="/cat-cafe-directory.png" alt="Cat Cafe Directory Logo" className="h-16 w-16" />
+            <img src="/cat-cafe-directory.png" alt="Self Service Car Wash Finder Logo" className="h-16 w-16" />
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Cat Cafe Directory</h2>
-              <p className="text-xs text-gray-600">Find Local Cat Cafes & Adoption Spots</p>
+              <h2 className="text-xl font-bold text-gray-900">Self Service Car Wash Finder</h2>
+              <p className="text-xs text-gray-600">Find Local Self Service Car Washes</p>
             </div>
           </Link>
 
@@ -47,8 +47,8 @@ export default function Header({ states = [] }: HeaderProps) {
             >
               Home
             </Link>
-            <Link href="/cat-cafe-near-me" className="text-gray-700 hover:text-lavender-600 font-medium transition-colors">
-              Cat Cafes Near Me
+            <Link href="/self-service-car-wash-near-me" className="text-gray-700 hover:text-lavender-600 font-medium transition-colors">
+              Self Service Car Washes Near Me
             </Link>
             <Link 
               href="/states" 
@@ -85,11 +85,11 @@ export default function Header({ states = [] }: HeaderProps) {
                 Home
               </Link>
               <Link 
-                href="/cat-cafe-near-me" 
+                href="/self-service-car-wash-near-me" 
                 className="text-gray-700 hover:text-lavender-600 font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Cat Cafes Near Me
+                Self Service Car Washes Near Me
               </Link>
               <Link 
                 href="/states" 

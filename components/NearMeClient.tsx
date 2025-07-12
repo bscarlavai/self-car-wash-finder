@@ -101,7 +101,7 @@ export default function NearMeClient() {
       const results = await searchLocationsByZip(zip, Number(radius))
       setSearchResults(results)
       if (results.length === 0) {
-        setSearchError(`No cat cafes found within ${radius} miles of this zip code. Try expanding your search or browse by state.`)
+        setSearchError(`No self-service car washes found within ${radius} miles of this zip code. Try expanding your search or browse by state.`)
       }
     } catch (error) {
       setSearchError('Invalid zip code. Please enter a valid 5-digit US zip code.')
@@ -115,7 +115,7 @@ export default function NearMeClient() {
     if (!zipCode.trim()) return
 
     // Update the URL with the new zip (shallow routing, no reload)
-    router.replace(`/cat-cafe-near-me?zip=${encodeURIComponent(zipCode.trim())}`)
+    router.replace(`/self-service-car-wash-near-me?zip=${encodeURIComponent(zipCode.trim())}`)
 
     await autoSearch(zipCode.trim())
   }
@@ -133,7 +133,7 @@ export default function NearMeClient() {
             const results = await searchLocationsByLatLng(lat, lng, Number(radius));
             setSearchResults(results);
             if (results.length === 0) {
-              setSearchError(`No cat cafes found within ${radius} miles of your location. Try expanding your search or browse by state.`);
+              setSearchError(`No self-service car washes found within ${radius} miles of your location. Try expanding your search or browse by state.`);
             }
           } catch (error) {
             setSearchError('Unable to search by your location. Please try again or use zip code search.');
@@ -157,17 +157,17 @@ export default function NearMeClient() {
         {/* Hero Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Find Cat Cafes Near Me
+            Find Self Service Car Washes Near Me
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Discover cat cafes, adoption centers, and feline-friendly spaces in your area. 
-            Get directions, hours, and contact information for local cat cafes.
+            Discover self-service car washes, auto washes, and car wash locations in your area. 
+            Get directions, hours, and contact information for local self-service car washes.
           </p>
           {/* Search Section */}
           <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center space-x-4 mb-4">
               <Search className="h-6 w-6 text-lavender-500" />
-              <span className="text-lg font-medium text-gray-900">Find Cat Cafes Near You</span>
+              <span className="text-lg font-medium text-gray-900">Find Self Service Car Washes Near You</span>
             </div>
             {/* Zip Code Search Form */}
             <form onSubmit={handleZipSearch} className="mb-4">
@@ -266,10 +266,10 @@ export default function NearMeClient() {
               <Coffee className="h-8 w-8 text-lavender-600" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Cat Cafes Near Me – Find the Best Cat Cafes in Your Area
+              Self Service Car Washes Near Me – Find the Best Self Service Car Washes in Your Area
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Looking for a cat cafe near you? Discover cozy, cat-friendly cafes where you can sip coffee and spend time with adoptable cats. Our national cat cafe directory helps you quickly find the best local spots to relax, connect, and maybe even adopt a new furry friend.
+              Looking for a self-service car wash near you? Discover convenient, self-service car washes where you can wash your car with professional equipment. Our national self-service car wash directory helps you quickly find the best local spots to clean your vehicle on your own schedule.
             </p>
           </div>
           
@@ -282,15 +282,15 @@ export default function NearMeClient() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Explore Curated Cat Cafes Near You
+                    Explore Curated Self Service Car Washes Near You
                   </h3>
                   <p className="text-gray-700 mb-4">
-                    Our directory features curated cat cafes with detailed listings that include:
+                    Our directory features curated self-service car washes with detailed listings that include:
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
-                      <span className="text-gray-700">Location and directions to cat cafes near you</span>
+                      <span className="text-gray-700">Location and directions to self-service car washes near you</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
@@ -298,11 +298,11 @@ export default function NearMeClient() {
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
-                      <span className="text-gray-700">Cafe amenities and drink options</span>
+                      <span className="text-gray-700">Available equipment and services</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
-                      <span className="text-gray-700">Adoption programs and policies</span>
+                      <span className="text-gray-700">Pricing and payment options</span>
                     </div>
                     <div className="flex items-center space-x-3">
                       <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
@@ -321,10 +321,10 @@ export default function NearMeClient() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    Why Visit a Cat Cafe?
+                    Why Choose Self Service Car Washes?
                   </h3>
                   <p className="text-gray-700">
-                    Cat cafes offer a unique experience — enjoy coffee, tea, or pastries while socializing with friendly cats in a relaxing environment. Many cafes also partner with local shelters to help cats find forever homes, so your visit could make a difference.
+                    Self-service car washes offer convenience, control, and cost-effectiveness — wash your car with professional equipment on your own schedule. Many locations also offer additional services like vacuuming and detailing supplies.
                   </p>
                 </div>
               </div>
@@ -336,7 +336,7 @@ export default function NearMeClient() {
                   <h4 className="font-semibold text-gray-900">Perfect for Any Occasion</h4>
                 </div>
                 <p className="text-gray-700 text-sm">
-                  Whether you're searching for a cat cafe nearby for a weekend visit or planning a day trip with fellow cat lovers, our guide makes it easy to compare and choose the perfect place.
+                  Whether you're searching for a self-service car wash nearby for a quick clean or planning a detailed wash session, our guide makes it easy to compare and choose the perfect location.
                 </p>
               </div>
             </div>
@@ -350,10 +350,10 @@ export default function NearMeClient() {
               <Award className="h-8 w-8 text-peach-600" />
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Top States with Cat Cafes
+              Top States with Self Service Car Washes
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore the states with the most cat cafes in our directory
+              Explore the states with the most self-service car washes in our directory
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -374,7 +374,7 @@ export default function NearMeClient() {
                       </h3>
                       <div className="flex items-center text-sm text-gray-600">
                         <Star className="h-4 w-4 text-yellow-500 mr-1 fill-current" />
-                        <span>#{state.rank} Most Cafes</span>
+                        <span>#{state.rank} Most Car Washes</span>
                       </div>
                     </div>
                   </div>
@@ -383,12 +383,12 @@ export default function NearMeClient() {
                   <div className="text-3xl font-bold text-lavender-600 mb-2">
                     {state.count}
                   </div>
-                  <div className="text-sm text-gray-600 mb-4">
-                    {state.count === 1 ? 'Cat Cafe' : 'Cat Cafes'}
-                  </div>
-                  <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
-                    Explore Cafes →
-                  </div>
+                                      <div className="text-sm text-gray-600 mb-4">
+                      {state.count === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
+                    </div>
+                    <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
+                      Explore Car Washes →
+                    </div>
                 </div>
               </a>
             ))}

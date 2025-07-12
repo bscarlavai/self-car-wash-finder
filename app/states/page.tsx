@@ -9,14 +9,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const totalLocations = states.reduce((sum, state) => sum + state.locationCount, 0)
   
   const social = generateSocialPreview({
-    title: 'Cat Cafes by State - Find Cat Cafes Near You | Cat Cafe Directory',
-    description: `Discover cat cafes across all 50 states. Browse ${states.length} states with ${totalLocations} curated cat cafes. Find adoption centers, coffee shops with cats, and feline-friendly spaces near you.`,
-    url: 'https://catcafedirectory.com/states',
+    title: 'Self Service Car Washes by State - Find Self Service Car Washes Near You | Self Service Car Wash Finder',
+    description: `Discover self-service car washes across all 50 states. Browse ${states.length} states with ${totalLocations} curated self-service car washes. Find auto washes, car wash locations, and self-service facilities near you.`,
+    url: 'https://www.selfcarwashfinder.com/states',
   })
   return {
     ...social,
     alternates: {
-      canonical: 'https://catcafedirectory.com/states',
+      canonical: 'https://www.selfcarwashfinder.com/states',
     },
   }
 }
@@ -44,12 +44,12 @@ export default async function StatesPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Cat Cafes by State
+            Self Service Car Washes by State
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From cozy corners in California to charming spots in New York, discover the purr-fect cat cafes across all 50 states. 
-            Whether you're looking to adopt, relax with a latte and some whiskers, or simply find your next favorite hangout, 
-            we've got you covered with curated cat cafes nationwide.
+            From convenient locations in California to accessible spots in New York, discover the best self-service car washes across all 50 states. 
+            Whether you're looking to wash your car quickly, save money on car care, or simply find a reliable car wash near you, 
+            we've got you covered with curated self-service car washes nationwide.
           </p>
         </div>
 
@@ -58,11 +58,11 @@ export default async function StatesPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-4xl font-bold text-lavender-600 mb-2">{totalStates}</div>
-              <div className="text-gray-600 font-medium">States with Cat Cafes</div>
+              <div className="text-gray-600 font-medium">States with Self Service Car Washes</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-peach-600 mb-2">{totalLocations}</div>
-              <div className="text-gray-600 font-medium">Total Cat Cafes</div>
+              <div className="text-gray-600 font-medium">Total Self Service Car Washes</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-mint-600 mb-2">{Math.round(totalLocations / totalStates)}</div>
@@ -104,12 +104,12 @@ export default async function StatesPage() {
                     <div className="text-3xl font-bold text-lavender-600 mb-2">
                       {state.locationCount}
                     </div>
-                    <div className="text-sm text-gray-600 mb-4">
-                      {state.locationCount === 1 ? 'Cat Cafe' : 'Cat Cafes'}
-                    </div>
-                    <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
-                      Explore Cafes →
-                    </div>
+                                            <div className="text-sm text-gray-600 mb-4">
+                          {state.locationCount === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
+                        </div>
+                        <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
+                          Explore Car Washes →
+                        </div>
                   </div>
                 </Link>
               ))}
@@ -121,7 +121,7 @@ export default async function StatesPage() {
         {Object.keys(groupedStates).length > 0 && (
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              All States with Cat Cafes
+              All States with Self Service Car Washes
             </h2>
             
             {/* Quick Navigation */}
@@ -162,7 +162,7 @@ export default async function StatesPage() {
                           </h4>
                           <div className="flex items-center justify-center text-sm text-gray-600 mb-3">
                             <Coffee className="h-4 w-4 mr-1 text-lavender-500" />
-                            <span>{state.locationCount} {state.locationCount === 1 ? 'cafe' : 'cafes'}</span>
+                            <span>{state.locationCount} {state.locationCount === 1 ? 'car wash' : 'car washes'}</span>
                           </div>
                           <div className="text-lavender-600 font-medium text-sm">
                             Browse →
@@ -181,7 +181,7 @@ export default async function StatesPage() {
           <div className="text-center py-12">
             <div className="bg-white rounded-lg shadow-md p-8 max-w-md mx-auto">
               <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No cat cafes found</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No self-service car washes found</h3>
               <p className="text-gray-600">Check back soon as we're constantly adding new locations!</p>
             </div>
           </div>
