@@ -22,13 +22,12 @@ function extractAmenities(aboutJson) {
     const about = JSON.parse(aboutJson);
     const amenities = [];
     
-    // Extract amenities from various categories
-    const categories = ['Service options', 'Highlights', 'Offerings', 'Dining options', 'Amenities', 'Atmosphere', 'Crowd', 'Planning', 'Payments', 'Children', 'Parking', 'Other'];
-    
-    categories.forEach(category => {
-      if (about[category]) {
-        Object.keys(about[category]).forEach(amenity => {
-          if (about[category][amenity] === true) {
+    // Extract amenities from all categories dynamically
+    Object.keys(about).forEach(category => {
+      const categoryObj = about[category];
+      if (categoryObj && typeof categoryObj === 'object') {
+        Object.keys(categoryObj).forEach(amenity => {
+          if (categoryObj[amenity] === true) {
             amenities.push({
               name: amenity,
               category: category

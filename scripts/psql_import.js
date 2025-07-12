@@ -53,7 +53,7 @@ async function psqlImport() {
       `psql "${encodedDbUrl}" -c "DROP TABLE IF EXISTS locations_staging;"`
     );
     await execAsync(
-      `psql "${encodedDbUrl}" -c "CREATE TEMP TABLE locations_staging (LIKE locations INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
+      `psql "${encodedDbUrl}" -c "CREATE TABLE locations_staging (LIKE locations INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
     );
     await execAsync(`psql "${encodedDbUrl}" -c "\\COPY locations_staging (
         id, name, slug, city_slug, website_url, phone, email, street_address, city, state, postal_code, country,
@@ -64,7 +64,7 @@ async function psqlImport() {
       FROM '${csvDir}/locations.csv'
       WITH (FORMAT csv, HEADER true, FORCE_NULL (
         email, website_url, phone, street_address, city, state, postal_code, country,
-        latitude, longitude, description, business_type, business_status, google_rating,
+        latitude, longitude, description, business_type, business_status, google_rating, google_verified,
         review_count, working_hours, price_level, photo_url, logo_url, street_view_url, google_id, updated_at, reviews_tags, reservation_urls, order_urls
       ))"`);
       await execAsync(`psql "${encodedDbUrl}" -c "INSERT INTO locations (
@@ -104,7 +104,7 @@ async function psqlImport() {
       `psql "${encodedDbUrl}" -c "DROP TABLE IF EXISTS location_amenities_staging;"`
     );
     await execAsync(
-      `psql "${encodedDbUrl}" -c "CREATE TEMP TABLE location_amenities_staging (LIKE location_amenities INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
+      `psql "${encodedDbUrl}" -c "CREATE TABLE location_amenities_staging (LIKE location_amenities INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
     );
     await execAsync(
       `psql "${encodedDbUrl}" -c "\\COPY location_amenities_staging (location_id, amenity_name, amenity_category) FROM '${csvDir}/location_amenities.csv' WITH (FORMAT csv, HEADER true)"`
@@ -127,7 +127,7 @@ async function psqlImport() {
       `psql "${encodedDbUrl}" -c "DROP TABLE IF EXISTS location_hours_staging;"`
     );
     await execAsync(
-      `psql "${encodedDbUrl}" -c "CREATE TEMP TABLE location_hours_staging (LIKE location_hours INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
+      `psql "${encodedDbUrl}" -c "CREATE TABLE location_hours_staging (LIKE location_hours INCLUDING DEFAULTS EXCLUDING CONSTRAINTS);"`
     );
     await execAsync(
       `psql "${encodedDbUrl}" -c "\\COPY location_hours_staging (location_id, day_of_week, open_time, close_time, is_closed) FROM '${csvDir}/location_hours.csv' WITH (FORMAT csv, HEADER true)"`

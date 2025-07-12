@@ -47,7 +47,7 @@ export default async function StatesPage() {
             Self Service Car Washes by State
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From convenient locations in California to accessible spots in New York, discover the best self-service car washes across all 50 states. 
+            From California to New York, discover the best self-service car washes across all 50 states. 
             Whether you're looking to wash your car quickly, save money on car care, or simply find a reliable car wash near you, 
             we've got you covered with curated self-service car washes nationwide.
           </p>
