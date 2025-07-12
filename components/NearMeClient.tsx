@@ -1,0 +1,400 @@
+"use client"
+
+import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { Star, Search, MapPinIcon, Coffee, Telescope, BadgeQuestionMark, Award } from 'lucide-react'
+import { getSupabaseClient } from '@/lib/supabase'
+import { searchLocationsByLatLng, searchLocationsByZip } from '@/lib/locationUtils';
+import LocationCard from '@/components/LocationCard'
+
+// Helper function to clean URLs consistently
+function cleanUrl(url: string): string {
+  if (!url) return ''
+  let cleaned = url.replace(/^https?:\/\//, '')
+  cleaned = cleaned.replace(/^www\./, '')
+  cleaned = cleaned.replace(/\/$/, '')
+  return cleaned
+}
+
+export default function NearMeClient() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const initialZip = searchParams.get('zip') || ''
+  const [zipCode, setZipCode] = useState(initialZip)
+  const [radius, setRadius] = useState('25')
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchError, setSearchError] = useState('')
+  const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null)
+  const [topStates, setTopStates] = useState<Array<{name: string, count: number, rank: number}>>([])
+
+  useEffect(() => {
+    setZipCode(initialZip)
+  }, [initialZip])
+
+  // Auto-search when zip is provided in URL
+  useEffect(() => {
+    if (initialZip && initialZip.trim()) {
+      autoSearch(initialZip.trim())
+    }
+  }, []) // Only run once on mount
+
+  // Fetch top states on component mount
+  useEffect(() => {
+    fetchTopStates()
+  }, [])
+
+  const radiusOptions = ['5', '10', '15', '25', '50', '100']
+
+  const fetchTopStates = async () => {
+    try {
+      const supabase = getSupabaseClient()
+      const { data, error } = await supabase
+        .from('locations')
+        .select(`
+          *,
+          location_amenities(amenity_name, amenity_category),
+          location_hours(day_of_week, open_time, close_time, is_closed)
+        `)
+        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+        .eq('is_visible', true)
+        .not('latitude', 'is', null)
+        .not('longitude', 'is', null)
+
+      if (error) {
+        console.error('Error fetching states:', error)
+        return
+      }
+
+      // Get unique states and count locations per state
+      const stateCounts = data.reduce((acc: { [key: string]: number }, location: any) => {
+        if (location.state) {
+          acc[location.state] = (acc[location.state] || 0) + 1
+        }
+        return acc
+      }, {})
+
+      // Convert to array, sort by count, and take top 3
+      const states = Object.entries(stateCounts)
+        .map(([state, count]) => ({
+          name: state,
+          count: count as number,
+          rank: 0 // Will be set below
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 3)
+        .map((state, index) => ({
+          ...state,
+          rank: index + 1
+        }))
+
+      setTopStates(states)
+    } catch (error) {
+      console.error('Error fetching top states:', error)
+    }
+  }
+
+  const autoSearch = async (zip: string) => {
+    setIsSearching(true)
+    setSearchError('')
+    try {
+      const results = await searchLocationsByZip(zip, Number(radius))
+      setSearchResults(results)
+      if (results.length === 0) {
+        setSearchError(`No cat cafes found within ${radius} miles of this zip code. Try expanding your search or browse by state.`)
+      }
+    } catch (error) {
+      setSearchError('Invalid zip code. Please enter a valid 5-digit US zip code.')
+    } finally {
+      setIsSearching(false)
+    }
+  }
+
+  const handleZipSearch = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!zipCode.trim()) return
+
+    // Update the URL with the new zip (shallow routing, no reload)
+    router.replace(`/cat-cafe-near-me?zip=${encodeURIComponent(zipCode.trim())}`)
+
+    await autoSearch(zipCode.trim())
+  }
+
+  const handleLocationSearch = () => {
+    if (navigator.geolocation) {
+      setIsSearching(true);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          setUserLocation({ lat, lng });
+          setSearchError('');
+          try {
+            const results = await searchLocationsByLatLng(lat, lng, Number(radius));
+            setSearchResults(results);
+            if (results.length === 0) {
+              setSearchError(`No cat cafes found within ${radius} miles of your location. Try expanding your search or browse by state.`);
+            }
+          } catch (error) {
+            setSearchError('Unable to search by your location. Please try again or use zip code search.');
+          } finally {
+            setIsSearching(false);
+          }
+        },
+        () => {
+          setSearchError('Location access denied. Please use zip code search or browse by state.');
+          setIsSearching(false);
+        }
+      );
+    } else {
+      setSearchError('Geolocation not supported. Please use zip code search or browse by state.');
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Find Cat Cafes Near Me
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            Discover cat cafes, adoption centers, and feline-friendly spaces in your area. 
+            Get directions, hours, and contact information for local cat cafes.
+          </p>
+          {/* Search Section */}
+          <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
+            <div className="flex items-center justify-center space-x-4 mb-4">
+              <Search className="h-6 w-6 text-lavender-500" />
+              <span className="text-lg font-medium text-gray-900">Find Cat Cafes Near You</span>
+            </div>
+            {/* Zip Code Search Form */}
+            <form onSubmit={handleZipSearch} className="mb-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+                <input
+                  type="text"
+                  id="zipCode"
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  placeholder="Enter Your Zip Code (e.g., 32801)"
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lavender-500 focus:border-transparent text-lg"
+                  maxLength={5}
+                  autoComplete="postal-code"
+                  inputMode="numeric"
+                  pattern="[0-9]{5}"
+                />
+                <select
+                  value={radius}
+                  onChange={e => setRadius(e.target.value)}
+                  className="px-4 py-3 pr-10 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-lavender-500 focus:border-transparent bg-white text-gray-900"
+                  style={{ width: '140px', minWidth: '100px' }}
+                  aria-label="Search radius in miles"
+                >
+                  <option value="" disabled>Select miles</option>
+                  {radiusOptions.map(miles => (
+                    <option key={miles} value={miles}>{miles} miles</option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  disabled={isSearching || !zipCode.trim()}
+                  className="w-full sm:w-auto bg-lavender-500 text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
+                  style={{ minWidth: '140px' }}
+                >
+                  {isSearching ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Searching...
+                    </>
+                  ) : (
+                    'Search'
+                  )}
+                </button>
+              </div>
+            </form>
+            <button
+              type="button"
+              onClick={handleLocationSearch}
+              className="w-full bg-gray-100 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-lavender-100 transition-colors flex items-center justify-center text-lg"
+            >
+              <MapPinIcon className="h-5 w-5 mr-2 text-lavender-500" />
+              Use My Location
+            </button>
+          </div>
+        </div>
+        {/* Results Section */}
+        <div className="max-w-3xl mx-auto">
+          {searchError && (
+            <div className="bg-red-100 text-red-800 rounded-lg px-4 py-3 mb-6 text-center font-medium">
+              {searchError}
+            </div>
+          )}
+          {searchResults.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Results</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {searchResults.map((location: any) => (
+                  <LocationCard
+                    key={location.id}
+                    id={location.id}
+                    name={location.name}
+                    city={location.city}
+                    state={location.state}
+                    slug={location.slug}
+                    description={location.description}
+                    google_rating={location.google_rating}
+                    review_count={location.review_count}
+                    photo_url={location.photo_url}
+                    is_visible={location.is_visible}
+                    location_hours={location.location_hours}
+                    business_status={location.business_status}
+                    street_address={location.street_address}
+                    phone={location.phone}
+                    website_url={location.website_url}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Combined SEO Content Section */}
+        <div className="bg-soft-gradient rounded-2xl shadow-lg p-8 mb-12 border border-lavender-200">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-lavender-100 rounded-full mb-4">
+              <Coffee className="h-8 w-8 text-lavender-600" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Cat Cafes Near Me – Find the Best Cat Cafes in Your Area
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Looking for a cat cafe near you? Discover cozy, cat-friendly cafes where you can sip coffee and spend time with adoptable cats. Our national cat cafe directory helps you quickly find the best local spots to relax, connect, and maybe even adopt a new furry friend.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left Column - Directory Features */}
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-lavender-100 rounded-lg flex items-center justify-center">
+                  <Telescope className="h-6 w-6 text-lavender-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Explore Curated Cat Cafes Near You
+                  </h3>
+                  <p className="text-gray-700 mb-4">
+                    Our directory features curated cat cafes with detailed listings that include:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
+                      <span className="text-gray-700">Location and directions to cat cafes near you</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
+                      <span className="text-gray-700">Photos, reviews, and customer ratings</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
+                      <span className="text-gray-700">Cafe amenities and drink options</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
+                      <span className="text-gray-700">Adoption programs and policies</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-lavender-500 rounded-full"></div>
+                      <span className="text-gray-700">Hours of operation and contact info</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Why Visit */}
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-mint-100 rounded-lg flex items-center justify-center">
+                  <BadgeQuestionMark className="h-6 w-6 text-mint-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Why Visit a Cat Cafe?
+                  </h3>
+                  <p className="text-gray-700">
+                    Cat cafes offer a unique experience — enjoy coffee, tea, or pastries while socializing with friendly cats in a relaxing environment. Many cafes also partner with local shelters to help cats find forever homes, so your visit could make a difference.
+                  </p>
+                </div>
+              </div>
+
+              {/* Highlight Box */}
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-lavender-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <MapPinIcon className="h-5 w-5 text-lavender-600" />
+                  <h4 className="font-semibold text-gray-900">Perfect for Any Occasion</h4>
+                </div>
+                <p className="text-gray-700 text-sm">
+                  Whether you're searching for a cat cafe nearby for a weekend visit or planning a day trip with fellow cat lovers, our guide makes it easy to compare and choose the perfect place.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Featured States Section */}
+        <div className="mb-12">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-peach-100 rounded-full mb-4">
+              <Award className="h-8 w-8 text-peach-600" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Top States with Cat Cafes
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Explore the states with the most cat cafes in our directory
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {topStates.map((state) => (
+              <a
+                key={state.name}
+                href={`/states/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
+                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-lavender-300 transform hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <div className="bg-lavender-100 p-3 rounded-full mr-4">
+                      <MapPinIcon className="h-6 w-6 text-lavender-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-gray-900">
+                        {state.name}
+                      </h3>
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Star className="h-4 w-4 text-yellow-500 mr-1 fill-current" />
+                        <span>#{state.rank} Most Cafes</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-lavender-600 mb-2">
+                    {state.count}
+                  </div>
+                  <div className="text-sm text-gray-600 mb-4">
+                    {state.count === 1 ? 'Cat Cafe' : 'Cat Cafes'}
+                  </div>
+                  <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
+                    Explore Cafes →
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+} 
