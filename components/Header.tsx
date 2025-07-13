@@ -27,10 +27,10 @@ export default function Header({ states = [] }: HeaderProps) {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <img src="/cat-cafe-directory.png" alt="Self Service Car Wash Finder Logo" className="h-16 w-16" />
+            <img src="/self-car-wash-finder.png" alt="Self Service Car Wash Finder Logo" className="h-16 w-16" />
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Self Service Car Wash Finder</h2>
-              <p className="text-xs text-gray-600">Find Local Self Service Car Washes</p>
+              <h2 className="text-xl font-bold text-carwash-blue">Self Service Car Wash Finder</h2>
+              <p className="text-xs text-carwash-light-700">Find Local Self Service Car Washes</p>
             </div>
           </Link>
 
@@ -43,16 +43,16 @@ export default function Header({ states = [] }: HeaderProps) {
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               href="/" 
-              className="text-gray-700 hover:text-lavender-600 font-medium transition-colors"
+              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors"
             >
               Home
             </Link>
-            <Link href="/self-service-car-wash-near-me" className="text-gray-700 hover:text-lavender-600 font-medium transition-colors">
+            <Link href="/self-service-car-wash-near-me" className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors">
               Self Service Car Washes Near Me
             </Link>
             <Link 
               href="/states" 
-              className="text-gray-700 hover:text-lavender-600 font-medium transition-colors"
+              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors"
             >
               Browse States
             </Link>
@@ -61,7 +61,7 @@ export default function Header({ states = [] }: HeaderProps) {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-700 hover:text-lavender-600 hover:bg-lavender-50"
+            className="md:hidden p-2 rounded-md text-carwash-blue hover:text-carwash-light-600 hover:bg-carwash-light-50"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}

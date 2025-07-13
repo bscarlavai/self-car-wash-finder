@@ -115,7 +115,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 google_rating={location.google_rating}
                 review_count={location.review_count}
                 photo_url={location.photo_url}
-                is_visible={location.is_visible}
                 location_hours={location.location_hours}
                 business_status={location.business_status}
                 street_address={location.street_address}

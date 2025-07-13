@@ -18,21 +18,21 @@ const NearbyLocationsSection = dynamic(() => import('@/components/NearbyLocation
 // Helper function to get appropriate icon for each category
 function getCategoryIcon(category: string) {
   const iconMap: { [key: string]: JSX.Element } = {
-    'Service options': <Coffee className="h-5 w-5 text-lavender-600" />,
-    'Highlights': <Star className="h-5 w-5 text-lavender-600" />,
-    'Offerings': <Coffee className="h-5 w-5 text-lavender-600" />,
-    'Dining options': <Coffee className="h-5 w-5 text-lavender-600" />,
-    'Amenities': <Wifi className="h-5 w-5 text-lavender-600" />,
-    'Atmosphere': <Heart className="h-5 w-5 text-lavender-600" />,
-    'Crowd': <Users className="h-5 w-5 text-lavender-600" />,
-    'Planning': <Calendar className="h-5 w-5 text-lavender-600" />,
-    'Payments': <CreditCard className="h-5 w-5 text-lavender-600" />,
-    'Children': <Baby className="h-5 w-5 text-lavender-600" />,
-    'Parking': <Car className="h-5 w-5 text-lavender-600" />,
-    'Other': <Star className="h-5 w-5 text-lavender-600" />,
+    'Service options': <Coffee className="h-5 w-5 text-carwash-blue" />,
+    'Highlights': <Star className="h-5 w-5 text-carwash-blue" />,
+    'Offerings': <Coffee className="h-5 w-5 text-carwash-blue" />,
+    'Dining options': <Coffee className="h-5 w-5 text-carwash-blue" />,
+    'Amenities': <Wifi className="h-5 w-5 text-carwash-blue" />,
+    'Atmosphere': <Heart className="h-5 w-5 text-carwash-blue" />,
+    'Crowd': <Users className="h-5 w-5 text-carwash-blue" />,
+    'Planning': <Calendar className="h-5 w-5 text-carwash-blue" />,
+    'Payments': <CreditCard className="h-5 w-5 text-carwash-blue" />,
+    'Children': <Baby className="h-5 w-5 text-carwash-blue" />,
+    'Parking': <Car className="h-5 w-5 text-carwash-blue" />,
+    'Other': <Star className="h-5 w-5 text-carwash-blue" />,
   };
   
-  return iconMap[category] || <Star className="h-5 w-5 text-lavender-600" />;
+  return iconMap[category] || <Star className="h-5 w-5 text-carwash-blue" />;
 }
 
 export default function LocationPageClient({ location: initialLocation, params }: { location: any, params: any }) {
@@ -164,13 +164,13 @@ export default function LocationPageClient({ location: initialLocation, params }
         <nav className="mb-8" aria-label="Breadcrumb">
           <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600 sm:text-base">
             <li className="whitespace-nowrap">
-              <Link href="/states" className="hover:text-lavender-600">
+              <Link href="/states" className="hover:text-carwash-blue">
                 States
               </Link>
             </li>
             <li className="select-none">/</li>
             <li className="whitespace-nowrap">
-              <Link href={`/states/${params.state}`} className="hover:text-lavender-600">
+              <Link href={`/states/${params.state}`} className="hover:text-carwash-blue">
                 {location.state}
               </Link>
             </li>
@@ -232,7 +232,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                       )}
                     </div>
                   )}
-                  {location.claimed_status === 'claimed' && (
+                  {/* Reimplement this later {location.claimed_status === 'claimed' && (
                     <div className="flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                       <img 
                         src="/cat-cafe-directory-verified-purple.png" 
@@ -254,12 +254,12 @@ export default function LocationPageClient({ location: initialLocation, params }
                         trackCafeButtonClick('claim_listing', location.name, `${location.city}, ${location.state}`)
                         setShowClaimModal(true)
                       }}
-                      className="flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-lavender-100 text-lavender-800 hover:bg-lavender-200 transition-colors focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-1"
+                      className="flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-carwash-blue text-white hover:bg-carwash-blue/90 transition-colors focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-1"
                     >
                       <MapPin className="h-4 w-4 mr-1" />
                       <span>Claim This Listing</span>
                     </button>
-                  )}
+                  )} */}
                 </div>
 
                 {location.description && (
@@ -312,7 +312,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackCafeButtonClick('get_directions', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Navigation className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">Get Directions</span>
@@ -323,7 +323,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                   <a
                     href={`tel:${location.phone}`}
                     onClick={() => trackCafeButtonClick('call_now', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Phone className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">Call Now</span>
@@ -336,7 +336,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackCafeButtonClick('book_appointment', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Calendar className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">Book Appointment</span>
@@ -349,7 +349,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackCafeButtonClick('make_reservation', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Calendar className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">Make Reservation</span>
@@ -362,7 +362,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackCafeButtonClick('view_menu', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Coffee className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">View Menu</span>
@@ -375,7 +375,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackCafeButtonClick('order_online', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-lavender-500 shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                   >
                     <Coffee className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
                     <span className="font-medium text-white">Order Online</span>
@@ -409,7 +409,7 @@ export default function LocationPageClient({ location: initialLocation, params }
               {location.reviews_tags.map((tag: string, index: number) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-lavender-100 text-lavender-800 hover:bg-lavender-200 transition-colors cursor-pointer"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-carwash-blue text-white hover:bg-carwash-blue/90 transition-colors cursor-pointer"
                 >
                   {tag}
                 </span>
@@ -435,7 +435,7 @@ export default function LocationPageClient({ location: initialLocation, params }
           <div className="text-center py-8">
             <div className="max-w-md mx-auto">
               <div className="mb-6">
-                <MapPin className="h-12 w-12 text-lavender-500 mx-auto mb-4" />
+                <MapPin className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
                 <p className="text-gray-600">
                   Discover other amazing cat cafes and adoption centers in {location.state}
                 </p>
@@ -443,7 +443,7 @@ export default function LocationPageClient({ location: initialLocation, params }
               <div className="space-y-3">
                 <Link
                   href={`/states/${params.state}`}
-                  className="inline-flex items-center justify-center w-full bg-lavender-500 text-white px-4 py-3 rounded-lg font-medium shadow-sm hover:shadow-md hover:bg-lavender-600 transition-all duration-200"
+                  className="inline-flex items-center justify-center w-full bg-carwash-blue text-white px-4 py-3 rounded-lg font-medium shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200"
                 >
                   <MapPin className="h-5 w-5 mr-2" />
                   Browse All Cafes in {location.state}
@@ -487,7 +487,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                           onClick={() => setSelectedColor('purple')}
                           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                             selectedColor === 'purple'
-                              ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                              ? 'bg-carwash-blue text-white border-2 border-carwash-blue'
                               : 'bg-white text-gray-600 border-2 border-gray-200 hover:bg-gray-50'
                           }`}
                         >
@@ -525,7 +525,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                         <p className="text-sm font-medium text-gray-700">HTML Code:</p>
                         <button
                           onClick={copyToClipboard}
-                          className="flex items-center space-x-1 px-3 py-1.5 bg-teal-500 text-white text-sm rounded-lg hover:bg-teal-600 transition-colors"
+                          className="flex items-center space-x-1 px-3 py-1.5 bg-carwash-blue text-white text-sm rounded-lg hover:bg-carwash-blue/90 transition-colors"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -534,14 +534,14 @@ export default function LocationPageClient({ location: initialLocation, params }
                         </button>
                       </div>
                       <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
-                        <pre className="text-green-400 text-sm leading-relaxed">
+                        <pre className="text-carwash-blue text-sm leading-relaxed">
                           <code>{selectedColor === 'purple' ? htmlSnippet : htmlSnippetPeach}</code>
                         </pre>
                       </div>
                     </div>
                     
-                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <p className="text-sm text-blue-800">
+                    <div className="mt-4 p-3 bg-carwash-blue text-white rounded-lg">
+                      <p className="text-sm">
                         Copy this code and paste it into your website's HTML. Then submit your name and email and we'll confirm your ownership.
                       </p>
                     </div>
@@ -559,7 +559,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                       required
                       value={claimForm.name}
                       onChange={(e) => setClaimForm({ ...claimForm, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lavender-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -574,7 +574,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                       required
                       value={claimForm.email}
                       onChange={(e) => setClaimForm({ ...claimForm, email: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-lavender-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
                       placeholder="Enter your email address"
                     />
                   </div>
@@ -593,7 +593,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 bg-lavender-500 text-white px-4 py-2.5 rounded-lg font-medium hover:bg-lavender-600 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-lavender-500 focus:ring-offset-2"
+                      className="flex-1 bg-carwash-blue text-white px-4 py-2.5 rounded-lg font-medium hover:bg-carwash-blue/90 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                     >
                       {isSubmitting ? 'Submitting...' : 'Submit Claim'}
                     </button>

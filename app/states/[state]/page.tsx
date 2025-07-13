@@ -250,7 +250,6 @@ export default async function StatePage({ params }: PageProps) {
                     review_count={location.review_count}
                     photo_url={location.photo_url}
                     location_hours={location.location_hours}
-                    is_visible={location.is_visible}
                     business_status={location.business_status}
                     street_address={location.street_address}
                     phone={location.phone}

@@ -5,16 +5,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --foreground-rgb: 51, 65, 85;
-  --background-start-rgb: 248, 247, 255;
+  --foreground-rgb: 24, 57, 75; /* carwash-blue */
+  --background-start-rgb: 242, 247, 249; /* carwash-light 50 */
   --background-end-rgb: 255, 255, 255;
+  --highlight-rgb: 123, 167, 186; /* carwash-light */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 15, 23, 42;
-    --background-end-rgb: 30, 41, 59;
+    --background-start-rgb: 13, 48, 66; /* carwash-blue 600 */
+    --background-end-rgb: 24, 57, 75;   /* carwash-blue */
+    --highlight-rgb: 123, 167, 186;
   }
 }
 
@@ -30,7 +32,7 @@ body {
 
 /* Performance optimizations */
 .hero-gradient {
-  background: linear-gradient(135deg, #f8f7ff 0%, #ffe8d9 50%, #ccfbf1 100%);
+  background: linear-gradient(135deg, #f2f7f9 0%, #e6eef3 50%, #7ba7ba 100%); /* carwash-light gradient */
 }
 
 .card-hover {
@@ -39,7 +41,7 @@ body {
 
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 8px 30px rgba(24, 57, 75, 0.15); /* carwash-blue shadow */
 }
 
 /* Input field fixes */
@@ -49,9 +51,9 @@ input[type="search"],
 input[type="tel"],
 input[type="url"],
 textarea {
-  color: #334155 !important;
+  color: #18394B !important; /* carwash-blue */
   background-color: #ffffff !important;
-  caret-color: #8b5cf6 !important;
+  caret-color: #7BA7BA !important; /* carwash-light */
 }
 
 input[type="text"]::placeholder,
@@ -60,7 +62,7 @@ input[type="search"]::placeholder,
 input[type="tel"]::placeholder,
 input[type="url"]::placeholder,
 textarea::placeholder {
-  color: #94a3b8 !important;
+  color: #7BA7BA !important; /* carwash-light */
 }
 
 /* Utility classes for better UX */
@@ -96,7 +98,7 @@ textarea::placeholder {
 
 /* Focus styles for accessibility */
 .focus-visible:focus-visible {
-  outline: 2px solid #8b5cf6;
+  outline: 2px solid #18394B;
   outline-offset: 2px;
 }
 

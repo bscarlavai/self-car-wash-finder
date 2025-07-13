@@ -84,23 +84,23 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-gray-900 text-white" role="contentinfo">
+    <footer className="bg-carwash-blue text-white" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <img
-                src="/cat-cafe-directory.png"
-                alt="Cat Cafe Directory Logo"
+                src="/self-car-wash-finder.png"
+                alt="Self Service Car Wash Finder Logo"
                 className="h-12 w-12"
               />
               <div>
                 <h4 className="text-lg font-semibold">About Our Directory</h4>
-                <p className="text-gray-400 text-xs">Find Local Self Service Car Washes</p>
+                <p className="text-carwash-light-200 text-xs">Find Local Self Service Car Washes</p>
               </div>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-carwash-light-200 text-sm leading-relaxed">
               Your comprehensive directory for finding the best self-service car washes across
               the United States. Discover local self-service car washes where you can wash
               your car with professional equipment on your own schedule.
@@ -116,7 +116,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors text-sm"
+                      className="text-carwash-light-200 hover:text-white transition-colors text-sm"
                     >
                       {link.name}
                     </Link>
@@ -132,13 +132,13 @@ export default function Footer() {
             <nav aria-label="Popular states">
               <ul className="space-y-1">
                 {loadingStates ? (
-                  <li className="text-gray-400 text-sm">Loading...</li>
+                  <li className="text-carwash-light-200 text-sm">Loading...</li>
                 ) : (
                   popularStates.map((state) => (
                     <li key={state}>
                       <Link
                         href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="text-gray-400 hover:text-white transition-colors text-sm"
+                        className="text-carwash-light-200 hover:text-white transition-colors text-sm"
                       >
                         {state} Self Service Car Washes
                       </Link>
@@ -155,13 +155,13 @@ export default function Footer() {
             <nav aria-label="Popular cities">
               <ul className="space-y-1">
                 {loadingCities ? (
-                  <li className="text-gray-400 text-sm">Loading...</li>
+                  <li className="text-carwash-light-200 text-sm">Loading...</li>
                 ) : (
                   popularCities.map(({ city, state }) => (
                     <li key={`${city},${state}`}>
                       <Link
                         href={`/cities/${slugify(city)}-${slugify(state)}`}
-                        className="text-gray-400 hover:text-white transition-colors text-sm"
+                        className="text-carwash-light-200 hover:text-white transition-colors text-sm"
                       >
                         {city}, {state} Self Service Car Washes
                       </Link>
@@ -173,12 +173,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8">
+        <div className="border-t border-carwash-light-700 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-gray-400 text-sm">
+            <p className="text-carwash-light-200 text-sm">
               © {currentYear} Self Service Car Wash Finder. All rights reserved.
             </p>
-            <div className="flex items-center space-x-4 text-sm text-gray-400">
+            <div className="flex items-center space-x-4 text-sm text-carwash-light-200">
               <span>
                 Helping car owners find the best local self-service car washes since 2025
               </span>

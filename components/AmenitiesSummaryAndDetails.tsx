@@ -121,20 +121,20 @@ const amenityMatchMap: { [key: string]: string[] } = {
 // Helper function to get appropriate icon for each category
 function getCategoryIcon(category: string) {
   const iconMap: { [key: string]: React.ReactNode } = {
-    'Service options': <Coffee className="h-5 w-5 text-lavender-600" />,
-    'Highlights': <Star className="h-5 w-5 text-lavender-600" />,
-    'Offerings': <Coffee className="h-5 w-5 text-lavender-600" />,
-    'Dining options': <Hamburger className="h-5 w-5 text-lavender-600" />,
-    'Amenities': <Wifi className="h-5 w-5 text-lavender-600" />,
-    'Atmosphere': <Heart className="h-5 w-5 text-lavender-600" />,
-    'Crowd': <Users className="h-5 w-5 text-lavender-600" />,
-    'Planning': <Calendar className="h-5 w-5 text-lavender-600" />,
-    'Payments': <CreditCard className="h-5 w-5 text-lavender-600" />,
-    'Children': <Baby className="h-5 w-5 text-lavender-600" />,
-    'Parking': <SquareParking className="h-5 w-5 text-lavender-600" />,
-    'Other': <Star className="h-5 w-5 text-lavender-600" />,
+    'Service options': <Coffee className="h-5 w-5 text-carwash-blue" />,
+    'Highlights': <Star className="h-5 w-5 text-carwash-blue" />,
+    'Offerings': <Coffee className="h-5 w-5 text-carwash-blue" />,
+    'Dining options': <Hamburger className="h-5 w-5 text-carwash-blue" />,
+    'Amenities': <Wifi className="h-5 w-5 text-carwash-blue" />,
+    'Atmosphere': <Heart className="h-5 w-5 text-carwash-blue" />,
+    'Crowd': <Users className="h-5 w-5 text-carwash-blue" />,
+    'Planning': <Calendar className="h-5 w-5 text-carwash-blue" />,
+    'Payments': <CreditCard className="h-5 w-5 text-carwash-blue" />,
+    'Children': <Baby className="h-5 w-5 text-carwash-blue" />,
+    'Parking': <SquareParking className="h-5 w-5 text-carwash-blue" />,
+    'Other': <Star className="h-5 w-5 text-carwash-blue" />,
   };
-  return iconMap[category] || <Star className="h-5 w-5 text-lavender-600" />;
+  return iconMap[category] || <Star className="h-5 w-5 text-carwash-blue" />;
 }
 
 export default function AmenitiesSummaryAndDetails({ amenitiesByCategory, sortedCategories }: Props) {
@@ -143,20 +143,23 @@ export default function AmenitiesSummaryAndDetails({ amenitiesByCategory, sorted
   const allAmenities = React.useMemo(() => Object.values(amenitiesByCategory).flat().map(a => a.toLowerCase()), [amenitiesByCategory])
 
   function hasAmenity(popularKey: string) {
-    const matches = amenityMatchMap[popularKey]
+    const matches = amenityMatchMap[popularKey] || [];
+    if (matches.length === 0) {
+      console.log(popularKey)
+    }
     return allAmenities.some(a => matches.some(m => a.includes(m)))
   }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-        <div className="w-8 h-8 bg-lavender-100 rounded-lg flex items-center justify-center mr-3">
-          <span className="text-lavender-600 font-bold text-lg">★</span>
+      <h2 className="text-2xl font-bold text-carwash-blue mb-6 flex items-center">
+        <div className="w-8 h-8 bg-carwash-light-100 rounded-lg flex items-center justify-center mr-3">
+          <span className="text-carwash-blue font-bold text-lg">★</span>
         </div>
         Amenities & Features
       </h2>
       {/* Summary List */}
-      <ul className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 bg-lavender-50 rounded p-2">
+      <ul className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 bg-carwash-light-50 rounded-xl p-4">
         {[...POPULAR_AMENITIES].sort((a, b) => a.label.localeCompare(b.label)).map(({ label, key, icon }) => {
           const available = hasAmenity(key)
           return (
@@ -164,15 +167,15 @@ export default function AmenitiesSummaryAndDetails({ amenitiesByCategory, sorted
               key={key}
               className="flex items-center px-2 py-2 rounded"
             >
-              <span className={available ? "text-lavender-600" : "text-gray-400"}>{icon}</span>
-              <span className={available ? "ml-2 font-medium text-lavender-700" : "ml-2 text-gray-500"}>{label}</span>
-              {available && <Check className="ml-2 h-4 w-4 text-green-500" />}
+              <span className={available ? "text-tarawera font-semibold" : "text-manatee opacity-70"}>{icon}</span>
+              <span className={available ? "ml-2 font-semibold text-tarawera" : "ml-2 text-manatee opacity-70"}>{label}</span>
+              {available && <Check className="ml-2 h-4 w-4 text-tarawera" />}
             </li>
           )
         })}
       </ul>
       <button
-        className="text-lavender-600 font-semibold underline mb-4"
+        className="text-carwash-blue font-semibold underline mb-4"
         onClick={() => setExpanded(e => !e)}
         type="button"
       >
@@ -181,17 +184,20 @@ export default function AmenitiesSummaryAndDetails({ amenitiesByCategory, sorted
       {expanded && (
         <div className="space-y-8 mt-6">
           {sortedCategories.map((category) => (
-            <div key={category} className="border border-gray-100 rounded-xl p-6 bg-gradient-to-br from-gray-50 to-white">
+            <div key={category} className="border border-carwash-light-200 rounded-xl p-6 bg-gradient-to-br from-carwash-light-50 to-white">
               <div className="flex items-center mb-4">
-                <div className="w-10 h-10 bg-lavender-100 rounded-lg flex items-center justify-center mr-3">
+                <div className="w-10 h-10 bg-carwash-light-100 rounded-lg flex items-center justify-center mr-3">
                   {getCategoryIcon(category)}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900">{category}</h3>
+                <h3 className="text-xl font-semibold text-carwash-blue">{category}</h3>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                 {amenitiesByCategory[category].map((amenity: string) => (
-                  <div key={amenity} className="flex items-center p-2 bg-gray-100 rounded-md border border-gray-200 hover:border-lavender-300 hover:bg-lavender-100 transition-all duration-200">
-                    <span className="text-gray-800 text-sm font-medium">{amenity}</span>
+                  <div
+                    key={amenity}
+                    className="flex items-center space-x-2 text-tarawera font-semibold transition-colors"
+                  >
+                    <span>{amenity}</span>
                   </div>
                 ))}
               </div>
