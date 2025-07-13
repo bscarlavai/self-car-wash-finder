@@ -15,7 +15,6 @@ interface LocationCardProps {
   google_rating?: number;
   review_count?: number;
   photo_url?: string;
-  is_visible?: boolean;
   location_hours?: any[];
   business_status?: string;
   street_address?: string;

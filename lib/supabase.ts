@@ -38,7 +38,6 @@ export interface Location {
   street_view_url?: string
   google_place_id?: string // This is now a separate field
   google_id?: string
-  is_visible: boolean
   claimed_status?: 'unclaimed' | 'pending' | 'claimed'
   reviews_tags?: string[]
   reservation_urls?: string[]
@@ -48,6 +47,7 @@ export interface Location {
   location_url?: string
   created_at: string
   updated_at: string
+  review_status: 'pending' | 'approved' | 'rejected'
 }
 
 export interface LocationAmenity {
@@ -81,7 +81,7 @@ export function getLocations(filters?: { state?: string; city?: string; }) {
     .from('locations')
     .select('*')
     .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-    .eq('is_visible', true)
+    .eq('review_status', 'approved')
 
   if (filters?.state) {
     // Convert slug to title case for state

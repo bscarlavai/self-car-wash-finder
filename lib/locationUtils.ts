@@ -47,7 +47,7 @@ export async function searchLocationsByZip(zipCode: string, radiusMiles: number 
         location_hours(day_of_week, open_time, close_time, is_closed)
       `)
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .not('latitude', 'is', null)
       .not('longitude', 'is', null)
 
@@ -85,7 +85,7 @@ export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: n
       .from('locations')
       .select('id, name, city, state, slug, google_rating, description, latitude, longitude')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .not('latitude', 'is', null)
       .not('longitude', 'is', null)
 
@@ -130,7 +130,7 @@ export async function searchLocationsByLatLng(lat: number, lng: number, radiusMi
         location_hours(day_of_week, open_time, close_time, is_closed)
       `)
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .not('latitude', 'is', null)
       .not('longitude', 'is', null)
 

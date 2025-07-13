@@ -166,7 +166,7 @@ async function getLocationsByCity(cityStateSlug: string) {
     const { data, error } = await supabase
       .from('locations')
       .select('*')
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('city_slug', citySlugified)
       .ilike('state', `%${stateSlugified.replace(/-/g, ' ')}%`);
@@ -415,7 +415,6 @@ export default async function CityPage({ params }: PageProps) {
                 review_count={location.review_count}
                 photo_url={location.photo_url}
                 location_hours={location.location_hours}
-                is_visible={location.is_visible}
                 business_status={location.business_status}
                 street_address={location.street_address}
                 phone={location.phone}

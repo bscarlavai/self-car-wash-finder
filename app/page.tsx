@@ -26,7 +26,7 @@ async function getFeaturedLocations() {
       .from('locations')
       .select('*')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .not('google_rating', 'is', null)
       .not('review_count', 'is', null)
 
@@ -110,7 +110,7 @@ async function getStats() {
       .from('locations')
       .select('*', { count: 'exact', head: true })
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
     
     if (countError) {
       console.error('Error fetching location count:', countError)
@@ -122,7 +122,7 @@ async function getStats() {
       .from('locations')
       .select('*', { count: 'exact', head: true })
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .gte('google_rating', 4.0)
     
     if (highRatedError) {
@@ -139,7 +139,7 @@ async function getStats() {
           FROM locations 
           WHERE state IS NOT NULL
           AND business_status IN ('OPERATIONAL', 'CLOSED_TEMPORARILY')
-          AND is_visible = true
+          AND review_status = 'approved'
         `
       })
     
@@ -150,7 +150,7 @@ async function getStats() {
         .from('locations')
         .select('state')
         .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-        .eq('is_visible', true)
+        .eq('review_status', 'approved')
         .not('state', 'is', null)
         .limit(10000)
       
@@ -265,7 +265,6 @@ export default async function HomePage() {
                   google_rating={location.google_rating}
                   review_count={location.review_count}
                   photo_url={location.photo_url}
-                  is_visible={location.is_visible}
                   location_hours={location.location_hours}
                   business_status={location.business_status}
                   street_address={location.street_address}

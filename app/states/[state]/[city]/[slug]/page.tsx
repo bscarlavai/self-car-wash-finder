@@ -59,7 +59,7 @@ async function getCafeBySlugStateAndCity(slug: string, state: string, city: stri
     const { data, error } = await supabase
       .from('locations')
       .select(`*, location_amenities(amenity_name, amenity_category), location_hours(day_of_week, open_time, close_time, is_closed)`)
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('city_slug', citySlugified)
       .ilike('state', `%${stateSlugified.replace(/-/g, ' ')}%`);

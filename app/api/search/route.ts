@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       .from('locations')
       .select('id, name, city, state, slug, google_rating, description')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .or(`name.ilike.%${query}%,city.ilike.%${query}%,state.ilike.%${query}%,description.ilike.%${query}%`)
       .order('google_rating', { ascending: false })
       .limit(10)

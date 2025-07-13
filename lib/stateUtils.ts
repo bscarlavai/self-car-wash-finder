@@ -7,7 +7,7 @@ export async function getStatesWithLocations() {
       .from('locations')
       .select('state')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .order('state')
 
     if (error) {

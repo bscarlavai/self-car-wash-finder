@@ -57,7 +57,7 @@ export default function NearMeClient() {
           location_hours(day_of_week, open_time, close_time, is_closed)
         `)
         .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-        .eq('is_visible', true)
+        .eq('review_status', 'approved')
         .not('latitude', 'is', null)
         .not('longitude', 'is', null)
 
@@ -246,7 +246,6 @@ export default function NearMeClient() {
                     google_rating={location.google_rating}
                     review_count={location.review_count}
                     photo_url={location.photo_url}
-                    is_visible={location.is_visible}
                     location_hours={location.location_hours}
                     business_status={location.business_status}
                     street_address={location.street_address}

@@ -22,7 +22,7 @@ export default function Footer() {
       const { data, error } = await supabase
         .from('locations')
         .select('state')
-        .eq('is_visible', true)
+        .eq('review_status', 'approved')
         .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
         .limit(1000) // safeguard for now
       if (!error && data) {
@@ -49,7 +49,7 @@ export default function Footer() {
       const { data, error } = await supabase
         .from('locations')
         .select('city, state')
-        .eq('is_visible', true)
+        .eq('review_status', 'approved')
         .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
         .limit(1000)
       if (!error && data) {

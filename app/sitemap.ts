@@ -36,7 +36,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from('locations')
       .select('state')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
       .not('state', 'is', null)
 
     const uniqueStates = Array.from(new Set(states?.map(location => location.state) || []))
@@ -53,7 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from('locations')
       .select('slug, state, city, updated_at')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('is_visible', true)
+      .eq('review_status', 'approved')
 
     const locationPages = (locations || []).map((location) => ({
       url: `${baseUrl}/states/${slugify(location.state)}/${slugify(location.city)}/${location.slug}`,
