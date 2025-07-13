@@ -85,8 +85,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
             <SearchIcon className="h-8 w-8 text-carwash-blue mr-3" />
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Find Self Service Car Washes Near You</h1>
           </div>
-          <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
-            Search for self-service car washes by city, state, or name. Discover the best places to wash your car on your schedule.
+          <p className="text-gray-600 text-center mb-8">
+            Enter a city or state name to find self service car washes in that area.
           </p>
         </div>
       </section>
@@ -125,33 +125,11 @@ export default async function SearchPage({ searchParams }: PageProps) {
           </div>
         ) : (
           /* No Results */
-          <div className="text-center py-16">
-            <div className="max-w-md mx-auto">
-              <SearchIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                No cat cafes found
-              </h2>
-              <p className="text-gray-600 mb-8">
-                We couldn't find any cat cafes matching "{searchTerm}". Try searching with different terms or browse by state.
-              </p>
-              <div className="space-y-4">
-                <Link
-                  href="/states"
-                  className="inline-flex items-center bg-tarawera text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300"
-                >
-                  Explore States Directory
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-                <div className="text-sm text-gray-500">
-                  <p>Try searching for:</p>
-                  <ul className="mt-2 space-y-1">
-                    <li>• Just the city name (e.g., "Miami")</li>
-                    <li>• Just the state name (e.g., "Florida")</li>
-                    <li>• Cafe name (e.g., "Kitty")</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div className="text-center py-12">
+            <div className="text-gray-500 text-lg mb-2">No self service car washes found</div>
+            <p className="text-gray-600">
+              We couldn't find any self service car washes matching "{searchTerm}". Try searching with different terms or browse by state.
+            </p>
           </div>
         )}
 
@@ -163,7 +141,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Search by Location</h3>
                 <p className="text-gray-600 text-sm">
-                  Enter a city or state name to find cat cafes in that area.
+                  Enter a city or state name to find self service car washes in that area.
                 </p>
               </div>
               <div>

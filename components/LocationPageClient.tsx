@@ -41,22 +41,16 @@ export default function LocationPageClient({ location: initialLocation, params }
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [claimMessage, setClaimMessage] = useState('')
   const [copied, setCopied] = useState(false)
-  const [selectedColor, setSelectedColor] = useState('purple')
   const [location, setLocation] = useState(initialLocation)
   const { trackCafeButtonClick } = useAnalytics()
 
-  const htmlSnippet = `<a href="https://catcafedirectory.com/states/${params.state}/${params.city}/${params.slug}" target="_blank" rel="noopener noreferrer">
-  <img src="https://catcafedirectory.com/cat-cafe-directory-verified-purple.png" alt="Verified by Cat Cafe Directory" style="height: 64px; width: auto;">
-</a>`
-
-  const htmlSnippetPeach = `<a href="https://catcafedirectory.com/states/${params.state}/${params.city}/${params.slug}" target="_blank" rel="noopener noreferrer">
-  <img src="https://catcafedirectory.com/cat-cafe-directory-verified-peach.png" alt="Verified by Cat Cafe Directory" style="height: 64px; width: auto;">
+  const htmlSnippet = `<a href="https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}" target="_blank" rel="noopener noreferrer">
+  <img src="https://www.selfcarwashfinder.com/self-car-wash-finder.png" alt="Verified by Self Service Car Wash Finder" style="height: 64px; width: auto;">
 </a>`
 
   const copyToClipboard = async () => {
-    const snippetToCopy = selectedColor === 'purple' ? htmlSnippet : htmlSnippetPeach
     try {
-      await navigator.clipboard.writeText(snippetToCopy)
+      await navigator.clipboard.writeText(htmlSnippet)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
@@ -147,11 +141,11 @@ export default function LocationPageClient({ location: initialLocation, params }
 
   // Breadcrumb items for structured data
   const breadcrumbItems = [
-    { name: 'Home', url: 'https://catcafedirectory.com' },
-    { name: 'States', url: 'https://catcafedirectory.com/states' },
-    { name: location.state, url: `https://catcafedirectory.com/states/${params.state}` },
-    { name: location.city, url: `https://catcafedirectory.com/states/${params.state}/${params.city}` },
-    { name: location.name, url: `https://catcafedirectory.com/states/${params.state}/${params.city}/${params.slug}` }
+    { name: 'Home', url: 'https://www.selfcarwashfinder.com' },
+    { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
+    { name: location.state, url: `https://www.selfcarwashfinder.com/states/${params.state}` },
+    { name: location.city, url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}` },
+    { name: location.name, url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}` }
   ]
 
   return (
@@ -186,7 +180,7 @@ export default function LocationPageClient({ location: initialLocation, params }
             <div className="relative h-64 md:h-80 bg-gray-200 overflow-hidden">
               <img
                 src={heroImage}
-                alt={`${location.name} cat cafe in ${location.city}, ${location.state}`}
+                alt={`${location.name} self service car wash in ${location.city}, ${location.state}`}
                 className="w-full h-full object-cover"
                 loading="eager"
                 width={800}
@@ -219,7 +213,7 @@ export default function LocationPageClient({ location: initialLocation, params }
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
               <div className="flex-1">
                 {!location.photo_url && (
-                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{location.name} - Cat Cafe in {location.city}, {location.state}</h1>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{location.name} - Self Service Car Wash in {location.city}, {location.state}</h1>
                 )}
                 
                 <div className="flex items-center space-x-4 mb-4">
@@ -235,8 +229,8 @@ export default function LocationPageClient({ location: initialLocation, params }
                   {/* Reimplement this later {location.claimed_status === 'claimed' && (
                     <div className="flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                       <img 
-                        src="/cat-cafe-directory-verified-purple.png" 
-                        alt="Verified by Cat Cafe Directory" 
+                        src="/self-car-wash-finder.png" 
+                        alt="Verified by Self Service Car Wash Finder" 
                         className="h-12 w-12 mr-1"
                       />
                       <span>Claimed</span>
@@ -418,7 +412,7 @@ export default function LocationPageClient({ location: initialLocation, params }
           </div>
         )}
 
-        {/* Nearby Cat Cafes Section */}
+        {/* Nearby Self Service Car Washes Section */}
         {location.latitude && location.longitude && (
           <NearbyLocationsSection 
             latitude={location.latitude} 
@@ -431,13 +425,16 @@ export default function LocationPageClient({ location: initialLocation, params }
 
         {/* Related Cafes Section */}
         <div className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">More Cat Cafes in {location.state}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">More Self Service Car Washes in {location.state}</h2>
+          <p className="text-gray-600 text-center mb-8">
+            Discover other amazing self service car washes and auto wash stations in {location.state}
+          </p>
           <div className="text-center py-8">
             <div className="max-w-md mx-auto">
               <div className="mb-6">
                 <MapPin className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
                 <p className="text-gray-600">
-                  Discover other amazing cat cafes and adoption centers in {location.state}
+                  Discover other amazing self service car washes and auto wash stations in {location.state}
                 </p>
               </div>
               <div className="space-y-3">
@@ -446,7 +443,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                   className="inline-flex items-center justify-center w-full bg-carwash-blue text-white px-4 py-3 rounded-lg font-medium shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200"
                 >
                   <MapPin className="h-5 w-5 mr-2" />
-                  Browse All Cafes in {location.state}
+                  Browse All Car Washes in {location.state}
                 </Link>
                 <Link
                   href="/states"
@@ -480,31 +477,7 @@ export default function LocationPageClient({ location: initialLocation, params }
               <div className="space-y-6">
                 <div>                  
                   <div className="mt-6 p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
-                    {/* Color Options */}
-                    <div className="mb-4">
-                      <div className="flex space-x-2 mb-3">
-                        <button
-                          onClick={() => setSelectedColor('purple')}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            selectedColor === 'purple'
-                              ? 'bg-carwash-blue text-white border-2 border-carwash-blue'
-                              : 'bg-white text-gray-600 border-2 border-gray-200 hover:bg-gray-50'
-                          }`}
-                        >
-                          Purple
-                        </button>
-                        <button
-                          onClick={() => setSelectedColor('peach')}
-                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            selectedColor === 'peach'
-                              ? 'bg-orange-100 text-orange-700 border-2 border-orange-300'
-                              : 'bg-white text-gray-600 border-2 border-gray-200 hover:bg-gray-50'
-                          }`}
-                        >
-                          Peach
-                        </button>
-                      </div>
-                      
+                  <div className="mb-4">
                       {/* Preview */}
                       <div className="bg-white p-4 rounded-lg border border-gray-200 mb-4">
                         <p className="text-sm text-gray-600 mb-2">Preview:</p>
@@ -512,7 +485,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                           <div 
                             className="bg-white p-3 rounded-lg shadow-sm border border-gray-200"
                             dangerouslySetInnerHTML={{
-                              __html: selectedColor === 'purple' ? htmlSnippet : htmlSnippetPeach
+                              __html: htmlSnippet
                             }}
                           />
                         </div>
@@ -535,7 +508,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                       </div>
                       <div className="bg-gray-900 rounded-lg p-4 overflow-x-auto">
                         <pre className="text-carwash-blue text-sm leading-relaxed">
-                          <code>{selectedColor === 'purple' ? htmlSnippet : htmlSnippetPeach}</code>
+                          <code>{htmlSnippet}</code>
                         </pre>
                       </div>
                     </div>

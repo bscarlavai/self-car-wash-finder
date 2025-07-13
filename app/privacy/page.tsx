@@ -38,7 +38,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Information We Collect</h2>
             <p className="text-gray-700 mb-6">
-              We collect information you provide directly to us, such as when you search for cat cafes or contact us. We also automatically collect certain information about your device and how you interact with our website, including your IP address, browser type, and pages visited.
+              We collect information you provide directly to us, such as when you search for self service car washes or contact us. We also automatically collect certain information about your device and how you interact with our website, including your IP address, browser type, and pages visited.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. How We Use Your Information</h2>

@@ -51,8 +51,8 @@ export default function NearbyLocationsSection({ latitude, longitude, currentLoc
 
   return (
     <div className="bg-white rounded-lg shadow-md p-8 mb-8 mt-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-        Cat Cafes Near {city}, {state}
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+        Self Service Car Washes Near {city}, {state}
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {nearbyLocations.map((location) => (

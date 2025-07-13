@@ -216,15 +216,15 @@ export default async function CityPage({ params }: PageProps) {
     return (
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
+          <div className="text-center py-12">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
               <MapPin className="h-8 w-8 text-red-600" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              No Cat Cafes Found
+              No Self Service Car Washes Found
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              We couldn't find any cat cafes in "{parsedCitySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}"{stateName ? `, ${stateName}` : ''}.
+              We couldn't find any self service car washes in "{parsedCitySlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}"{stateName ? `, ${stateName}` : ''}.
             </p>
             
             {similarCities.length > 0 && (
@@ -278,14 +278,45 @@ export default async function CityPage({ params }: PageProps) {
 
   // Breadcrumb items for structured data
   const breadcrumbItems = [
-    { name: 'Home', url: 'https://catcafedirectory.com' },
-    { name: 'States', url: 'https://catcafedirectory.com/states' },
-    { name: state, url: `https://catcafedirectory.com/states/${state.toLowerCase().replace(/\s+/g, '-')}` },
-    { name: cityName, url: `https://catcafedirectory.com/cities/${citySlug}` }
+    { name: 'Home', url: 'https://www.selfcarwashfinder.com/' },
+    { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
+    { name: state, url: `https://www.selfcarwashfinder.com/states/${state.toLowerCase().replace(/\s+/g, '-')}` },
+    { name: cityName, url: `https://www.selfcarwashfinder.com/cities/${citySlug}` }
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Breadcrumbs */}
+      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <li>
+            <Link href="/" className="hover:text-lavender-600 transition-colors">
+              Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/states" className="hover:text-lavender-600 transition-colors">
+              States
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
+              {state}
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-gray-900 font-medium">{cityName}</li>
+        </ol>
+      </nav>
+      {/* Breadcrumb structured data for SEO */}
+      <BreadcrumbStructuredData items={[
+        { name: 'Home', url: 'https://www.selfcarwashfinder.com/' },
+        { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
+        { name: state, url: `https://www.selfcarwashfinder.com/states/${state.toLowerCase().replace(/\s+/g, '-')}` },
+        { name: cityName, url: `https://www.selfcarwashfinder.com/cities/${citySlug}` }
+      ]} />
       <LocalBusinessStructuredData location={{
         name: `Self Service Car Washes in ${cityName}`,
         description: `Find the best self service car washes in ${cityName}, ${state}. Discover ${locations.length} self service car washes.`,
@@ -295,111 +326,58 @@ export default async function CityPage({ params }: PageProps) {
         longitude: cityLng,
         location_hours: []
       }} />
-      <BreadcrumbStructuredData items={breadcrumbItems} />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-8" aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li>
-              <Link href="/states" className="hover:text-lavender-600 transition-colors">
-                States
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
-                {state}
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">{cityName}</li>
-          </ol>
-        </nav>
-
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-lavender-50 to-peach-50 rounded-2xl shadow-lg p-8 mb-8 border border-lavender-100">
+      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        {/* Hero Section - match singular state page style and color */}
+        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-8 border border-carwash-light-200">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-lavender-100 rounded-full mb-4">
-              <MapPin className="h-8 w-8 text-lavender-600" />
-            </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Cat Cafes in {cityName}
+              Self Service Car Washes in {cityName}
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover {locations.length} purr-fect cat cafes and adoption centers in {cityName}, {state}. 
-              Find the perfect place to enjoy coffee with cats near you.
+              Explore {locations.length} convenient self-service car washes in {cityName}{state ? `, ${state}` : ''}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in {cityName}.
             </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 shadow-md border border-lavender-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-lavender-100 p-3 rounded-full mr-4">
-                  <Coffee className="h-6 w-6 text-lavender-600" />
+                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
+                  <MapPin className="h-6 w-6 text-carwash-blue" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Local Cafes</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Citywide Coverage</h3>
               </div>
               <p className="text-gray-600 text-sm">
-                {locations.length} curated cat cafes in {cityName} with detailed information on services and amenities.
+                Find self-service car washes throughout {cityName}—your next car wash spot might be just around the corner!
               </p>
             </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-md border border-purple-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-purple-100 p-3 rounded-full mr-4">
-                  <Heart className="h-6 w-6 text-purple-600" />
+                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
+                  <Heart className="h-6 w-6 text-carwash-blue" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Adoption Centers</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
               </div>
               <p className="text-gray-600 text-sm">
-                Many cafes partner with local shelters to help cats find their forever homes.
+                All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
               </p>
             </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-md border border-green-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-tarawera/20 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-green-100 p-3 rounded-full mr-4">
-                  <Users className="h-6 w-6 text-green-600" />
+                <div className="bg-tarawera/10 p-3 rounded-full mr-4">
+                  <Coffee className="h-6 w-6 text-tarawera" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Community Hubs</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Professional Equipment</h3>
               </div>
               <p className="text-gray-600 text-sm">
-                Connect with fellow cat lovers and support local animal welfare initiatives.
+                Whether you want a quick wash or a detailed clean, find your perfect self-service spot in {cityName}.
               </p>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <Star className="h-5 w-5 text-yellow-500 mr-2 fill-current" />
-              Why Choose {cityName} Cat Cafes?
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Comprehensive directory of all curated cat cafes in {cityName}</span>
-              </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Detailed information on adoption programs and services</span>
-              </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Real customer reviews and ratings for each location</span>
-              </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Up-to-date contact information and operating hours</span>
-              </div>
             </div>
           </div>
         </div>
 
-
         {/* Cafes Grid */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Cat Cafes in {cityName}
+            Self Service Car Washes in {cityName}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {locations.map((location) => (
@@ -423,32 +401,25 @@ export default async function CityPage({ params }: PageProps) {
             ))}
           </div>
         </div>
-        {/* Cat Cafes Near [City] Section */}
-        {cityLat && cityLng && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Cat Cafes Near {cityName}
-            </h2>
-            <NearbyLocationsSection
-              latitude={cityLat}
-              longitude={cityLng}
-              currentLocationId={''}
-              city={cityName}
-              state={state}
-              excludeIds={Array.from(cityLocationIds)}
-            />
-          </div>
-        )}
-        {/* Back to State */}
-        <div className="text-center">
-          <Link
-            href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
-            className="inline-flex items-center bg-lavender-500 text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to {state} Cat Cafes
-          </Link>
-        </div>
+        {/* Self Service Car Washes Near [City] Section - only renders if there are results */}
+        <NearbyLocationsSection
+          latitude={cityLat}
+          longitude={cityLng}
+          currentLocationId={''}
+          city={cityName}
+          state={state}
+          excludeIds={Array.from(cityLocationIds)}
+        />
+      </div>
+      {/* Back to State Button - always at the bottom, visually separated */}
+      <div className="w-full text-center py-6 bg-transparent">
+        <Link
+          href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
+          className="inline-flex items-center bg-carwash-blue text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue/90 transition-all duration-300"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to {state} Self Service Car Washes
+        </Link>
       </div>
     </div>
   )

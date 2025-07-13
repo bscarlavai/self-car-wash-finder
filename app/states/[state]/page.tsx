@@ -7,6 +7,7 @@ import { generateSocialPreview } from '@/components/SocialPreview'
 import { getShopCardImage } from '@/lib/imageUtils'
 import LocationCard from '@/components/LocationCard'
 import slugify from '@/lib/slugify';
+import { BreadcrumbStructuredData } from '@/components/StructuredData'
 
 interface PageProps {
   params: {
@@ -129,8 +130,32 @@ export default async function StatePage({ params }: PageProps) {
   const otherCitiesCount = cityCount - topCitiesArr.length
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Breadcrumbs */}
+      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <li>
+            <Link href="/" className="hover:text-lavender-600 transition-colors">
+              Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/states" className="hover:text-lavender-600 transition-colors">
+              States
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-gray-900 font-medium">{stateName}</li>
+        </ol>
+      </nav>
+      {/* Breadcrumb structured data for SEO */}
+      <BreadcrumbStructuredData items={[
+        { name: 'Home', url: 'https://www.selfcarwashfinder.com/' },
+        { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
+        { name: stateName, url: `https://www.selfcarwashfinder.com/states/${stateSlug}` }
+      ]} />
+      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Enhanced Content Section */}
         <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-8 border border-carwash-light-200">
           <div className="text-center mb-8">
@@ -161,8 +186,8 @@ export default async function StatePage({ params }: PageProps) {
             
             <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-carwash-light/10 p-3 rounded-full mr-4">
-                  <Heart className="h-6 w-6 text-carwash-light" />
+                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
+                  <Heart className="h-6 w-6 text-carwash-blue" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
               </div>
@@ -230,10 +255,15 @@ export default async function StatePage({ params }: PageProps) {
 
         <div className="space-y-8">
           {sortedCities.map((city) => (
-            <div key={city} className="bg-white rounded-lg shadow-md p-6" id={`city-${slugify(city)}`}>
+            <div key={city} className="bg-white rounded-lg shadow-md p-6" id={`city-${slugify(city)}`}> 
               <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <MapPin className="h-6 w-6 text-lavender-500 mr-2" />
-                {city}
+                <Link
+                  href={`/cities/${slugify(city)}-${stateSlug}`}
+                  className="hover:text-carwash-blue focus:text-carwash-blue underline-offset-2 hover:underline focus:underline transition-colors"
+                >
+                  {city}
+                </Link>
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -260,15 +290,15 @@ export default async function StatePage({ params }: PageProps) {
             </div>
           ))}
         </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/states"
-            className="inline-flex items-center text-lavender-600 hover:text-lavender-700 font-medium"
-          >
-            ← Back to All States
-          </Link>
-        </div>
+      </div>
+      {/* Back to All States Button - always at the bottom, visually separated */}
+      <div className="w-full text-center py-6 bg-transparent">
+        <Link
+          href="/states"
+          className="inline-flex items-center bg-carwash-blue text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue/90 transition-all duration-300"
+        >
+          ← Back to All States
+        </Link>
       </div>
     </div>
   )
