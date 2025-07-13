@@ -1,17 +1,44 @@
 "use client"
 
 import React from 'react'
-import { Check, Wifi, Coffee, CreditCard, Baby, Calendar, Star, Heart, Users, Toilet, SquareParking, Hamburger, CalendarCheck } from 'lucide-react'
+import {
+  Baby,
+  Banknote,
+  BrushCleaning,
+  Bubbles,
+  CalendarCheck, 
+  Check,
+  Calendar,
+  Coffee,
+  CreditCard,
+  Droplets,
+  Fuel,
+  Hamburger,
+  HandCoins,
+  Heart,
+  Smartphone,
+  SquareParking,
+  Star,
+  Toilet,
+  Users,
+  WashingMachine,
+  Wifi
+} from 'lucide-react'
 
 const POPULAR_AMENITIES = [
-  { label: 'Bathroom', key: 'Bathroom', icon: <Toilet className="h-5 w-5" /> },
+  { label: 'Cash Only', key: 'Cash Only', icon: <Banknote className="h-5 w-5" /> },
+  { label: 'Mobile Payments', key: 'Mobile Payments', icon: <Smartphone className="h-5 w-5" /> },
   { label: 'Credit Cards', key: 'Credit Cards', icon: <CreditCard className="h-5 w-5" /> },
+  { label: 'Vacuums (Free)', key: 'Free Vacuums', icon: <BrushCleaning className="h-5 w-5" /> },
+  { label: 'Vacuums (Paid)', key: 'Paid Vacuums', icon: <HandCoins className="h-5 w-5" /> },
+  { label: 'Oil Changes', key: 'Oil Changes', icon: <Droplets className="h-5 w-5" /> },
+  { label: 'Hand Car Washes', key: 'Hand Car Washes', icon: <Bubbles className="h-5 w-5" /> },
+  { label: 'Undercarriage Cleaning', key: 'Undercarriage Cleaning', icon: <Bubbles className="h-5 w-5" /> },
+  { label: 'Towels', key: 'Towels', icon: <WashingMachine className="h-5 w-5" /> },
+  { label: 'Appointment Required', key: 'Appointment Required', icon: <CalendarCheck className="h-5 w-5" /> },
+  { label: 'Bathroom', key: 'Bathroom', icon: <Toilet className="h-5 w-5" /> },
   { label: 'Drinks', key: 'Drinks', icon: <Coffee className="h-5 w-5" /> },
   { label: 'Food', key: 'Food', icon: <Hamburger className="h-5 w-5" /> },
-  { label: 'Kid-friendly', key: 'Kid-friendly', icon: <Baby className="h-5 w-5" /> },
-  { label: 'Appointment Required', key: 'Appointment Required', icon: <CalendarCheck className="h-5 w-5" /> },
-  { label: 'Parking', key: 'Parking', icon: <SquareParking className="h-5 w-5" /> },
-  { label: 'Reservations', key: 'Reservations', icon: <Calendar className="h-5 w-5" /> },
   { label: 'WiFi', key: 'WiFi', icon: <Wifi className="h-5 w-5" /> },
 ]
 
@@ -21,6 +48,12 @@ interface Props {
 }
 
 const amenityMatchMap: { [key: string]: string[] } = {
+  "Paid Vacuums": ["car vacuum", "paid vacuums"],
+  "Free Vacuums": ["free vacuums"],
+  "Oil Changes": ["oil change"],
+  "Hand Car Washes": ["hand car wash"],
+  "Undercarriage Cleaning": ["undercarriage cleaning"],
+  "Towels": ["towels"],
   "Kid-friendly": [
     "kid-friendly", "kid-friendly activities", "kid-friendly hikes", "good for kids", "good for kids birthday",
     "high chairs", "has changing table(s)", "discounts for kids", "family-friendly", "family discount", "kids' menu"
@@ -45,10 +78,14 @@ const amenityMatchMap: { [key: string]: string[] } = {
   ],
   "Parking": [
     "parking", "free parking", "free parking garage", "free parking lot", "free street parking", "paid parking garage",
-    "paid parking lot", "paid street parking", "on-site parking", "valet parking", "car vacuum", "hand car wash", "undercarriage cleaning"
+    "paid parking lot", "paid street parking", "on-site parking", "valet parking"
+  ],
+  "Cash Only": ["cash-only"],
+  "Mobile Payments": [
+    "mobile payments", "nfc mobile payments"
   ],
   "Credit Cards": [
-    "credit cards", "accepts credit cards", "debit cards", "checks", "check cashing", "cash-only", "nfc mobile payments", "snap/ebt", "card payment"
+    "credit cards", "accepts credit cards", "debit cards", "nfc mobile payments", "snap/ebt", "card payment"
   ],
   "Reservations": [
     "accepts reservations", "reservations required", "appointments recommended", "appointment required", "appointments only",

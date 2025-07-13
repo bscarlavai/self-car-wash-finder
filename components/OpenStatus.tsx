@@ -24,6 +24,15 @@ function formatTime(time: string): string {
   return time.replace(/^0(\d:)/, '$1');
 }
 
+// Helper function to check if a day is open 24 hours
+function isOpen24Hours(hour: BusinessHour | undefined): boolean {
+  if (!hour || hour.is_closed) return false;
+  // Accept both 11:59 PM and 12:00 AM next day as close time
+  return (
+    (hour.open_time === '12:00 AM' && (hour.close_time === '11:59 PM' || hour.close_time === '12:00 AM'))
+  );
+}
+
 export default function OpenStatus({ hours, state, businessStatus }: OpenStatusProps) {
   const [status, setStatus] = useState<{ isOpen: boolean; nextOpen?: string; isTemporarilyClosed?: boolean }>({ isOpen: false });
   const [currentTime, setCurrentTime] = useState<string>('');
@@ -101,7 +110,12 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
                   ? 'text-mint-700' 
                   : 'text-red-700'
             }`}>
-              {status.isTemporarilyClosed ? 'Temporarily Closed' : (status.isOpen ? `Open Now Until ${formatTime(todayHours?.close_time || '')}` : 'Closed')}
+              {status.isTemporarilyClosed ? 'Temporarily Closed' : (
+                status.isOpen ? (
+                  isOpen24Hours(todayHours)
+                    ? 'Open 24 hours'
+                    : `Open Now Until ${formatTime(todayHours?.close_time || '')}`
+                ) : 'Closed')}
             </div>
             <div className="text-sm text-gray-600">
             Current Local Time: {currentTime} {getTimezoneAbbr(state)}
@@ -142,7 +156,11 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
                     {!h || h.is_closed ? (
                       <span className="text-red-600 font-medium">Closed</span>
                     ) : (
-                      <span className="text-gray-700 font-medium">{formatTime(h.open_time)} - {formatTime(h.close_time)}</span>
+                      <span className="text-gray-700 font-medium">
+                        {isOpen24Hours(h)
+                          ? 'Open 24 hours'
+                          : `${formatTime(h.open_time)} - ${formatTime(h.close_time)}`}
+                      </span>
                     )}
                   </span>
                 </div>
