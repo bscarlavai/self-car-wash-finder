@@ -1,6 +1,6 @@
 # Cloudflare Workers Deployment Guide
 
-This guide will help you deploy your Cat Cafe Directory to Cloudflare Workers with proper environment variable configuration.
+This guide will help you deploy your Self Car Wash Finder Directory to Cloudflare Workers with proper environment variable configuration.
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ npm run deploy:prod
 ## Step 3: Verify Deployment
 
 1. Check the deployment status in your Cloudflare dashboard
-2. Visit your deployed URL (usually `https://cat-cafe-directory.your-subdomain.workers.dev`)
+2. Visit your deployed URL (usually `https://self-car-wash-finder.your-subdomain.workers.dev`)
 3. Test the search functionality and database connections
 
 ## Environment Variables Reference
