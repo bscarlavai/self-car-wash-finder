@@ -15,9 +15,9 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const cafe = await getCafeBySlugStateAndCity(params.slug, params.state, params.city)
+  const location = await getLocationBySlugStateAndCity(params.slug, params.state, params.city)
   
-  if (!cafe) {
+  if (!location) {
     return generateSocialPreview({
       title: 'Self Service Car Wash Not Found | Self Service Car Wash Finder',
       description: 'The requested self service car wash could not be found.',
@@ -25,9 +25,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const social = generateSocialPreview({
-    title: `${cafe.name} - Self Service Car Wash in ${cafe.city}, ${cafe.state}`,
-    description: `Visit ${cafe.name} in ${cafe.city}, ${cafe.state}. ${cafe.description || 'Get your car cleaned at this local self service car wash.'} Get directions, hours, and contact information.`,
-    image: cafe.photo_url,
+    title: `${location.name} - Self Service Car Wash in ${location.city}, ${location.state} | Self Service Car Wash Finder`,
+    description: `Find ${location.name} self service car wash in ${location.city}, ${location.state}. ${location.description || 'Get your car cleaned at this local self service car wash.'} Get directions, hours, and contact information.`,
+    image: location.photo_url,
     url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}`,
     type: 'article',
   })
@@ -40,17 +40,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function CafePage({ params }: PageProps) {
-  const cafe = await getCafeBySlugStateAndCity(params.slug, params.state, params.city)
+export default async function LocationPage({ params }: PageProps) {
+  const location = await getLocationBySlugStateAndCity(params.slug, params.state, params.city)
 
-  if (!cafe) {
+  if (!location) {
     notFound()
   }
 
-  return <LocationPageClient location={cafe} params={params} />
+  return <LocationPageClient location={location} params={params} />
 }
 
-async function getCafeBySlugStateAndCity(slug: string, state: string, city: string) {
+async function getLocationBySlugStateAndCity(slug: string, state: string, city: string) {
   try {
     const supabase = getSupabaseClient()
     const citySlugified = slugify(city);
@@ -68,7 +68,7 @@ async function getCafeBySlugStateAndCity(slug: string, state: string, city: stri
       return null
     }
     // Find the exact match for this slug, state, and city using city_slug
-    const cafe = data?.find(location => {
+    const location = data?.find(location => {
       const locationSlug = slugify(location.name)
       return (
         locationSlug === slug &&
@@ -76,10 +76,10 @@ async function getCafeBySlugStateAndCity(slug: string, state: string, city: stri
         location.city_slug === citySlugified
       )
     })
-    if (!cafe) {
-      console.log('No cafe found for:', { slug, state, city })
+    if (!location) {
+      console.log('No location found for:', { slug, state, city })
     }
-    return cafe || null
+    return location || null
   } catch (error) {
     console.error('Error fetching locations:', error)
     return null

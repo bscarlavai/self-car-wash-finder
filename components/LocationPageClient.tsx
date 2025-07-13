@@ -193,8 +193,10 @@ export default function LocationPageClient({ location: initialLocation, params }
             <div className="min-w-0">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 break-words">
                 {location.name}
+                <span className="block font-normal text-lg text-gray-600">
+                  Self Service Car Wash in {location.city}, {location.state}
+                </span>
               </h1>
-              <p className="text-lg text-gray-600">in {location.city}, {location.state}</p>
             </div>
             {location.google_rating && (
               <div className="flex-shrink-0">
@@ -212,20 +214,7 @@ export default function LocationPageClient({ location: initialLocation, params }
           <div className="p-8">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
               <div className="flex-1">
-                {!location.photo_url && (
-                  <h1 className="text-3xl font-bold text-gray-900 mb-4">{location.name} - Self Service Car Wash in {location.city}, {location.state}</h1>
-                )}
-                
                 <div className="flex items-center space-x-4 mb-4">
-                  {!location.photo_url && location.google_rating && (
-                    <div className="flex items-center bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
-                      <Star className="h-4 w-4 mr-1 fill-current" />
-                      <span className="font-medium">{location.google_rating}</span>
-                      {location.review_count && (
-                        <span className="text-sm ml-1">({location.review_count} reviews)</span>
-                      )}
-                    </div>
-                  )}
                   {/* Reimplement this later {location.claimed_status === 'claimed' && (
                     <div className="flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                       <img 
