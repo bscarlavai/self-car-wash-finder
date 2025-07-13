@@ -6,14 +6,9 @@ import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locations = await getLocations({})
-  const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
-  const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
-  
   return generateSocialPreview({
     title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
-    description: 'Discover the best self-service car washes across the United States. Find self-service car washes, auto washes, and car wash locations near you.',
-    image,
+    description: 'Find the best self service car washes across the U.S. Explore nearby self car wash and self service auto wash locations in your area.',
   })
 }
 

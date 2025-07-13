@@ -19,23 +19,23 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   if (!cafe) {
     return generateSocialPreview({
-      title: 'Cat Cafe Not Found | Cat Cafe Directory',
-      description: 'The requested cat cafe could not be found.',
+      title: 'Self Service Car Wash Not Found | Self Service Car Wash Finder',
+      description: 'The requested self service car wash could not be found.',
     })
   }
 
   const social = generateSocialPreview({
-    title: `${cafe.name} - Cat Cafe in ${cafe.city}, ${cafe.state}`,
-    description: `Visit ${cafe.name} in ${cafe.city}, ${cafe.state}. ${cafe.description || 'Enjoy cats at this local cat cafe.'} Get directions, hours, and contact information.`,
+    title: `${cafe.name} - Self Service Car Wash in ${cafe.city}, ${cafe.state}`,
+    description: `Visit ${cafe.name} in ${cafe.city}, ${cafe.state}. ${cafe.description || 'Get your car cleaned at this local self service car wash.'} Get directions, hours, and contact information.`,
     image: cafe.photo_url,
-    url: `https://catcafedirectory.com/states/${params.state}/${params.city}/${params.slug}`,
+    url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}`,
     type: 'article',
   })
 
   return {
     ...social,
     alternates: {
-      canonical: `https://catcafedirectory.com/states/${params.state}/${params.city}/${params.slug}`,
+      canonical: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}`,
     },
   }
 }

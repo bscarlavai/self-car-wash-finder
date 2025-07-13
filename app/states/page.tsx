@@ -7,9 +7,6 @@ import TopStatesCard from '@/components/TopStatesCard'
 import { getSupabaseClient } from '@/lib/supabase'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const states = await getStatesWithLocations()
-  const totalLocations = states.reduce((sum, state) => sum + state.locationCount, 0)
-  
   const social = generateSocialPreview({
     title: 'Self Service Car Washes by State - Find Self Service Car Washes Near You | Self Service Car Wash Finder',
     description: `Discover self service and auto washes locations near you.`,

@@ -4,8 +4,8 @@ import { ArrowLeft } from 'lucide-react'
 import { generateSocialPreview } from '@/components/SocialPreview'
 
 export const metadata: Metadata = generateSocialPreview({
-  title: 'Terms of Service - Cat Cafe Directory',
-  description: 'Terms of service and usage guidelines for Cat Cafe Directory.',
+  title: 'Terms of Service - Self Service Car Wash Finder',
+  description: 'Terms of service and usage guidelines for Self Service Car Wash Finder.',
 })
 
 export default function TermsPage() {
@@ -33,12 +33,12 @@ export default function TermsPage() {
             </p>
 
             <p className="text-gray-700 mb-6">
-              Welcome to Cat Cafe Directory ("we," "our," or "us"). By using our website, you agree to be bound by the following Terms of Service. If you do not agree to these terms, please do not use our site.
+              Welcome to Self Service Car Wash Finder ("we," "our," or "us"). By using our website, you agree to be bound by the following Terms of Service. If you do not agree to these terms, please do not use our site.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Use of Our Website</h2>
             <p className="text-gray-700 mb-6">
-              Our site is intended to help users find and explore cat cafés across the United States. By using the site, you agree to use it only for lawful purposes and not for any activity that may harm the site or other users.
+              Our site is intended to help users find and explore car wash facilities across the United States. By using the site, you agree to use it only for lawful purposes and not for any activity that may harm the site or other users.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">2. Accuracy of Information</h2>
@@ -53,7 +53,7 @@ export default function TermsPage() {
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">4. Intellectual Property</h2>
             <p className="text-gray-700 mb-6">
-              All content on this site—including text, layout, and design—is owned by Cat Cafe Directory unless otherwise noted. You may not copy, reproduce, or republish any part of the site without written permission.
+              All content on this site—including text, layout, and design—is owned by Self Service Car Wash Finder unless otherwise noted. You may not copy, reproduce, or republish any part of the site without written permission.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">5. Limitation of Liability</h2>
@@ -68,7 +68,7 @@ export default function TermsPage() {
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">9. Contact Information</h2>
             <p className="text-gray-700 mb-6">
-              If you have any questions about these Terms of Service, please contact us at hello@catcafedirectory.com.
+              If you have any questions about these Terms of Service, please contact us at hello@selfservicecarwashfinder.com.
             </p>
           </div>
         </div>

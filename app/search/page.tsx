@@ -15,14 +15,9 @@ interface PageProps {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locations = await getLocations({})
-  const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
-  const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
-
   const social = generateSocialPreview({
     title: 'Search Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder',
     description: 'Search for self service car washes by name, city, or state. Find the perfect self service car wash near you with our comprehensive search.',
-    image,
   })
   return {
     ...social,

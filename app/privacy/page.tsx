@@ -4,8 +4,8 @@ import { ArrowLeft } from 'lucide-react'
 import { generateSocialPreview } from '@/components/SocialPreview'
 
 export const metadata: Metadata = generateSocialPreview({
-  title: 'Privacy Policy - Cat Cafe Directory',
-  description: 'Learn how Cat Cafe Directory protects your privacy and handles your data.',
+  title: 'Privacy Policy - Self Service Car Wash Finder',
+  description: 'Learn how Self Service Car Wash Finder protects your privacy and handles your data.',
 })
 
 export default function PrivacyPage() {
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
             </p>
 
             <p className="text-gray-700 mb-6">
-              Welcome to Cat Cafe Directory ("we," "our," or "us"). By using our website, you agree to be bound by this Privacy Policy. If you do not agree to this policy, please do not use our site.
+              Welcome to Self Service Car Wash Finder ("we," "our," or "us"). By using our website, you agree to be bound by this Privacy Policy. If you do not agree to this policy, please do not use our site.
             </p>
 
             <h2 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">1. Information We Collect</h2>

@@ -25,16 +25,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
 
   const social = generateSocialPreview({
-    title: `${cityName} Cat Cafes - Find Local Cat Cafes | Cat Cafe Directory`,
-    description: `Discover cat cafes and adoption centers in ${cityName}. Find the perfect place to enjoy cats near you.`,
+    title: `${cityName} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
+    description: `Discover self service car washes and auto wash stations in ${cityName}. Find the perfect self service car wash near you.`,
     image,
-    url: `https://catcafedirectory.com/cities/${params.city}`,
+    url: `https://www.selfcarwashfinder.com/cities/${params.city}`,
   })
 
   return {
     ...social,
     alternates: {
-      canonical: `https://catcafedirectory.com/cities/${params.city}`,
+      canonical: `https://www.selfcarwashfinder.com/cities/${params.city}`,
     },
   }
 }

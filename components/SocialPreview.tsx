@@ -11,12 +11,12 @@ interface SocialPreviewProps {
 export function generateSocialPreview({
   title,
   description,
-  image = '/og-default.jpg', // Default image
+  image = '/self-car-wash-finder.png', // Default to site logo
   url = 'https://www.selfcarwashfinder.com',
   type = 'website'
 }: SocialPreviewProps): Metadata {
-  // Handle null image by using default
-  const imageToUse = image || '/og-default.jpg'
+  // Use provided image or fallback to site logo
+  const imageToUse = image || '/self-car-wash-finder.png'
   
   // Ensure image URL is absolute
   const imageUrl = imageToUse.startsWith('http') ? imageToUse : `https://www.selfcarwashfinder.com${imageToUse}`
