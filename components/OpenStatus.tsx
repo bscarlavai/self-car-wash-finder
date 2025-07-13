@@ -149,14 +149,27 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
               return (
                 <div
                   key={day}
-                  className={`flex items-center justify-between py-2 px-4 rounded-lg ${isToday ? 'bg-lavender-100 font-bold' : 'bg-white'} border border-gray-100`}
+                  className={`flex items-center justify-between py-3 px-4 rounded-lg ${
+                    isToday 
+                      ? 'bg-carwash-blue text-white font-semibold shadow-sm border border-carwash-blue' 
+                      : 'bg-white text-gray-900'
+                  }`}
                 >
-                  <span className={isToday ? 'text-lavender-700' : 'text-gray-900'}>{day}</span>
-                  <span>
+                  <div className="flex items-center space-x-2">
+                    <span>{day}</span>
+                    {isToday && (
+                      <span className="bg-white text-carwash-blue text-xs font-bold px-2 py-1 rounded-full">
+                        TODAY
+                      </span>
+                    )}
+                  </div>
+                  <span className={isToday ? 'text-white' : 'text-gray-700'}>
                     {!h || h.is_closed ? (
-                      <span className="text-red-600 font-medium">Closed</span>
+                      <span className={isToday ? 'text-red-200' : 'text-red-600'} style={{fontWeight: isToday ? '500' : '500'}}>
+                        Closed
+                      </span>
                     ) : (
-                      <span className="text-gray-700 font-medium">
+                      <span style={{fontWeight: isToday ? '500' : '500'}}>
                         {isOpen24Hours(h)
                           ? 'Open 24 hours'
                           : `${formatTime(h.open_time)} - ${formatTime(h.close_time)}`}

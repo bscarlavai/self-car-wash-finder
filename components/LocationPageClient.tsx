@@ -158,6 +158,10 @@ export default function LocationPageClient({ location: initialLocation, params }
         <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
             <li>
+              <Link href="/" className="hover:text-carwash-blue">Home</Link>
+            </li>
+            <li>/</li>
+            <li>
               <Link href="/states" className="hover:text-carwash-blue">States</Link>
             </li>
             <li>/</li>
