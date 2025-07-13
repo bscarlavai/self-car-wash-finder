@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { MapPin, Star, Bubbles, Heart } from 'lucide-react'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import { getStatesWithLocations } from '@/lib/stateUtils'
+import TopStatesCard from '@/components/TopStatesCard'
+import { getSupabaseClient } from '@/lib/supabase'
 
 export async function generateMetadata(): Promise<Metadata> {
   const states = await getStatesWithLocations()
@@ -21,109 +23,147 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+async function getStats() {
+  try {
+    const supabase = getSupabaseClient()
+    
+    // Get total count of locations
+    const { count: totalLocations, error: countError } = await supabase
+      .from('locations')
+      .select('*', { count: 'exact', head: true })
+      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+      .eq('review_status', 'approved')
+    
+    if (countError) {
+      console.error('Error fetching location count:', countError)
+      return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0 }
+    }
+    
+    // Get count of high-rated locations (4+ stars)
+    const { count: highRatedCount, error: highRatedError } = await supabase
+      .from('locations')
+      .select('*', { count: 'exact', head: true })
+      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+      .eq('review_status', 'approved')
+      .gte('google_rating', 4.0)
+    
+    if (highRatedError) {
+      console.error('Error fetching high-rated count:', highRatedError)
+      return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0 }
+    }
+    
+    // Get unique states count - use SQL to count distinct states
+    let totalStates = 0;
+    const { data: statesData, error: statesError } = await supabase
+      .rpc('exec_sql', {
+        sql: `
+          SELECT COUNT(DISTINCT state) as state_count 
+          FROM locations 
+          WHERE state IS NOT NULL
+          AND business_status IN ('OPERATIONAL', 'CLOSED_TEMPORARILY')
+          AND review_status = 'approved'
+        `
+      })
+    
+    if (statesError) {
+      console.error('Error fetching states count:', statesError)
+      // Fallback to the previous method
+      const { data: states, error: fallbackError } = await supabase
+        .from('locations')
+        .select('state')
+        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+        .eq('review_status', 'approved')
+        .not('state', 'is', null)
+        .limit(10000)
+      
+      if (fallbackError) {
+        return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0 }
+      }
+      
+      const uniqueStates = new Set(states.map((location: any) => location.state).filter(Boolean))
+      totalStates = uniqueStates.size
+    } else {
+      totalStates = statesData?.[0]?.state_count || 0
+    }
+    
+    const finalTotalLocations = totalLocations || 0
+    const finalHighRatedCount = highRatedCount || 0
+    const highRatedPercent = finalTotalLocations > 0 ? Math.round((finalHighRatedCount / finalTotalLocations) * 100) : 0
+
+    return { totalLocations: finalTotalLocations, totalStates, highRatedCount: finalHighRatedCount, highRatedPercent }
+  } catch (error) {
+    console.error('Error fetching stats:', error)
+    return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0 }
+  }
+}
+
 export default async function StatesPage() {
-  const states = await getStatesWithLocations()
+  const [states, stats] = await Promise.all([
+    getStatesWithLocations(),
+    getStats()
+  ])
   const totalLocations = states.reduce((sum, state) => sum + state.locationCount, 0)
   const totalStates = states.length
-  const topStates = states.slice(0, 3) // Top 3 states by cafe count
-  const remainingStates = states.slice(3).sort((a, b) => a.name.localeCompare(b.name)) // Alphabetical for easier navigation
+  const sortedStates = [...states].sort((a, b) => b.locationCount - a.locationCount)
+  const topStates = sortedStates.slice(0, 3)
+  const alphaStates = [...states].sort((a, b) => a.name.localeCompare(b.name))
 
-  // Group remaining states by first letter
-  const groupedStates = remainingStates.reduce((acc, state) => {
+  // Group all states by first letter
+  const groupedStates = alphaStates.reduce((acc, state) => {
     const firstLetter = state.name.charAt(0)
     if (!acc[firstLetter]) {
       acc[firstLetter] = []
     }
     acc[firstLetter].push(state)
     return acc
-  }, {} as { [key: string]: typeof remainingStates })
+  }, {} as { [key: string]: typeof alphaStates })
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Self Service Car Washes by State
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            From California to New York, discover the best self-service car washes across all 50 states. 
-            Whether you're looking to wash your car quickly, save money on car care, or simply find a reliable car wash near you, 
-            we've got you covered with curated self-service car washes nationwide.
-          </p>
+      {/* Hero Section */}
+      <section className="bg-carwash-light-100 pt-20 pb-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              Self Service Car Washes by State
+            </h1>
+            <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
+              From California to New York, discover the best self-service car washes across all 50 states. 
+              Whether you're looking to wash your car quickly, save money on car care, or simply find a reliable car wash near you, 
+              we've got you covered with curated self-service car washes nationwide.
+            </p>
+          </div>
         </div>
+      </section>
 
-        {/* Statistics Section */}
-        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-12 border border-carwash-light-200">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      {/* Stats Section with Overlap */}
+      <section className="relative z-10 -mt-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl py-8 px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border border-gray-100">
             <div>
-              <div className="text-4xl font-bold text-tarawera mb-2">{totalStates}</div>
-              <div className="text-gray-600 font-medium">States with Self Service Car Washes</div>
+              <div className="text-4xl font-bold text-tarawera mb-2">{stats.totalLocations}</div>
+              <div className="text-gray-600">Self Service Car Washes Nationwide</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-carwash-blue mb-2">{totalLocations}</div>
-              <div className="text-gray-600 font-medium">Total Self Service Car Washes</div>
+              <div className="text-4xl font-bold text-carwash-blue mb-2">{stats.totalStates}</div>
+              <div className="text-gray-600">States Covered</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-carwash-light mb-2">{Math.round(totalLocations / totalStates)}</div>
-              <div className="text-gray-600 font-medium">Average per State</div>
+              <div className="text-4xl font-bold text-carwash-light mb-2">{stats.highRatedCount}</div>
+              <div className="text-gray-600">4+ Star Rated</div>
+              <div className="text-sm text-manatee mt-1">{stats.highRatedPercent}% 4+ Stars</div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Featured States Section */}
-        {topStates.length > 0 && (
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-              Most Popular States
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {topStates.map((state, index) => (
-                <Link
-                  key={state.slug}
-                  href={`/states/${state.slug}`}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-carwash-light-200 hover:border-tarawera transform hover:-translate-y-1"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center">
-                      <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
-                        <MapPin className="h-6 w-6 text-carwash-blue" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-900">
-                          {state.name}
-                        </h3>
-                        <div className="flex items-center text-sm text-gray-600">
-                          <Star className="h-4 w-4 text-yellow-500 mr-1 fill-current" />
-                          <span>#{index + 1} Most Popular</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-tarawera mb-2">
-                      {state.locationCount}
-                    </div>
-                    <div className="text-sm text-gray-600 mb-4">
-                      {state.locationCount === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
-                    </div>
-                    <div className="bg-carwash-light-100 text-carwash-blue px-4 py-2 rounded-lg font-semibold border border-carwash-light-200 hover:bg-carwash-light-200 hover:text-tarawera transition-colors">
-                      Explore Car Washes →
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* All States Section - Alphabetically Grouped */}
-        {Object.keys(groupedStates).length > 0 && (
-          <div>
+      {/* Quick Navigation & All States Section */}
+      {Object.keys(groupedStates).length > 0 && (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
               All States with Self Service Car Washes
             </h2>
-            
             {/* Quick Navigation */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-carwash-light-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Quick Navigation</h3>
@@ -139,7 +179,6 @@ export default async function StatesPage() {
                 ))}
               </div>
             </div>
-
             {/* Alphabetical Groups */}
             <div className="space-y-8">
               {Object.keys(groupedStates).sort().map((letter) => (
@@ -175,18 +214,48 @@ export default async function StatesPage() {
               ))}
             </div>
           </div>
-        )}
+        </section>
+      )}
 
-        {states.length === 0 && (
-          <div className="text-center py-12">
-            <div className="bg-carwash-light-100 rounded-lg shadow-md p-8 max-w-md mx-auto border border-carwash-light-200">
-              <Heart className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No self-service car washes found</h3>
-              <p className="text-gray-600">Check back soon as we're constantly adding new locations!</p>
+      {/* Most Popular States at Bottom */}
+      {topStates.length > 0 && (
+        <section className="bg-carwash-light-100 py-8 pb-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-4">
+                <Star className="h-8 w-8 text-carwash-blue" />
+              </div>
+              <h2 className="text-3xl font-bold text-tarawera mb-4">
+                Most Popular States
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Explore the states with the most self-service car washes in our directory
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {topStates.map((state, index) => (
+                <TopStatesCard
+                  key={state.slug}
+                  name={state.name}
+                  count={state.locationCount}
+                  rank={index + 1}
+                  href={`/states/${state.slug}`}
+                />
+              ))}
             </div>
           </div>
-        )}
-      </div>
+        </section>
+      )}
+
+      {states.length === 0 && (
+        <div className="text-center py-12">
+          <div className="bg-carwash-light-100 rounded-lg shadow-md p-8 max-w-md mx-auto border border-carwash-light-200">
+            <Heart className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No self-service car washes found</h3>
+            <p className="text-gray-600">Check back soon as we're constantly adding new locations!</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 } 

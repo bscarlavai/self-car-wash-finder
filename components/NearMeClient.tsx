@@ -6,6 +6,7 @@ import { Star, Search, MapPinIcon, Coffee, Telescope, BadgeQuestionMark, Award }
 import { getSupabaseClient } from '@/lib/supabase'
 import { searchLocationsByLatLng, searchLocationsByZip } from '@/lib/locationUtils';
 import LocationCard from '@/components/LocationCard'
+import TopStatesCard from './TopStatesCard'
 
 // Helper function to clean URLs consistently
 function cleanUrl(url: string): string {
@@ -359,39 +360,13 @@ export default function NearMeClient() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {topStates.map((state) => (
-              <a
+              <TopStatesCard
                 key={state.name}
+                name={state.name}
+                count={state.count}
+                rank={state.rank}
                 href={`/states/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
-                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-tarawera-300 transform hover:-translate-y-1"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center">
-                    <div className="bg-teal-100 p-3 rounded-full mr-4">
-                      <MapPinIcon className="h-6 w-6 text-teal-500" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-tarawera">
-                        {state.name}
-                      </h3>
-                      <div className="flex items-center text-sm text-manatee">
-                        <Star className="h-4 w-4 text-yellow-400 mr-1 fill-current" />
-                        <span>#{state.rank} Most Car Washes</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-tarawera mb-2">
-                    {state.count}
-                  </div>
-                  <div className="text-sm text-manatee mb-4">
-                    {state.count === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
-                  </div>
-                  <div className="bg-tarawera text-white px-4 py-2 rounded-lg font-medium hover:bg-tarawera-200 transition-colors">
-                    Explore Car Washes →
-                  </div>
-                </div>
-              </a>
+              />
             ))}
           </div>
         </div>
