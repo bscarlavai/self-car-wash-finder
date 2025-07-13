@@ -1,10 +1,9 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Star, Heart, ArrowRight, Phone, Globe, Navigation, Coffee } from 'lucide-react'
+import { MapPin, Heart, ArrowRight, Phone, Globe, Navigation, Coffee } from 'lucide-react'
 import { getLocations } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import { generateSocialPreview } from '@/components/SocialPreview'
-import { getShopCardImage } from '@/lib/imageUtils'
 import LocationCard from '@/components/LocationCard'
 import slugify from '@/lib/slugify';
 import { BreadcrumbStructuredData } from '@/components/StructuredData'
@@ -131,110 +130,74 @@ export default async function StatePage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Breadcrumbs */}
-      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-sm text-gray-600">
-          <li>
-            <Link href="/" className="hover:text-lavender-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href="/states" className="hover:text-lavender-600 transition-colors">
-              States
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-gray-900 font-medium">{stateName}</li>
-        </ol>
-      </nav>
-      {/* Breadcrumb structured data for SEO */}
-      <BreadcrumbStructuredData items={[
-        { name: 'Home', url: 'https://www.selfcarwashfinder.com/' },
-        { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
-        { name: stateName, url: `https://www.selfcarwashfinder.com/states/${stateSlug}` }
-      ]} />
-      <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Enhanced Content Section */}
-        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-8 border border-carwash-light-200">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Self Service Car Washes in {stateName}
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore {locations.length} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
-              Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, 
-              discover where you can wash your car with professional equipment in the {stateName} self-service car wash scene.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
-                  <MapPin className="h-6 w-6 text-carwash-blue" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Statewide Coverage</h3>
+      {/* Hero Section - full-width, no card, with breadcrumbs inside */}
+      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
+        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
+          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-lavender-600 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link href="/states" className="hover:text-lavender-600 transition-colors">
+                States
+              </Link>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900 font-medium">{stateName}</li>
+          </ol>
+        </nav>
+        <div className="text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            Self Service Car Washes in {stateName}
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Explore {locations.length} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
+            Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, 
+            discover where you can wash your car with professional equipment in the {stateName} self-service car wash scene.
+          </p>
+        </div>
+      </section>
+      {/* Overlap Feature Section - like stats overlap on homepage/states */}
+      <section className="relative z-10 -mt-8 mb-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl py-8 px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border border-gray-100">
+            <div>
+              <div className="bg-carwash-blue/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-carwash-blue" />
               </div>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Statewide Coverage</h3>
+              <p className="text-gray-600">
                 {otherCitiesCount > 0
                   ? `Check out self-service car washes in ${topCities} and ${otherCitiesCount} other cities — your next car wash spot in ${stateName} might be here!`
                   : `Check out self-service car washes in ${topCities} — your next car wash spot in ${stateName} might be here!`}
               </p>
             </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
-                  <Heart className="h-6 w-6 text-carwash-blue" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
+            <div>
+              <div className="bg-carwash-blue/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Heart className="h-8 w-8 text-carwash-blue" />
               </div>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Curated Listings</h3>
+              <p className="text-gray-600">
                 All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
               </p>
             </div>
-            
-            <div className="bg-white rounded-lg p-6 shadow-md border border-tarawera/20 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-tarawera/10 p-3 rounded-full mr-4">
-                  <Coffee className="h-6 w-6 text-tarawera" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">Professional Equipment</h3>
+            <div>
+              <div className="bg-tarawera/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Coffee className="h-8 w-8 text-tarawera" />
               </div>
-              <p className="text-gray-600 text-sm">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Equipment</h3>
+              <p className="text-gray-600">
                 Whether you're looking to wash your car quickly or take your time with detailed cleaning, find your perfect self-service spot.
               </p>
             </div>
           </div>
-          
-          <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
-                          <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                <Star className="h-5 w-5 text-yellow-500 mr-2 fill-current" />
-                Why Choose {stateName} Self Service Car Washes?
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Comprehensive directory of all curated self-service car washes in {stateName}</span>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Detailed information on equipment, services, and facilities</span>
-                </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Real customer reviews and ratings for each location</span>
-              </div>
-              <div className="flex items-start">
-                <div className="w-2 h-2 bg-lavender-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                <span>Up-to-date contact information and operating hours</span>
-              </div>
-            </div>
-          </div>
         </div>
+      </section>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* City Navigation */}
         {Object.keys(locationsByCity).length > 1 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -252,10 +215,9 @@ export default async function StatePage({ params }: PageProps) {
             </div>
           </div>
         )}
-
-        <div className="space-y-8">
+        <div>
           {sortedCities.map((city) => (
-            <div key={city} className="bg-white rounded-lg shadow-md p-6" id={`city-${slugify(city)}`}> 
+            <div key={city} id={`city-${slugify(city)}`} className="mb-12">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <MapPin className="h-6 w-6 text-lavender-500 mr-2" />
                 <Link
@@ -265,7 +227,6 @@ export default async function StatePage({ params }: PageProps) {
                   {city}
                 </Link>
               </h2>
-              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {locationsByCity[city].map((location) => (
                   <LocationCard

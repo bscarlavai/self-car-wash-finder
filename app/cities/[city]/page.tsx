@@ -286,37 +286,40 @@ export default async function CityPage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Breadcrumbs */}
-      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-sm text-gray-600">
-          <li>
-            <Link href="/" className="hover:text-lavender-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href="/states" className="hover:text-lavender-600 transition-colors">
-              States
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
-              {state}
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-gray-900 font-medium">{cityName}</li>
-        </ol>
-      </nav>
-      {/* Breadcrumb structured data for SEO */}
-      <BreadcrumbStructuredData items={[
-        { name: 'Home', url: 'https://www.selfcarwashfinder.com/' },
-        { name: 'States', url: 'https://www.selfcarwashfinder.com/states' },
-        { name: state, url: `https://www.selfcarwashfinder.com/states/${state.toLowerCase().replace(/\s+/g, '-')}` },
-        { name: cityName, url: `https://www.selfcarwashfinder.com/cities/${citySlug}` }
-      ]} />
+      {/* Hero Section - full-width, no card, with breadcrumbs inside */}
+      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
+        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
+          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-lavender-600 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link href="/states" className="hover:text-lavender-600 transition-colors">
+                States
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
+                {state}
+              </Link>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900 font-medium">{cityName}</li>
+          </ol>
+        </nav>
+        <div className="text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
+            Self Service Car Washes in {cityName}
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Explore {locations.length} convenient self-service car washes in {cityName}{state ? `, ${state}` : ''}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in {cityName}.
+          </p>
+        </div>
+      </section>
       <LocalBusinessStructuredData location={{
         name: `Self Service Car Washes in ${cityName}`,
         description: `Find the best self service car washes in ${cityName}, ${state}. Discover ${locations.length} self service car washes.`,
@@ -327,52 +330,40 @@ export default async function CityPage({ params }: PageProps) {
         location_hours: []
       }} />
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        {/* Hero Section - match singular state page style and color */}
-        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-8 border border-carwash-light-200">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Self Service Car Washes in {cityName}
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore {locations.length} convenient self-service car washes in {cityName}{state ? `, ${state}` : ''}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in {cityName}.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
-                  <MapPin className="h-6 w-6 text-carwash-blue" />
+        {/* Overlap Feature Section - like stats overlap on homepage/states */}
+        <section className="relative z-10 -mt-8 mb-8">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl shadow-xl py-8 px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border border-gray-100">
+              <div>
+                <div className="bg-carwash-blue/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <MapPin className="h-8 w-8 text-carwash-blue" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Citywide Coverage</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Citywide Coverage</h3>
+                <p className="text-gray-600">
+                  Find self-service car washes throughout {cityName}—your next car wash spot might be just around the corner!
+                </p>
               </div>
-              <p className="text-gray-600 text-sm">
-                Find self-service car washes throughout {cityName}—your next car wash spot might be just around the corner!
-              </p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
-                  <Heart className="h-6 w-6 text-carwash-blue" />
+              <div>
+                <div className="bg-carwash-blue/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Heart className="h-8 w-8 text-carwash-blue" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Curated Listings</h3>
+                <p className="text-gray-600">
+                  All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
+                </p>
               </div>
-              <p className="text-gray-600 text-sm">
-                All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
-              </p>
-            </div>
-            <div className="bg-white rounded-lg p-6 shadow-md border border-tarawera/20 hover:shadow-lg transition-shadow">
-              <div className="flex items-center mb-4">
-                <div className="bg-tarawera/10 p-3 rounded-full mr-4">
-                  <Coffee className="h-6 w-6 text-tarawera" />
+              <div>
+                <div className="bg-tarawera/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Coffee className="h-8 w-8 text-tarawera" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Professional Equipment</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Equipment</h3>
+                <p className="text-gray-600">
+                  Whether you want a quick wash or a detailed clean, find your perfect self-service spot in {cityName}.
+                </p>
               </div>
-              <p className="text-gray-600 text-sm">
-                Whether you want a quick wash or a detailed clean, find your perfect self-service spot in {cityName}.
-              </p>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Cafes Grid */}
         <div className="mb-8">
@@ -401,15 +392,19 @@ export default async function CityPage({ params }: PageProps) {
             ))}
           </div>
         </div>
-        {/* Self Service Car Washes Near [City] Section - only renders if there are results */}
-        <NearbyLocationsSection
-          latitude={cityLat}
-          longitude={cityLng}
-          currentLocationId={''}
-          city={cityName}
-          state={state}
-          excludeIds={Array.from(cityLocationIds)}
-        />
+        {/* Self Service Car Washes Near [City] Section - full-width blue background */}
+        <section className="bg-carwash-blue/5 py-12 mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <NearbyLocationsSection
+              latitude={cityLat}
+              longitude={cityLng}
+              currentLocationId={''}
+              city={cityName}
+              state={state}
+              excludeIds={Array.from(cityLocationIds)}
+            />
+          </div>
+        </section>
       </div>
       {/* Back to State Button - always at the bottom, visually separated */}
       <div className="w-full text-center py-6 bg-transparent">
