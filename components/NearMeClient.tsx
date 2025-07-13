@@ -235,12 +235,12 @@ export default function NearMeClient() {
                     <button
                       type="submit"
                       disabled={isSearching || !zipCode.trim()}
-                      className="w-full sm:w-auto bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
+                      className="w-full sm:w-auto border-2 border-tarawera bg-white text-tarawera px-8 py-3 rounded-lg font-semibold transition-colors hover:bg-tarawera hover:text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap group"
                       style={{ minWidth: '140px' }}
                     >
                       {isSearching ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-tarawera mr-2"></div>
                           Searching...
                         </>
                       ) : (
@@ -252,9 +252,9 @@ export default function NearMeClient() {
                 <button
                   type="button"
                   onClick={handleLocationSearch}
-                  className="w-full bg-carwash-light text-tarawera px-8 py-3 rounded-lg font-semibold hover:bg-carwash-blue hover:text-white transition-colors flex items-center justify-center text-lg"
+                  className="w-full bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 flex items-center justify-center text-lg"
                 >
-                  <MapPinIcon className="h-5 w-5 mr-2 text-tarawera" />
+                  <MapPinIcon className="h-5 w-5 mr-2" />
                   Use My Location
                 </button>
               </div>

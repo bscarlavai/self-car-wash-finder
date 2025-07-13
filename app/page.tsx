@@ -192,9 +192,8 @@ export default async function HomePage() {
               <div className="text-gray-600">Open 24 Hours</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-carwash-light mb-2">{stats.highRatedCount}</div>
+              <div className="text-4xl font-bold text-yellow-500 mb-2">{stats.highRatedCount}</div>
               <div className="text-gray-600">4+ Star Rated</div>
-              <div className="text-sm text-manatee mt-1">{stats.highRatedPercent}% 4+ Stars</div>
             </div>
           </div>
         </div>
