@@ -137,8 +137,8 @@ export default async function StatesPage() {
             </h2>
             {/* Quick Navigation */}
             <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-carwash-light-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Quick Navigation</h3>
-              <div className="flex flex-wrap justify-center gap-2">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Navigation</h3>
+              <div className="flex flex-wrap gap-2">
                 {Object.keys(groupedStates).sort().map((letter) => (
                   <a
                     key={letter}
@@ -153,29 +153,29 @@ export default async function StatesPage() {
             {/* Alphabetical Groups */}
             <div className="space-y-8">
               {Object.keys(groupedStates).sort().map((letter) => (
-                <div key={letter} id={`letter-${letter}`} className="bg-white rounded-lg shadow-md p-6 border border-carwash-light-200">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                    <div className="bg-carwash-light-100 text-carwash-blue px-4 py-2 rounded-lg mr-4 font-bold border border-carwash-light-200">
-                      {letter}
-                    </div>
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div key={letter} id={`letter-${letter}`} className="mb-12">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                    <MapPin className="h-6 w-6 text-lavender-500 mr-2" />
+                    {letter}
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {groupedStates[letter].map((state) => (
                       <Link
                         key={state.slug}
                         href={`/states/${state.slug}`}
-                        className="bg-carwash-light-100 rounded-lg p-4 border border-carwash-light-200 hover:border-tarawera hover:bg-carwash-light-200 transition-all duration-200"
+                        className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-5 border border-gray-200 hover:border-tarawera-300 transform hover:-translate-y-1 flex flex-col items-center"
                       >
-                        <div className="text-center">
-                          <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                            {state.name}
-                          </h4>
-                          <div className="flex items-center justify-center text-sm text-gray-600 mb-3">
-                            <Bubbles className="h-4 w-4 mr-1 text-carwash-blue" />
-                            <span>{state.locationCount} {state.locationCount === 1 ? 'car wash' : 'car washes'}</span>
-                          </div>
-                          <div className="text-carwash-blue font-semibold text-sm">
-                            Browse →
+                        <div className="flex items-center w-full justify-center mb-2">
+                          <span className="bg-carwash-light-100 p-2 rounded-full mr-2 flex items-center justify-center">
+                            <MapPin className="h-5 w-5 text-carwash-blue" />
+                          </span>
+                          <span className="text-lg font-semibold text-tarawera">{state.name}</span>
+                        </div>
+                        <div className="text-center w-full">
+                          <div className="text-2xl font-bold text-tarawera mb-1">{state.locationCount}</div>
+                          <div className="text-sm text-manatee mb-3">{state.locationCount === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}</div>
+                          <div className="bg-tarawera text-white w-full px-4 py-2 rounded-lg font-medium hover:bg-tarawera-200 transition-colors">
+                            Explore Car Washes →
                           </div>
                         </div>
                       </Link>

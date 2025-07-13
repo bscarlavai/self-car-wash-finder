@@ -1,41 +1,33 @@
 import { getSupabaseClient } from './supabase'
 
+// This function assumes you have a Postgres function (RPC) called 'states_with_location_counts'
+// that returns rows with { state: string, location_count: number }
 export async function getStatesWithLocations() {
   try {
-    const supabase = getSupabaseClient()
+    const supabase = getSupabaseClient();
     const { data, error } = await supabase
-      .from('locations')
-      .select('state')
-      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('review_status', 'approved')
-      .order('state')
+      .from('states_with_location_counts')
+      .select('*');
 
     if (error) {
-      console.error('Error fetching states:', error)
-      return []
+      console.error('Error fetching states:', error);
+      return [];
     }
 
-    // Get unique states and count locations per state
-    const stateCounts = data.reduce((acc: { [key: string]: number }, location: any) => {
-      if (location.state) {
-        acc[location.state] = (acc[location.state] || 0) + 1
-      }
-      return acc
-    }, {})
-
-    // Convert to array and sort
-    const states = Object.entries(stateCounts)
-      .map(([state, count]) => ({
-        name: state,
-        locationCount: count,
-        slug: state.toLowerCase().replace(/\s+/g, '-')
+    // Each row: { state: string, location_count: number }
+    const states = (data || [])
+      .filter((row: any) => row.state)
+      .map((row: any) => ({
+        name: row.state,
+        locationCount: Number(row.location_count),
+        slug: row.state.toLowerCase().replace(/\s+/g, '-')
       }))
-      .sort((a, b) => b.locationCount - a.locationCount) // Sort by location count (highest first)
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
 
-    return states
+    return states;
   } catch (error) {
-    console.error('Error fetching states:', error)
-    return []
+    console.error('Error fetching states:', error);
+    return [];
   }
 }
 
