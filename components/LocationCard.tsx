@@ -151,7 +151,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
         </div>
         <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200">
           <span className="text-sm text-gray-600">{openStatus}</span>
-          <span className="flex items-center text-sm text-lavender-600 font-semibold group-hover:text-lavender-700 transition-colors">
+          <span className="flex items-center text-sm text-carwash-blue font-semibold group-hover:text-carwash-light transition-colors">
             View Details <ArrowRight className="ml-1 h-4 w-4" />
           </span>
         </div>

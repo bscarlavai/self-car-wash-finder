@@ -4,6 +4,7 @@ import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight } from 'luc
 import { getLocations, getSupabaseClient } from '@/lib/supabase'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
+import { getOpen24HourLocationCount } from '@/lib/stateUtils'
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSocialPreview({
@@ -99,19 +100,16 @@ async function getFeaturedLocations() {
 async function getStats() {
   try {
     const supabase = getSupabaseClient()
-    
     // Get total locations count
     const { count: totalLocations, error: totalError } = await supabase
       .from('locations')
       .select('*', { count: 'exact', head: true })
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('review_status', 'approved')
-    
     if (totalError) {
       console.error('Error fetching total count:', totalError)
       return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0, open24HoursCount: 0 }
     }
-    
     // Get high-rated locations count
     const { count: highRatedCount, error: highRatedError } = await supabase
       .from('locations')
@@ -119,33 +117,15 @@ async function getStats() {
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('review_status', 'approved')
       .gte('google_rating', 4.0)
-    
     if (highRatedError) {
       console.error('Error fetching high-rated count:', highRatedError)
       return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0, open24HoursCount: 0 }
     }
-    
-    // Get 24/7 locations count
-    const { data: hoursData, error: hoursError } = await supabase
-      .from('location_hours')
-      .select('location_id, open_time, close_time, is_closed')
-      .eq('is_closed', false)
-      .eq('open_time', '12:00 AM')
-      .in('close_time', ['11:59 PM', '12:00 AM'])
-    
-    if (hoursError) {
-      console.error('Error fetching 24/7 hours:', hoursError)
-      return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0, open24HoursCount: 0 }
-    }
-    
-    // Count unique locations that have 24/7 hours
-    const open24HoursLocationIds = new Set(hoursData?.map(h => h.location_id) || [])
-    const open24HoursCount = open24HoursLocationIds.size
-    
+    // Use shared util for open 24 hours count
+    const open24HoursCount = await getOpen24HourLocationCount();
     const finalTotalLocations = totalLocations || 0
     const finalHighRatedCount = highRatedCount || 0
     const highRatedPercent = finalTotalLocations > 0 ? Math.round((finalHighRatedCount / finalTotalLocations) * 100) : 0
-
     return { 
       totalLocations: finalTotalLocations, 
       totalStates: 50, // Hardcode since we expect all states to be covered

@@ -38,3 +38,15 @@ export async function getStatesWithLocations() {
     return []
   }
 }
+
+export async function getOpen24HourLocationCount() {
+  const supabase = getSupabaseClient();
+  const { count, error } = await supabase
+    .from('open_24_hour_locations')
+    .select('location_id', { count: 'exact', head: true });
+  if (error) {
+    console.error('Error fetching open 24 hour location count:', error);
+    return 0;
+  }
+  return count || 0;
+}

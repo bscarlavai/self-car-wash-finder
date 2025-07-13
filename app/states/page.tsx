@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { MapPin, Star, Bubbles, Heart } from 'lucide-react'
 import { generateSocialPreview } from '@/components/SocialPreview'
-import { getStatesWithLocations } from '@/lib/stateUtils'
+import { getStatesWithLocations, getOpen24HourLocationCount } from '@/lib/stateUtils'
 import TopStatesCard from '@/components/TopStatesCard'
 import { getSupabaseClient } from '@/lib/supabase'
 
@@ -49,22 +49,8 @@ async function getStats() {
       return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0, open24HoursCount: 0 }
     }
     
-    // Get 24/7 locations count
-    const { data: hoursData, error: hoursError } = await supabase
-      .from('location_hours')
-      .select('location_id, open_time, close_time, is_closed')
-      .eq('is_closed', false)
-      .eq('open_time', '12:00 AM')
-      .in('close_time', ['11:59 PM', '12:00 AM'])
-    
-    if (hoursError) {
-      console.error('Error fetching 24/7 hours:', hoursError)
-      return { totalLocations: 0, totalStates: 0, highRatedCount: 0, highRatedPercent: 0, open24HoursCount: 0 }
-    }
-    
-    // Count unique locations that have 24/7 hours
-    const open24HoursLocationIds = new Set(hoursData?.map(h => h.location_id) || [])
-    const open24HoursCount = open24HoursLocationIds.size
+    // Use shared util for open 24 hours count
+    const open24HoursCount = await getOpen24HourLocationCount();
     
     const finalTotalLocations = totalLocations || 0
     const finalHighRatedCount = highRatedCount || 0
