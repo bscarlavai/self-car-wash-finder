@@ -152,108 +152,62 @@ export default function LocationPageClient({ location: initialLocation, params }
     <div className="min-h-screen bg-gray-50">
       <LocalBusinessStructuredData location={location} />
       <BreadcrumbStructuredData items={breadcrumbItems} />
-      
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-8" aria-label="Breadcrumb">
-          <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600 sm:text-base">
-            <li className="whitespace-nowrap">
-              <Link href="/states" className="hover:text-carwash-blue">
-                States
-              </Link>
+
+      {/* Hero Section - full-width blue with breadcrumbs and name */}
+      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
+        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
+          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <Link href="/states" className="hover:text-carwash-blue">States</Link>
             </li>
-            <li className="select-none">/</li>
-            <li className="whitespace-nowrap">
-              <Link href={`/states/${params.state}`} className="hover:text-carwash-blue">
-                {location.state}
-              </Link>
+            <li>/</li>
+            <li>
+              <Link href={`/states/${params.state}`} className="hover:text-carwash-blue">{location.state}</Link>
             </li>
-            <li className="select-none">/</li>
-            <li className="text-gray-900 font-medium whitespace-nowrap break-all">{location.name}</li>
+            <li>/</li>
+            <li className="text-gray-900 font-medium">{location.name}</li>
           </ol>
         </nav>
+        <div className="text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 break-words">{location.name}</h1>
+          <p className="text-lg text-gray-700 max-w-2xl mx-auto">Self Service Car Wash in {location.city}, {location.state}</p>
+        </div>
+      </section>
 
-        {/* Cafe Header */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
-          {/* Hero Image */}
-          {heroImage && (
-            <div className="relative h-64 md:h-80 bg-gray-200 overflow-hidden">
-              <img
-                src={heroImage}
-                alt={`${location.name} self service car wash in ${location.city}, ${location.state}`}
-                className="w-full h-full object-cover"
-                loading="eager"
-                width={800}
-                height={400}
-              />
-            </div>
-          )}
-          {/* Cafe Name, Location, and Review Badge below image */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-8 pt-6 pb-2">
-            <div className="min-w-0">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-1 break-words">
-                {location.name}
-                <span className="block font-normal text-lg text-gray-600">
-                  Self Service Car Wash in {location.city}, {location.state}
-                </span>
-              </h1>
-            </div>
-            {location.google_rating && (
-              <div className="flex-shrink-0">
-                <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 flex items-center shadow">
-                  <Star className="h-5 w-5 text-yellow-500 mr-1 fill-current" />
-                  <span className="text-lg font-bold text-gray-900">{location.google_rating}</span>
-                  {location.review_count && (
-                    <span className="text-sm text-gray-600 ml-1">({location.review_count} reviews)</span>
-                  )}
-                </div>
+      {/* Overlap Card for image, rating, address, actions */}
+      <section className="relative z-10 -mt-12 mb-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            {/* Hero Image */}
+            {heroImage && (
+              <div className="relative h-64 md:h-80 bg-gray-200 overflow-hidden rounded-t-2xl">
+                <img
+                  src={heroImage}
+                  alt={`${location.name} self service car wash in ${location.city}, ${location.state}`}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  width={800}
+                  height={400}
+                />
               </div>
             )}
-          </div>
-          
-          <div className="p-8">
-            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between">
-              <div className="flex-1">
-                <div className="flex items-center space-x-4 mb-4">
-                  {/* Reimplement this later {location.claimed_status === 'claimed' && (
-                    <div className="flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                      <img 
-                        src="/self-car-wash-finder.png" 
-                        alt="Verified by Self Service Car Wash Finder" 
-                        className="h-12 w-12 mr-1"
-                      />
-                      <span>Claimed</span>
-                    </div>
-                  )}
-                  {location.claimed_status === 'pending' && (
-                    <div className="flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
-                      <Clock className="h-4 w-4 mr-1" />
-                      <span>Claim Pending Review</span>
-                    </div>
-                  )}
-                  {(!location.claimed_status || location.claimed_status === 'unclaimed') && (
-                    <button
-                      onClick={() => {
-                        trackCafeButtonClick('claim_listing', location.name, `${location.city}, ${location.state}`)
-                        setShowClaimModal(true)
-                      }}
-                      className="flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-carwash-blue text-white hover:bg-carwash-blue/90 transition-colors focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-1"
-                    >
-                      <MapPin className="h-4 w-4 mr-1" />
-                      <span>Claim This Listing</span>
-                    </button>
-                  )} */}
-                </div>
-
-                {location.description && (
-                  <p className="text-gray-700 mb-6 leading-relaxed">
-                    {location.description}
-                  </p>
-                )}
-
-                <div className="space-y-3">
+            {/* Name, Rating, Address, Actions */}
+            <div className="px-8 pt-6 pb-2">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center space-x-4 mb-2">
+                    {location.google_rating && (
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 flex items-center shadow">
+                        <Star className="h-5 w-5 text-yellow-500 mr-1 fill-current" />
+                        <span className="text-lg font-bold text-gray-900">{location.google_rating}</span>
+                        {location.review_count && (
+                          <span className="text-sm text-gray-600 ml-1">({location.review_count} reviews)</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
                   {location.street_address && (
-                    <div className="flex items-start">
+                    <div className="flex items-start mb-2">
                       <MapPin className="h-5 w-5 mr-3 text-gray-400 mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-gray-900">{location.street_address}</p>
@@ -261,114 +215,43 @@ export default function LocationPageClient({ location: initialLocation, params }
                       </div>
                     </div>
                   )}
-                  
-                  {/* {location.phone && (
-                    <div className="flex items-center">
-                      <Phone className="h-5 w-5 mr-3 text-gray-400 flex-shrink-0" />
-                      <a href={`tel:${location.phone}`} className="text-gray-900 hover:text-lavender-600">
-                        {location.phone}
-                      </a>
-                    </div>
+                  {location.description && (
+                    <p className="text-gray-700 mb-4 leading-relaxed">{location.description}</p>
                   )}
-
-                  {location.website_url && (
-                    <div className="flex items-center">
-                      <Globe className="h-5 w-5 mr-3 text-gray-400 flex-shrink-0" />
-                      <a 
-                        href={location.website_url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-gray-900 hover:text-lavender-600"
-                      >
-                        Visit Website
-                      </a>
-                    </div>
-                  )} */}
                 </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="mt-6 lg:mt-0 lg:ml-8 space-y-3 my-6">
-                {location.latitude && location.longitude && (
-                  <a
-                    href={location.location_url || `https://maps.google.com/?q=${encodeURIComponent(location.name + ' ' + (location.street_address || '') + ' ' + location.city + ' ' + location.state)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackCafeButtonClick('get_directions', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Navigation className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">Get Directions</span>
-                  </a>
-                )}
-                
-                {location.phone && (
-                  <a
-                    href={`tel:${location.phone}`}
-                    onClick={() => trackCafeButtonClick('call_now', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Phone className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">Call Now</span>
-                  </a>
-                )}
-
-                {location.booking_appointment_url && (
-                  <a
-                    href={location.booking_appointment_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackCafeButtonClick('book_appointment', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Calendar className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">Book Appointment</span>
-                  </a>
-                )}
-
-                {location.reservation_urls && location.reservation_urls.length > 0 && (
-                  <a
-                    href={location.reservation_urls[0]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackCafeButtonClick('make_reservation', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Calendar className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">Make Reservation</span>
-                  </a>
-                )}
-
-                {location.menu_url && (
-                  <a
-                    href={location.menu_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackCafeButtonClick('view_menu', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Coffee className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">View Menu</span>
-                  </a>
-                )}
-
-                {location.order_urls && location.order_urls.length > 0 && (
-                  <a
-                    href={location.order_urls[0]}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => trackCafeButtonClick('order_online', location.name, `${location.city}, ${location.state}`)}
-                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
-                  >
-                    <Coffee className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
-                    <span className="font-medium text-white">Order Online</span>
-                  </a>
-                )}
+                {/* Action Buttons */}
+                <div className="mt-6 lg:mt-0 lg:ml-8 space-y-3 my-6">
+                  {location.latitude && location.longitude && (
+                    <a
+                      href={location.location_url || `https://maps.google.com/?q=${encodeURIComponent(location.name + ' ' + (location.street_address || '') + ' ' + location.city + ' ' + location.state)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => trackCafeButtonClick('get_directions', location.name, `${location.city}, ${location.state}`)}
+                      className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
+                    >
+                      <Navigation className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
+                      <span className="font-medium text-white">Get Directions</span>
+                    </a>
+                  )}
+                  {location.phone && (
+                    <a
+                      href={`tel:${location.phone}`}
+                      onClick={() => trackCafeButtonClick('call_now', location.name, `${location.city}, ${location.state}`)}
+                      className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
+                    >
+                      <Phone className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
+                      <span className="font-medium text-white">Call Now</span>
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hours Section */}
         {formattedHours.length > 0 && (
           <div className="mb-8">
