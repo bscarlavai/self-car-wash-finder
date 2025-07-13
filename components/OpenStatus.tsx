@@ -89,9 +89,9 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
         <div className="flex items-center space-x-3">
           <div className={`flex items-center justify-center w-12 h-12 rounded-full ${
             status.isTemporarilyClosed
-              ? 'bg-peach-100 text-peach-600'
+              ? 'bg-red-100 text-red-600'
               : status.isOpen 
-                ? 'bg-mint-100 text-mint-600' 
+                ? 'bg-green-100 text-green-600' 
                 : 'bg-red-100 text-red-600'
           }`}>
             {status.isTemporarilyClosed ? (
@@ -105,9 +105,9 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
           <div>
             <div className={`text-lg font-bold ${
               status.isTemporarilyClosed
-                ? 'text-peach-700'
+                ? 'text-red-700'
                 : status.isOpen 
-                  ? 'text-mint-700' 
+                  ? 'text-green-700' 
                   : 'text-red-700'
             }`}>
               {status.isTemporarilyClosed ? 'Temporarily Closed' : (
@@ -133,7 +133,7 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
       {/* Expand/collapse for full hours */}
       <div className="mt-4">
         <button
-          className="flex items-center text-lavender-600 font-semibold focus:outline-none"
+          className="flex items-center text-carwash-blue font-semibold focus:outline-none hover:text-carwash-light"
           onClick={() => setExpanded(e => !e)}
           type="button"
         >
