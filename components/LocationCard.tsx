@@ -42,7 +42,6 @@ const LocationCard: React.FC<LocationCardProps> = ({
   google_rating,
   review_count,
   photo_url,
-  is_visible,
   location_hours,
   business_status,
   street_address,
