@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Star, Coffee, Heart } from 'lucide-react'
+import { MapPin, Star, Bubbles, Heart } from 'lucide-react'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import { getStatesWithLocations } from '@/lib/stateUtils'
 
@@ -54,18 +54,18 @@ export default async function StatesPage() {
         </div>
 
         {/* Statistics Section */}
-        <div className="bg-soft-gradient rounded-xl shadow-lg p-8 mb-12 border border-lavender-200">
+        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-12 border border-carwash-light-200">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-lavender-600 mb-2">{totalStates}</div>
+              <div className="text-4xl font-bold text-tarawera mb-2">{totalStates}</div>
               <div className="text-gray-600 font-medium">States with Self Service Car Washes</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-peach-600 mb-2">{totalLocations}</div>
+              <div className="text-4xl font-bold text-carwash-blue mb-2">{totalLocations}</div>
               <div className="text-gray-600 font-medium">Total Self Service Car Washes</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-mint-600 mb-2">{Math.round(totalLocations / totalStates)}</div>
+              <div className="text-4xl font-bold text-carwash-light mb-2">{Math.round(totalLocations / totalStates)}</div>
               <div className="text-gray-600 font-medium">Average per State</div>
             </div>
           </div>
@@ -82,12 +82,12 @@ export default async function StatesPage() {
                 <Link
                   key={state.slug}
                   href={`/states/${state.slug}`}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 hover:border-lavender-300 transform hover:-translate-y-1"
+                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-carwash-light-200 hover:border-tarawera transform hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
-                      <div className="bg-lavender-100 p-3 rounded-full mr-4">
-                        <MapPin className="h-6 w-6 text-lavender-600" />
+                      <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
+                        <MapPin className="h-6 w-6 text-carwash-blue" />
                       </div>
                       <div>
                         <h3 className="text-xl font-semibold text-gray-900">
@@ -101,15 +101,15 @@ export default async function StatesPage() {
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-lavender-600 mb-2">
+                    <div className="text-3xl font-bold text-tarawera mb-2">
                       {state.locationCount}
                     </div>
-                                            <div className="text-sm text-gray-600 mb-4">
-                          {state.locationCount === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
-                        </div>
-                        <div className="bg-lavender-100 text-lavender-700 px-4 py-2 rounded-lg font-medium hover:bg-lavender-200 transition-colors">
-                          Explore Car Washes →
-                        </div>
+                    <div className="text-sm text-gray-600 mb-4">
+                      {state.locationCount === 1 ? 'Self Service Car Wash' : 'Self Service Car Washes'}
+                    </div>
+                    <div className="bg-carwash-light-100 text-carwash-blue px-4 py-2 rounded-lg font-semibold border border-carwash-light-200 hover:bg-carwash-light-200 hover:text-tarawera transition-colors">
+                      Explore Car Washes →
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -125,14 +125,14 @@ export default async function StatesPage() {
             </h2>
             
             {/* Quick Navigation */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-carwash-light-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 text-center">Quick Navigation</h3>
               <div className="flex flex-wrap justify-center gap-2">
                 {Object.keys(groupedStates).sort().map((letter) => (
                   <a
                     key={letter}
                     href={`#letter-${letter}`}
-                    className="bg-lavender-100 text-lavender-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-lavender-200 transition-colors"
+                    className="bg-carwash-light-100 text-carwash-blue px-3 py-2 rounded-lg text-sm font-semibold border border-carwash-light-200 hover:bg-carwash-light-200 hover:text-tarawera transition-colors"
                   >
                     {letter}
                   </a>
@@ -143,9 +143,9 @@ export default async function StatesPage() {
             {/* Alphabetical Groups */}
             <div className="space-y-8">
               {Object.keys(groupedStates).sort().map((letter) => (
-                <div key={letter} id={`letter-${letter}`} className="bg-white rounded-lg shadow-md p-6">
+                <div key={letter} id={`letter-${letter}`} className="bg-white rounded-lg shadow-md p-6 border border-carwash-light-200">
                   <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                    <div className="bg-lavender-100 text-lavender-600 px-4 py-2 rounded-lg mr-4 font-bold">
+                    <div className="bg-carwash-light-100 text-carwash-blue px-4 py-2 rounded-lg mr-4 font-bold border border-carwash-light-200">
                       {letter}
                     </div>
                   </h3>
@@ -154,17 +154,17 @@ export default async function StatesPage() {
                       <Link
                         key={state.slug}
                         href={`/states/${state.slug}`}
-                        className="bg-gray-50 rounded-lg p-4 border border-gray-200 hover:border-lavender-300 hover:bg-lavender-50 transition-all duration-200"
+                        className="bg-carwash-light-100 rounded-lg p-4 border border-carwash-light-200 hover:border-tarawera hover:bg-carwash-light-200 transition-all duration-200"
                       >
                         <div className="text-center">
                           <h4 className="text-lg font-semibold text-gray-900 mb-2">
                             {state.name}
                           </h4>
                           <div className="flex items-center justify-center text-sm text-gray-600 mb-3">
-                            <Coffee className="h-4 w-4 mr-1 text-lavender-500" />
+                            <Bubbles className="h-4 w-4 mr-1 text-carwash-blue" />
                             <span>{state.locationCount} {state.locationCount === 1 ? 'car wash' : 'car washes'}</span>
                           </div>
-                          <div className="text-lavender-600 font-medium text-sm">
+                          <div className="text-carwash-blue font-semibold text-sm">
                             Browse →
                           </div>
                         </div>
@@ -179,8 +179,8 @@ export default async function StatesPage() {
 
         {states.length === 0 && (
           <div className="text-center py-12">
-            <div className="bg-white rounded-lg shadow-md p-8 max-w-md mx-auto">
-              <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <div className="bg-carwash-light-100 rounded-lg shadow-md p-8 max-w-md mx-auto border border-carwash-light-200">
+              <Heart className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No self-service car washes found</h3>
               <p className="text-gray-600">Check back soon as we're constantly adding new locations!</p>
             </div>

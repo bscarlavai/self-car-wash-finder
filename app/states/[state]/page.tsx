@@ -132,7 +132,7 @@ export default async function StatePage({ params }: PageProps) {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Enhanced Content Section */}
-        <div className="bg-soft-gradient rounded-xl shadow-lg p-8 mb-8 border border-lavender-200">
+        <div className="bg-carwash-light-100 rounded-xl shadow-lg p-8 mb-8 border border-carwash-light-200">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
               Self Service Car Washes in {stateName}
@@ -145,10 +145,10 @@ export default async function StatePage({ params }: PageProps) {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white rounded-lg p-6 shadow-md border border-lavender-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-lavender-100 p-3 rounded-full mr-4">
-                  <MapPin className="h-6 w-6 text-lavender-600" />
+                <div className="bg-carwash-blue/10 p-3 rounded-full mr-4">
+                  <MapPin className="h-6 w-6 text-carwash-blue" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Statewide Coverage</h3>
               </div>
@@ -159,10 +159,10 @@ export default async function StatePage({ params }: PageProps) {
               </p>
             </div>
             
-            <div className="bg-white rounded-lg p-6 shadow-md border border-peach-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-carwash-light-200 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-peach-100 p-3 rounded-full mr-4">
-                  <Heart className="h-6 w-6 text-peach-600" />
+                <div className="bg-carwash-light/10 p-3 rounded-full mr-4">
+                  <Heart className="h-6 w-6 text-carwash-light" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Curated Listings</h3>
               </div>
@@ -171,10 +171,10 @@ export default async function StatePage({ params }: PageProps) {
               </p>
             </div>
             
-            <div className="bg-white rounded-lg p-6 shadow-md border border-mint-200 hover:shadow-lg transition-shadow">
+            <div className="bg-white rounded-lg p-6 shadow-md border border-tarawera/20 hover:shadow-lg transition-shadow">
               <div className="flex items-center mb-4">
-                <div className="bg-mint-100 p-3 rounded-full mr-4">
-                  <Coffee className="h-6 w-6 text-mint-600" />
+                <div className="bg-tarawera/10 p-3 rounded-full mr-4">
+                  <Coffee className="h-6 w-6 text-tarawera" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Professional Equipment</h3>
               </div>
@@ -219,7 +219,7 @@ export default async function StatePage({ params }: PageProps) {
                 <a
                   key={city}
                   href={`#city-${slugify(city)}`}
-                  className="bg-lavender-100 text-lavender-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-lavender-200 transition-colors"
+                  className="bg-carwash-light-100 text-carwash-blue px-3 py-2 rounded-lg text-sm font-semibold border border-carwash-light-200 hover:bg-carwash-light-200 hover:text-tarawera transition-colors"
                 >
                   {city} ({locationsByCity[city].length})
                 </a>

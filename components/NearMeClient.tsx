@@ -155,74 +155,76 @@ export default function NearMeClient() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-tarawera mb-2 border-b-4 border-yellow-400 inline-block pb-2">
-            Find Self Service Car Washes Near Me
-          </h1>
-          <p className="text-xl text-manatee max-w-3xl mx-auto mb-8">
-            Discover self-service car washes, auto washes, and car wash locations in your area. 
-            Get directions, hours, and contact information for local self-service car washes.
-          </p>
-          {/* Search Section */}
-          <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              <Search className="h-6 w-6 text-teal-500" />
-              <span className="text-lg font-medium text-tarawera">Find Self Service Car Washes Near You</span>
-            </div>
-            {/* Zip Code Search Form */}
-            <form onSubmit={handleZipSearch} className="mb-4">
-              <div className="flex flex-col sm:flex-row gap-4 items-stretch">
-                <input
-                  type="text"
-                  id="zipCode"
-                  value={zipCode}
-                  onChange={(e) => setZipCode(e.target.value)}
-                  placeholder="Enter Your Zip Code (e.g., 32801)"
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tarawera focus:border-transparent text-lg placeholder-gray-500"
-                  maxLength={5}
-                  autoComplete="postal-code"
-                  inputMode="numeric"
-                  pattern="[0-9]{5}"
-                />
-                <select
-                  value={radius}
-                  onChange={e => setRadius(e.target.value)}
-                  className="px-4 py-3 pr-10 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-tarawera focus:border-transparent bg-white text-tarawera"
-                  style={{ width: '140px', minWidth: '100px' }}
-                  aria-label="Search radius in miles"
-                >
-                  <option value="" disabled>Select miles</option>
-                  {radiusOptions.map(miles => (
-                    <option key={miles} value={miles}>{miles} miles</option>
-                  ))}
-                </select>
-                <button
-                  type="submit"
-                  disabled={isSearching || !zipCode.trim()}
-                  className="w-full sm:w-auto bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
-                  style={{ minWidth: '140px' }}
-                >
-                  {isSearching ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Searching...
-                    </>
-                  ) : (
-                    'Search'
-                  )}
-                </button>
+        <section className="bg-carwash-light-100 rounded-2xl py-14 px-4 mb-12">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-tarawera mb-4">
+              Find Self Service Car Washes Near Me
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Discover self-service car washes, auto washes, and car wash locations in your area. 
+              Get directions, hours, and contact information for local self-service car washes.
+            </p>
+            {/* Search Section */}
+            <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
+              <div className="flex items-center justify-center space-x-4 mb-4">
+                <Search className="h-6 w-6 text-carwash-blue" />
+                <span className="text-lg font-medium text-tarawera">Find Self Service Car Washes Near You</span>
               </div>
-            </form>
-            <button
-              type="button"
-              onClick={handleLocationSearch}
-              className="w-full bg-teal-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-600 transition-colors flex items-center justify-center text-lg"
-            >
-              <MapPinIcon className="h-5 w-5 mr-2 text-white" />
-              Use My Location
-            </button>
+              {/* Zip Code Search Form */}
+              <form onSubmit={handleZipSearch} className="mb-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+                  <input
+                    type="text"
+                    id="zipCode"
+                    value={zipCode}
+                    onChange={(e) => setZipCode(e.target.value)}
+                    placeholder="Enter Your Zip Code (e.g., 32801)"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tarawera focus:border-transparent text-lg placeholder-gray-500"
+                    maxLength={5}
+                    autoComplete="postal-code"
+                    inputMode="numeric"
+                    pattern="[0-9]{5}"
+                  />
+                  <select
+                    value={radius}
+                    onChange={e => setRadius(e.target.value)}
+                    className="px-4 py-3 pr-10 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-tarawera focus:border-transparent bg-white text-tarawera"
+                    style={{ width: '140px', minWidth: '100px' }}
+                    aria-label="Search radius in miles"
+                  >
+                    <option value="" disabled>Select miles</option>
+                    {radiusOptions.map(miles => (
+                      <option key={miles} value={miles}>{miles} miles</option>
+                    ))}
+                  </select>
+                  <button
+                    type="submit"
+                    disabled={isSearching || !zipCode.trim()}
+                    className="w-full sm:w-auto bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
+                    style={{ minWidth: '140px' }}
+                  >
+                    {isSearching ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Searching...
+                      </>
+                    ) : (
+                      'Search'
+                    )}
+                  </button>
+                </div>
+              </form>
+              <button
+                type="button"
+                onClick={handleLocationSearch}
+                className="w-full bg-carwash-light text-tarawera px-8 py-3 rounded-lg font-semibold hover:bg-carwash-blue hover:text-white transition-colors flex items-center justify-center text-lg"
+              >
+                <MapPinIcon className="h-5 w-5 mr-2 text-tarawera" />
+                Use My Location
+              </button>
+            </div>
           </div>
-        </div>
+        </section>
         {/* Results Section */}
         <div className="max-w-3xl mx-auto">
           {searchError && (
@@ -259,15 +261,15 @@ export default function NearMeClient() {
         </div>
 
         {/* Combined SEO Content Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12 border border-tarawera-200">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12 border border-carwash-light-200">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-100 rounded-full mb-4">
-              <Coffee className="h-8 w-8 text-teal-500" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-carwash-light-100 rounded-full mb-4">
+              <Coffee className="h-8 w-8 text-carwash-blue" />
             </div>
             <h2 className="text-3xl font-bold text-tarawera mb-4">
               Self Service Car Washes Near Me – Find the Best Self Service Car Washes in Your Area
             </h2>
-            <p className="text-lg text-manatee max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Looking for a self-service car wash near you? Discover convenient, self-service car washes where you can wash your car with professional equipment. Our national self-service car wash directory helps you quickly find the best local spots to clean your vehicle on your own schedule.
             </p>
           </div>
@@ -276,37 +278,37 @@ export default function NearMeClient() {
             {/* Left Column - Directory Features */}
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                  <Telescope className="h-6 w-6 text-teal-500" />
+                <div className="flex-shrink-0 w-12 h-12 bg-carwash-light-100 rounded-lg flex items-center justify-center">
+                  <Telescope className="h-6 w-6 text-carwash-blue" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-tarawera mb-3">
                     Explore Curated Self Service Car Washes Near You
                   </h3>
-                  <p className="text-manatee mb-4">
+                  <p className="text-gray-600 mb-4">
                     Our directory features curated self-service car washes with detailed listings that include:
                   </p>
                   {/* CURATED LIST BULLETS (custom flex row, teal dot, section-matching text color) */}
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-manatee">Location and directions to self-service car washes near you</span>
+                      <div className="w-2 h-2 bg-carwash-blue rounded-full"></div>
+                      <span className="text-gray-600">Location and directions to self-service car washes near you</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-manatee">Photos, reviews, and customer ratings</span>
+                      <div className="w-2 h-2 bg-carwash-blue rounded-full"></div>
+                      <span className="text-gray-600">Photos, reviews, and customer ratings</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-manatee">Available equipment and services</span>
+                      <div className="w-2 h-2 bg-carwash-blue rounded-full"></div>
+                      <span className="text-gray-600">Available equipment and services</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-manatee">Pricing and payment options</span>
+                      <div className="w-2 h-2 bg-carwash-blue rounded-full"></div>
+                      <span className="text-gray-600">Pricing and payment options</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                      <span className="text-manatee">Hours of operation and contact info</span>
+                      <div className="w-2 h-2 bg-carwash-blue rounded-full"></div>
+                      <span className="text-gray-600">Hours of operation and contact info</span>
                     </div>
                   </div>
                 </div>
@@ -316,26 +318,26 @@ export default function NearMeClient() {
             {/* Right Column - Why Visit */}
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
-                  <BadgeQuestionMark className="h-6 w-6 text-teal-500" />
+                <div className="flex-shrink-0 w-12 h-12 bg-carwash-light-100 rounded-lg flex items-center justify-center">
+                  <BadgeQuestionMark className="h-6 w-6 text-carwash-blue" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-tarawera mb-3">
                     Why Choose Self Service Car Washes?
                   </h3>
-                  <p className="text-manatee">
+                  <p className="text-gray-600">
                     Self-service car washes offer convenience, control, and cost-effectiveness — wash your car with professional equipment on your own schedule. Many locations also offer additional services like vacuuming and detailing supplies.
                   </p>
                 </div>
               </div>
 
               {/* Highlight Box */}
-              <div className="bg-teal-50 rounded-xl p-6 shadow-sm border border-tarawera-200">
+              <div className="bg-carwash-light-100 rounded-xl p-6 shadow-sm border border-carwash-light-200">
                 <div className="flex items-center space-x-3 mb-3">
-                  <MapPinIcon className="h-5 w-5 text-teal-500" />
+                  <MapPinIcon className="h-5 w-5 text-carwash-blue" />
                   <h4 className="font-semibold text-tarawera">Pro Tip: Bring Your Own Supplies</h4>
                 </div>
-                <p className="text-manatee text-sm">
+                <p className="text-gray-600 text-sm">
                   For the best results, bring your own towels and cleaning products. Many self-service car washes provide vacuums and vending machines for extra supplies.
                 </p>
               </div>
@@ -346,13 +348,13 @@ export default function NearMeClient() {
         {/* Featured States Section */}
         <div className="mb-12">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-100 rounded-full mb-4">
-              <Award className="h-8 w-8 text-teal-500" />
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-carwash-light-100 rounded-full mb-4">
+              <Award className="h-8 w-8 text-carwash-blue" />
             </div>
             <h2 className="text-3xl font-bold text-tarawera mb-4">
               Top States with Self Service Car Washes
             </h2>
-            <p className="text-lg text-manatee max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Explore the states with the most self-service car washes in our directory
             </p>
           </div>

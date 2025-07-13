@@ -24,7 +24,7 @@ export default function PrivacyPage() {
         </nav>
 
         {/* Privacy Policy Content */}
-        <div className="bg-white rounded-lg shadow-md p-8">
+        <div className="bg-carwash-light-100 rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Privacy Policy</h1>
           
           <div className="prose prose-gray max-w-none">

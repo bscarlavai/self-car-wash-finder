@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Star, Heart, Coffee, Users, ArrowRight } from 'lucide-react'
+import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight } from 'lucide-react'
 import { getLocations, getSupabaseClient } from '@/lib/supabase'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
@@ -182,33 +182,31 @@ export default async function HomePage() {
   ])
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-hero-gradient py-20">
+      <section className="bg-carwash-light-100 pt-20 pb-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Find Your Perfect
-              <span className="text-lavender-600"> Self Service Car Wash</span>
+              Find A Self Service Car Wash
               <br />
-              <span className="text-2xl md:text-3xl font-normal text-gray-700">Across the United States</span>
+              <span className="text-2xl md:text-3xl font-normal text-gray-700">In the United States</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Discover convenient self-service car washes across the United States where you can wash your car 
               with professional equipment on your own schedule.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
               <Link
                 href="/states"
-                className="bg-lavender-500 text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300 flex justify-center items-center"
+                className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
               >
                 Explore All States
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 href="#featured"
-                className="bg-white/80 border border-lavender-300 text-lavender-700 px-8 py-4 rounded-lg font-semibold hover:bg-lavender-100 hover:text-lavender-900 transition-colors shadow-soft"
+                className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
               >
                 See Top-Rated Car Washes
               </Link>
@@ -217,22 +215,22 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      {/* Stats Section with Overlap */}
+      <section className="relative z-10 -mt-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl py-8 px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center border border-gray-100">
             <div>
-              <div className="text-4xl font-bold text-lavender-600 mb-2">{stats.totalLocations}</div>
+              <div className="text-4xl font-bold text-tarawera mb-2">{stats.totalLocations}</div>
               <div className="text-gray-600">Self Service Car Washes Nationwide</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-peach-600 mb-2">{stats.totalStates}</div>
+              <div className="text-4xl font-bold text-carwash-blue mb-2">{stats.totalStates}</div>
               <div className="text-gray-600">States Covered</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-mint-600 mb-2">{stats.highRatedCount}</div>
+              <div className="text-4xl font-bold text-carwash-light mb-2">{stats.highRatedCount}</div>
               <div className="text-gray-600">4+ Star Rated</div>
-              <div className="text-sm text-gray-500 mt-1">{stats.highRatedPercent}% 4+ Stars</div>
+              <div className="text-sm text-manatee mt-1">{stats.highRatedPercent}% 4+ Stars</div>
             </div>
           </div>
         </div>
@@ -277,7 +275,7 @@ export default async function HomePage() {
             <div className="text-center mt-12">
               <Link
                 href="/states"
-                className="inline-flex items-center bg-lavender-500 text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300"
+                className="inline-flex items-center bg-tarawera text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300"
               >
                 Browse Complete Directory
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -288,7 +286,7 @@ export default async function HomePage() {
       )}
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-carwash-light-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -301,8 +299,8 @@ export default async function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-lavender-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Coffee className="h-8 w-8 text-lavender-600" />
+              <div className="bg-carwash-blue/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Bubbles className="h-8 w-8 text-carwash-blue" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Equipment</h3>
               <p className="text-gray-600">
@@ -311,8 +309,8 @@ export default async function HomePage() {
             </div>
             
             <div className="text-center">
-              <div className="bg-peach-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Heart className="h-8 w-8 text-peach-600" />
+              <div className="bg-carwash-light/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Calendar className="h-8 w-8 text-tarawera" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Convenience & Control</h3>
               <p className="text-gray-600">
@@ -321,8 +319,8 @@ export default async function HomePage() {
             </div>
             
             <div className="text-center">
-              <div className="bg-mint-100 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Users className="h-8 w-8 text-mint-600" />
+              <div className="bg-tarawera/10 rounded-full p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <DollarSign className="h-8 w-8 text-tarawera" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Cost Effective</h3>
               <p className="text-gray-600">
@@ -347,10 +345,10 @@ export default async function HomePage() {
           
           <div className="grid gap-6">
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-lavender-50 to-lavender-100">
+              <div className="p-6 border-b border-gray-100 bg-carwash-blue/5">
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-lavender-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
-                    <Coffee className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-carwash-blue rounded-lg flex items-center justify-center mr-4 shadow-md">
+                    <Bubbles className="h-5 w-5 text-white" />
                   </div>
                   What is a self-service car wash?
                 </h3>
@@ -359,7 +357,7 @@ export default async function HomePage() {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   A self-service car wash is a facility where you can wash your own vehicle using professional equipment and supplies. These locations typically feature high-pressure washers, soap dispensers, wax applicators, and vacuum stations, allowing you to clean your car thoroughly on your own schedule.
                 </p>
-                <div className="bg-lavender-50 rounded-lg p-4 border-l-4 border-lavender-500">
+                <div className="bg-carwash-blue/5 rounded-lg p-4 border-l-4 border-carwash-blue">
                   <p className="text-sm text-gray-600">
                     <strong>Fun fact:</strong> Self-service car washes became popular in the 1950s and offer a cost-effective alternative to full-service car washes while giving you complete control over the cleaning process.
                   </p>
@@ -368,9 +366,9 @@ export default async function HomePage() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-peach-50 to-peach-100">
+              <div className="p-6 border-b border-gray-100 bg-carwash-light/5">
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-peach-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
+                  <div className="w-10 h-10 bg-carwash-light rounded-lg flex items-center justify-center mr-4 shadow-md">
                     <MapPin className="h-5 w-5 text-white" />
                   </div>
                   Is there a self-service car wash near me?
@@ -380,11 +378,11 @@ export default async function HomePage() {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   There's a good chance there is! Self-service car washes are widely available across the United States, with locations in most cities and towns. You can use our comprehensive directory to search for self-service car washes in your area by entering your city or zip code.
                 </p>
-                <div className="bg-peach-50 rounded-lg p-4 border-l-4 border-peach-500">
+                <div className="bg-carwash-light/5 rounded-lg p-4 border-l-4 border-carwash-light">
                   <p className="text-sm text-gray-600 mb-3">
                     <strong>Quick tip:</strong> We maintain an up-to-date database of self-service car washes nationwide, including their locations, hours, and contact information.
                   </p>
-                  <Link href="/self-service-car-wash-near-me" className="inline-flex items-center bg-peach-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-peach-700 transition-colors">
+                  <Link href="/self-service-car-wash-near-me" className="inline-flex items-center bg-carwash-light text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-carwash-blue transition-colors">
                     <MapPin className="h-4 w-4 mr-2" />
                     Find self-service car washes near you
                   </Link>
@@ -393,10 +391,10 @@ export default async function HomePage() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-mint-50 to-mint-100">
+              <div className="p-6 border-b border-gray-100 bg-tarawera/5">
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-mint-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
-                    <span className="text-white font-bold text-lg">$</span>
+                  <div className="w-10 h-10 bg-tarawera rounded-lg flex items-center justify-center mr-4 shadow-md">
+                    <DollarSign className="h-5 w-5 text-white" />
                   </div>
                   How much does a self-service car wash cost?
                 </h3>
@@ -407,20 +405,20 @@ export default async function HomePage() {
                     <h4 className="font-semibold text-gray-900 mb-2">Typical Costs:</h4>
                     <ul className="space-y-2 text-sm text-gray-700">
                       <li className="flex items-center">
-                        <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-tarawera rounded-full mr-3"></div>
                         Basic wash: $3-$8 per session
                       </li>
                       <li className="flex items-center">
-                        <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-tarawera rounded-full mr-3"></div>
                         Duration: 10-20 minutes
                       </li>
                       <li className="flex items-center">
-                        <div className="w-2 h-2 bg-mint-500 rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-tarawera rounded-full mr-3"></div>
                         Includes: Soap, rinse, and basic cleaning
                       </li>
                     </ul>
                   </div>
-                  <div className="bg-mint-50 rounded-lg p-4">
+                  <div className="bg-tarawera/5 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 mb-2">Special Offers:</h4>
                     <p className="text-sm text-gray-600">
                       Many locations offer additional services like waxing, tire cleaning, and interior vacuuming for extra fees. Some offer loyalty programs and bulk discounts.
@@ -431,10 +429,10 @@ export default async function HomePage() {
             </div>
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-lavender-50 to-lavender-100">
+              <div className="p-6 border-b border-gray-100 bg-carwash-blue/5">
                 <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <div className="w-10 h-10 bg-lavender-500 rounded-lg flex items-center justify-center mr-4 shadow-md">
-                    <Heart className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-carwash-blue rounded-lg flex items-center justify-center mr-4 shadow-md">
+                    <ToolCase className="h-5 w-5 text-white" />
                   </div>
                   What equipment is available at self-service car washes?
                 </h3>
@@ -443,7 +441,7 @@ export default async function HomePage() {
                 <p className="text-gray-700 leading-relaxed mb-4">
                   Self-service car washes typically offer a variety of professional equipment including high-pressure washers, foam brushes, soap dispensers, wax applicators, tire cleaners, and vacuum stations. Most locations also provide towels and other cleaning supplies for a complete car wash experience.
                 </p>
-                <div className="bg-lavender-50 rounded-lg p-4 border-l-4 border-lavender-500">
+                <div className="bg-carwash-blue/5 rounded-lg p-4 border-l-4 border-carwash-blue">
                   <h4 className="font-semibold text-gray-900 mb-2">Available Equipment:</h4>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• High-pressure water sprayers</li>
@@ -460,17 +458,17 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-soft-gradient border-t border-lavender-200">
+      <section className="py-16 bg-carwash-light-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
             Ready to Find Your Local Self Service Car Wash?
           </h2>
-          <p className="text-xl text-gray-900 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Browse our comprehensive directory of self-service car washes across all 50 states and find the perfect spot near you.
           </p>
           <Link
             href="/states"
-            className="inline-flex items-center bg-lavender-500 text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300 mx-auto"
+            className="inline-flex items-center bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 mx-auto"
           >
             Find Self Service Car Washes Now
             <ArrowRight className="ml-2 h-5 w-5" />

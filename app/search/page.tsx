@@ -20,14 +20,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
 
   const social = generateSocialPreview({
-    title: 'Search Cat Cafes - Find Local Cat Cafes | Cat Cafe Directory',
-    description: 'Search for cat cafes by name, city, or state. Find the perfect cat cafe near you with our comprehensive search.',
+    title: 'Search Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder',
+    description: 'Search for self service car washes by name, city, or state. Find the perfect self service car wash near you with our comprehensive search.',
     image,
   })
   return {
     ...social,
     alternates: {
-      canonical: 'https://catcafedirectory.com/search',
+      canonical: 'https://selfcarwashfinder.com/search',
     },
   }
 }
@@ -83,20 +83,25 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Search Header */}
-        <div className="mb-8">
-          <div className="flex items-center mb-4">
-            <SearchIcon className="h-6 w-6 text-lavender-600 mr-3" />
-            <h1 className="text-3xl font-bold text-gray-900">
-              Cat Cafe Search Results
-            </h1>
+      {/* Hero Section */}
+      <section className="bg-carwash-light-100 pt-16 pb-10">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="flex justify-center items-center mb-4">
+            <SearchIcon className="h-8 w-8 text-carwash-blue mr-3" />
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Find Self Service Car Washes Near You</h1>
           </div>
-          <p className="text-lg text-gray-600">
+          <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
+            Search for self-service car washes by city, state, or name. Discover the best places to wash your car on your schedule.
+          </p>
+        </div>
+      </section>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Search Results Header */}
+        <div className="mb-8">
+          <p className="text-lg text-gray-600 text-center">
             {locations.length > 0 
-              ? `Found ${locations.length} cat cafe${locations.length === 1 ? '' : 's'} for "${searchTerm}"`
-              : `No cat cafes found for "${searchTerm}"`
-            }
+              ? `Found ${locations.length} self-service car wash${locations.length === 1 ? '' : 'es'} for "${searchTerm}"`
+              : `No self-service car washes found for "${searchTerm}"`}
           </p>
         </div>
 
@@ -137,7 +142,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <div className="space-y-4">
                 <Link
                   href="/states"
-                  className="inline-flex items-center bg-lavender-500 text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-lavender-600 transition-all duration-300"
+                  className="inline-flex items-center bg-tarawera text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300"
                 >
                   Explore States Directory
                   <ArrowRight className="ml-2 h-5 w-5" />
