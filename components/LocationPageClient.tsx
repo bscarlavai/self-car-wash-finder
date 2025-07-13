@@ -274,12 +274,12 @@ export default function LocationPageClient({ location: initialLocation, params }
         {/* Reviews Tags Section */}
         {location.reviews_tags && location.reviews_tags.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-8 mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">What Reviews Say</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular Review Highlights</h2>
             <div className="flex flex-wrap gap-2">
               {location.reviews_tags.map((tag: string, index: number) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-carwash-blue text-white hover:bg-carwash-blue/90 transition-colors cursor-pointer"
+                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-carwash-blue text-white"
                 >
                   {tag}
                 </span>
@@ -290,47 +290,16 @@ export default function LocationPageClient({ location: initialLocation, params }
 
         {/* Nearby Self Service Car Washes Section */}
         {location.latitude && location.longitude && (
-          <NearbyLocationsSection 
-            latitude={location.latitude} 
-            longitude={location.longitude} 
-            currentLocationId={location.id} 
-            city={location.city} 
-            state={location.state} 
-          />
-        )}
-
-        {/* Related Cafes Section */}
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">More Self Service Car Washes in {location.state}</h2>
-          <p className="text-gray-600 text-center mb-8">
-            Discover other amazing self service car washes and auto wash stations in {location.state}
-          </p>
-          <div className="text-center py-8">
-            <div className="max-w-md mx-auto">
-              <div className="mb-6">
-                <MapPin className="h-12 w-12 text-carwash-blue mx-auto mb-4" />
-                <p className="text-gray-600">
-                  Discover other amazing self service car washes and auto wash stations in {location.state}
-                </p>
-              </div>
-              <div className="space-y-3">
-                <Link
-                  href={`/states/${params.state}`}
-                  className="inline-flex items-center justify-center w-full bg-carwash-blue text-white px-4 py-3 rounded-lg font-medium shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200"
-                >
-                  <MapPin className="h-5 w-5 mr-2" />
-                  Browse All Car Washes in {location.state}
-                </Link>
-                <Link
-                  href="/states"
-                  className="inline-flex items-center justify-center w-full border border-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-                >
-                  Explore All States
-                </Link>
-              </div>
-            </div>
+          <div className="mb-0">
+            <NearbyLocationsSection 
+              latitude={location.latitude} 
+              longitude={location.longitude} 
+              currentLocationId={location.id} 
+              city={location.city} 
+              state={location.state} 
+            />
           </div>
-        </div>
+        )}
       </div>
 
       {/* Claim Modal */}

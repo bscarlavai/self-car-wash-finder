@@ -5,6 +5,7 @@ import LocationPageClient from '@/components/LocationPageClient'
 import { getSupabaseClient } from '@/lib/supabase'
 // @ts-ignore
 import slugify from '@/lib/slugify'
+import { MapPin } from 'lucide-react'
 
 interface PageProps {
   params: {
@@ -47,7 +48,40 @@ export default async function LocationPage({ params }: PageProps) {
     notFound()
   }
 
-  return <LocationPageClient location={location} params={params} />
+  return (
+    <>
+      <LocationPageClient location={location} params={params} />
+      {/* Full-width CTA Section */}
+      <section className="py-16 bg-carwash-light-100 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-6">
+            <MapPin className="h-8 w-8 text-carwash-blue" />
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            More Self Service Car Washes in {params.state.charAt(0).toUpperCase() + params.state.slice(1).replace(/-/g, ' ')}
+          </h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Discover other amazing self service car washes and auto wash stations in {params.state.charAt(0).toUpperCase() + params.state.slice(1).replace(/-/g, ' ')}
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center mt-8">
+            <a
+              href={`/states/${params.state}`}
+              className="inline-flex items-center justify-center bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 w-full md:w-auto"
+            >
+              <MapPin className="h-5 w-5 mr-2" />
+              Browse All Car Washes in {params.state.charAt(0).toUpperCase() + params.state.slice(1).replace(/-/g, ' ')}
+            </a>
+            <a
+              href="/states"
+              className="inline-flex items-center justify-center bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-all duration-300 w-full md:w-auto"
+            >
+              Explore All States
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  )
 }
 
 async function getLocationBySlugStateAndCity(slug: string, state: string, city: string) {
