@@ -6,7 +6,7 @@ import { Star, Search, MapPinIcon, Coffee, Telescope, BadgeQuestionMark, Award }
 import { getSupabaseClient } from '@/lib/supabase'
 import { searchLocationsByLatLng, searchLocationsByZip } from '@/lib/locationUtils';
 import LocationCard from '@/components/LocationCard'
-import TopStatesCard from './TopStatesCard'
+import TopStatesSection from './TopStatesSection';
 import { getOpen24HourLocationCount } from '@/lib/stateUtils'
 
 // Helper function to clean URLs consistently
@@ -28,7 +28,6 @@ export default function NearMeClient() {
   const [isSearching, setIsSearching] = useState(false)
   const [searchError, setSearchError] = useState('')
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null)
-  const [topStates, setTopStates] = useState<Array<{name: string, count: number, rank: number}>>([])
   const [stats, setStats] = useState({ totalLocations: 0, open24HoursCount: 0, highRatedCount: 0, highRatedPercent: 0 })
 
   useEffect(() => {
@@ -41,11 +40,6 @@ export default function NearMeClient() {
       autoSearch(initialZip.trim())
     }
   }, []) // Only run once on mount
-
-  // Fetch top states on component mount
-  useEffect(() => {
-    fetchTopStates()
-  }, [])
 
   useEffect(() => {
     async function fetchStats() {
@@ -74,54 +68,6 @@ export default function NearMeClient() {
   }, [])
 
   const radiusOptions = ['5', '10', '15', '25', '50', '100']
-
-  const fetchTopStates = async () => {
-    try {
-      const supabase = getSupabaseClient()
-      const { data, error } = await supabase
-        .from('locations')
-        .select(`
-          *,
-          location_amenities(amenity_name, amenity_category),
-          location_hours(day_of_week, open_time, close_time, is_closed)
-        `)
-        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-        .eq('review_status', 'approved')
-        .not('latitude', 'is', null)
-        .not('longitude', 'is', null)
-
-      if (error) {
-        console.error('Error fetching states:', error)
-        return
-      }
-
-      // Get unique states and count locations per state
-      const stateCounts = data.reduce((acc: { [key: string]: number }, location: any) => {
-        if (location.state) {
-          acc[location.state] = (acc[location.state] || 0) + 1
-        }
-        return acc
-      }, {})
-
-      // Convert to array, sort by count, and take top 3
-      const states = Object.entries(stateCounts)
-        .map(([state, count]) => ({
-          name: state,
-          count: count as number,
-          rank: 0 // Will be set below
-        }))
-        .sort((a, b) => b.count - a.count)
-        .slice(0, 3)
-        .map((state, index) => ({
-          ...state,
-          rank: index + 1
-        }))
-
-      setTopStates(states)
-    } catch (error) {
-      console.error('Error fetching top states:', error)
-    }
-  }
 
   const autoSearch = async (zip: string) => {
     setIsSearching(true)
@@ -377,34 +323,22 @@ export default function NearMeClient() {
         </div>
       </section>
       {/* Top States Section - match Most Popular States on states page */}
-      {topStates.length > 0 && (
-        <section className="bg-carwash-light-100 py-8 pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-4">
-                <Award className="h-8 w-8 text-carwash-blue" />
-              </div>
-              <h2 className="text-3xl font-bold text-tarawera mb-4">
-                Top States with Self Service Car Washes
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Explore the states with the most self-service car washes in our directory
-              </p>
+      <section className="bg-carwash-light-100 py-8 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-4">
+              <Award className="h-8 w-8 text-carwash-blue" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {topStates.map((state) => (
-                <TopStatesCard
-                  key={state.name}
-                  name={state.name}
-                  count={state.count}
-                  rank={state.rank}
-                  href={`/states/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
-                />
-              ))}
-            </div>
+            <h2 className="text-3xl font-bold text-tarawera mb-4">
+              Top States with Self Service Car Washes
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Explore the states with the most self-service car washes in our directory
+            </p>
           </div>
-        </section>
-      )}
+          <TopStatesSection limit={3} />
+        </div>
+      </section>
     </div>
   )
 } 

@@ -1,10 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight } from 'lucide-react'
+import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight, Star } from 'lucide-react'
 import { getLocations, getSupabaseClient } from '@/lib/supabase'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 import { getOpen24HourLocationCount } from '@/lib/stateUtils'
+import TopStatesSection from '@/components/TopStatesSection';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSocialPreview({
@@ -436,6 +437,22 @@ export default async function HomePage() {
             Find Self Service Car Washes Now
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
+        </div>
+      </section>
+      <section className="bg-carwash-light-100 py-8 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-4">
+              <Star className="h-8 w-8 text-carwash-blue" />
+            </div>
+            <h2 className="text-3xl font-bold text-tarawera mb-4">
+              Most Popular States
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Explore the states with the most self-service car washes in our directory
+            </p>
+          </div>
+          <TopStatesSection limit={3} />
         </div>
       </section>
     </div>
