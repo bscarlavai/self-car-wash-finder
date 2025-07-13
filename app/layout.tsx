@@ -73,7 +73,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const GA_MEASUREMENT_ID = 'G-8H6R8Z2NYX';
+  const GA_MEASUREMENT_ID = 'G-MX6CGQHPNF';
   const gtagScript = `
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
