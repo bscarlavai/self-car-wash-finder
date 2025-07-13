@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   
   const social = generateSocialPreview({
     title: 'Self Service Car Washes by State - Find Self Service Car Washes Near You | Self Service Car Wash Finder',
-    description: `Discover self-service car washes across all 50 states. Browse ${states.length} states with ${totalLocations} curated self-service car washes. Find auto washes, car wash locations, and self-service facilities near you.`,
+    description: `Discover self service and auto washes locations near you.`,
     url: 'https://www.selfcarwashfinder.com/states',
   })
   return {

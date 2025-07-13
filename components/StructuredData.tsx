@@ -25,14 +25,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
 // Website structured data for homepage
 export function WebsiteStructuredData() {
   const data = {
-    name: 'Cat Cafe Directory',
-    description: 'Discover the best cat cafes across the United States. Find adoption centers, cat cafes, and feline-friendly spaces near you.',
-    url: 'https://catcafedirectory.com',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://catcafedirectory.com/search?q={search_term_string}',
-      'query-input': 'required name=search_term_string'
-    }
+    name: 'Self Service Car Wash Finder',
+    description: 'Discover the best self service car washes across the United States. Find self service car washes, auto washes, and car wash locations near you.',
+    url: 'https://www.selfcarwashfinder.com'
   }
 
   return <StructuredData type="website" data={data} />
@@ -41,27 +36,25 @@ export function WebsiteStructuredData() {
 // Organization structured data
 export function OrganizationStructuredData() {
   const data = {
-    name: 'Cat Cafe Directory',
-    url: 'https://catcafedirectory.com',
-    logo: 'https://catcafedirectory.com/logo.png',
+    url: 'https://www.selfcarwashfinder.com',
+    logo: 'https://www.selfcarwashfinder.com/logo.png',
     sameAs: [
-      'https://twitter.com/catcafedirectory',
-      'https://facebook.com/catcafedirectory'
+      'https://twitter.com/selfcarwashfinder',
+      'https://facebook.com/selfcarwashfinder'
     ],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer service',
-      email: 'hello@catcafedirectory.com'
+      email: 'hello@selfcarwashfinder.com'
     }
   }
 
   return <StructuredData type="organization" data={data} />
 }
 
-interface CafeForStructuredData {
+interface LocationForStructuredData {
   name: string;
   description?: string;
-  website_url?: string;
   phone?: string;
   street_address?: string;
   city?: string;
@@ -75,48 +68,41 @@ interface CafeForStructuredData {
   price_level?: string;
   location_hours?: BusinessHour[];
   photo_url?: string;
+  website_url?: string;
+  amenities?: any[];
 }
 
-export function LocalBusinessStructuredData({ cafe }: { cafe: CafeForStructuredData }) {
+export function LocalBusinessStructuredData({ location }: { location: LocationForStructuredData }) {
   const data = {
-    name: cafe.name,
-    description: cafe.description,
-    url: cafe.website_url,
-    telephone: cafe.phone,
+    name: location.name,
+    url: location.website_url,
+    telephone: location.phone,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: cafe.street_address,
-      addressLocality: cafe.city,
-      addressRegion: cafe.state,
-      postalCode: cafe.postal_code,
-      addressCountry: cafe.country === 'United States of America' ? 'US' : cafe.country
+      streetAddress: location.street_address,
+      addressLocality: location.city,
+      addressRegion: location.state,
+      postalCode: location.postal_code,
+      addressCountry: location.country === 'United States of America' ? 'US' : location.country
     },
-    geo: cafe.latitude && cafe.longitude ? {
+    geo: location.latitude && location.longitude ? {
       '@type': 'GeoCoordinates',
-      latitude: cafe.latitude,
-      longitude: cafe.longitude
+      latitude: location.latitude,
+      longitude: location.longitude
     } : undefined,
-    aggregateRating: cafe.google_rating ? {
+    aggregateRating: location.google_rating ? {
       '@type': 'AggregateRating',
-      ratingValue: cafe.google_rating,
-      reviewCount: cafe.review_count
+      ratingValue: location.google_rating,
+      reviewCount: location.review_count
     } : undefined,
-    priceRange: cafe.price_level,
-    openingHoursSpecification: getOpeningHoursSpecification(cafe.location_hours || []),
-    image: cafe.photo_url,
-    servesCuisine: getServesCuisine(cafe),
-    amenityFeature: [
-      {
-        '@type': 'LocationFeatureSpecification',
-        name: 'Cat Companionship',
-        value: true
-      },
-      {
-        '@type': 'LocationFeatureSpecification',
-        name: 'Cat Adoption',
-        value: true
-      }
-    ]
+    priceRange: location.price_level,
+    openingHoursSpecification: getOpeningHoursSpecification(location.location_hours || []),
+    image: location.photo_url,
+    amenityFeature: location.amenities ? location.amenities.map(a => ({
+      '@type': 'LocationFeatureSpecification',
+      name: a.amenity_name,
+      value: true
+    })) : []
   }
 
   return <StructuredData type="localBusiness" data={data} />
@@ -164,35 +150,4 @@ function to24Hour(timeStr: string | undefined): string | undefined {
   if (modifier === 'PM' && hours !== '12') hours = String(Number(hours) + 12);
   if (modifier === 'AM' && hours === '12') hours = '00';
   return `${hours.padStart(2, '0')}:${minutes}`;
-}
-
-// Helper to dynamically determine servesCuisine from cafe amenities
-function getServesCuisine(cafe: CafeForStructuredData): string[] {
-  const amenities = (cafe as any).location_amenities as Array<{ amenity_name?: string }> | undefined;
-  if (!amenities || !Array.isArray(amenities)) return ['Coffee', 'Tea', 'Pastries'];
-  const amenityNames = amenities.map(a => a.amenity_name?.toLowerCase?.() || '');
-  const cuisineKeywords: { [key: string]: string } = {
-    coffee: 'Coffee',
-    tea: 'Tea',
-    pastries: 'Pastries',
-    bakery: 'Bakery',
-    dessert: 'Dessert',
-    breakfast: 'Breakfast',
-    lunch: 'Lunch',
-    dinner: 'Dinner',
-    vegan: 'Vegan',
-    vegetarian: 'Vegetarian',
-    halal: 'Halal',
-    organic: 'Organic',
-    'comfort food': 'Comfort Food',
-    'healthy options': 'Healthy',
-    'bar food': 'Bar Food',
-    snacks: 'Snacks',
-    meals: 'Meals',
-    food: 'Food'
-  };
-  const found = Object.entries(cuisineKeywords)
-    .filter(([keyword]) => amenityNames.some(a => a.includes(keyword)))
-    .map(([, label]) => label);
-  return found.length ? Array.from(new Set(found)) : [];
 }

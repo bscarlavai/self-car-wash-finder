@@ -286,9 +286,9 @@ export default async function CityPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <LocalBusinessStructuredData cafe={{
-        name: `Cat Cafes in ${cityName}`,
-        description: `Find the best cat cafes in ${cityName}, ${state}. Discover ${locations.length} cat cafes and adoption centers.`,
+      <LocalBusinessStructuredData location={{
+        name: `Self Service Car Washes in ${cityName}`,
+        description: `Find the best self service car washes in ${cityName}, ${state}. Discover ${locations.length} self service car washes.`,
         city: cityName,
         state: state,
         latitude: cityLat,

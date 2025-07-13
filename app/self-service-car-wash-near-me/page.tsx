@@ -22,7 +22,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       
       const social = generateSocialPreview({
         title: `Self Service Car Washes Near ${zip} | Find Local Self Service Car Washes`,
-        description: `Discover self-service car washes, auto washes, and car wash locations near ${zip}. Get directions, hours, and contact information for local self-service car washes.`,
+        description: `Explore self-service car washes and auto wash stations near ${zip}. Get directions, hours, and contact details for local self-serve car wash locations.`,
         image,
         url: `https://www.selfcarwashfinder.com/self-service-car-wash-near-me?zip=${zip}`,
       })
@@ -43,7 +43,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   
   const social = generateSocialPreview({
     title: 'Self Service Car Wash Near Me | Find Local Self Service Car Washes',
-    description: 'Discover self-service car washes, auto washes, and car wash locations in your area. Get directions, hours, and contact information for local self-service car washes.',
+    description: 'Explore self-service car washes and auto wash stations in your area. Get directions, hours, and contact details for local self-serve car wash locations.',
     image,
     url: 'https://www.selfcarwashfinder.com/self-service-car-wash-near-me',
   })

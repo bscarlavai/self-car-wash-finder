@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     ...social,
     alternates: {
-      canonical: 'https://selfcarwashfinder.com/search',
+      canonical: 'https://www.selfcarwashfinder.com/search',
     },
   }
 }

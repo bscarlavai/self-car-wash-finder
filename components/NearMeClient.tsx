@@ -161,8 +161,7 @@ export default function NearMeClient() {
               Find Self Service Car Washes Near Me
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Discover self-service car washes, auto washes, and car wash locations in your area. 
-              Get directions, hours, and contact information for local self-service car washes.
+              Explore self-service car washes and auto wash stations in your area. Get directions, hours, and contact details for local self-serve car wash locations.
             </p>
             {/* Search Section */}
             <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
@@ -270,7 +269,7 @@ export default function NearMeClient() {
               Self Service Car Washes Near Me – Find the Best Self Service Car Washes in Your Area
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Looking for a self-service car wash near you? Discover convenient, self-service car washes where you can wash your car with professional equipment. Our national self-service car wash directory helps you quickly find the best local spots to clean your vehicle on your own schedule.
+              Looking for a self-service car wash near you? Find convenient locations where you can wash your car using professional-grade equipment. Our nationwide self-service car wash directory helps you quickly locate the best spots to clean your vehicle on your own schedule.
             </p>
           </div>
           
