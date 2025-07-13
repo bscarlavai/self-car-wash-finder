@@ -7,6 +7,7 @@ import { getSupabaseClient } from '@/lib/supabase'
 import { searchLocationsByLatLng, searchLocationsByZip } from '@/lib/locationUtils';
 import LocationCard from '@/components/LocationCard'
 import TopStatesCard from './TopStatesCard'
+import { getOpen24HourLocationCount } from '@/lib/stateUtils'
 
 // Helper function to clean URLs consistently
 function cleanUrl(url: string): string {
@@ -28,6 +29,7 @@ export default function NearMeClient() {
   const [searchError, setSearchError] = useState('')
   const [userLocation, setUserLocation] = useState<{lat: number, lng: number} | null>(null)
   const [topStates, setTopStates] = useState<Array<{name: string, count: number, rank: number}>>([])
+  const [stats, setStats] = useState({ totalLocations: 0, open24HoursCount: 0, highRatedCount: 0, highRatedPercent: 0 })
 
   useEffect(() => {
     setZipCode(initialZip)
@@ -43,6 +45,32 @@ export default function NearMeClient() {
   // Fetch top states on component mount
   useEffect(() => {
     fetchTopStates()
+  }, [])
+
+  useEffect(() => {
+    async function fetchStats() {
+      const supabase = getSupabaseClient()
+      // Get total locations count
+      const { count: totalLocations } = await supabase
+        .from('locations')
+        .select('*', { count: 'exact', head: true })
+        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+        .eq('review_status', 'approved')
+      // Get high-rated locations count
+      const { count: highRatedCount } = await supabase
+        .from('locations')
+        .select('*', { count: 'exact', head: true })
+        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
+        .eq('review_status', 'approved')
+        .gte('google_rating', 4.0)
+      // Open 24 hours
+      const open24HoursCount = await getOpen24HourLocationCount()
+      const finalTotalLocations = totalLocations || 0
+      const finalHighRatedCount = highRatedCount || 0
+      const highRatedPercent = finalTotalLocations > 0 ? Math.round((finalHighRatedCount / finalTotalLocations) * 100) : 0
+      setStats({ totalLocations: finalTotalLocations, open24HoursCount, highRatedCount: finalHighRatedCount, highRatedPercent })
+    }
+    fetchStats()
   }, [])
 
   const radiusOptions = ['5', '10', '15', '25', '50', '100']
@@ -154,118 +182,124 @@ export default function NearMeClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <section className="bg-carwash-light-100 rounded-2xl py-14 px-4 mb-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-tarawera mb-4">
+      {/* Hero Section */}
+      <section className="bg-carwash-light-100 pt-20 pb-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Find Self Service Car Washes Near Me
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
               Explore self-service car washes and auto wash stations in your area. Get directions, hours, and contact details for local self-serve car wash locations.
             </p>
-            {/* Search Section */}
-            <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto mb-8">
-              <div className="flex items-center justify-center space-x-4 mb-4">
-                <Search className="h-6 w-6 text-carwash-blue" />
-                <span className="text-lg font-medium text-tarawera">Find Self Service Car Washes Near You</span>
-              </div>
-              {/* Zip Code Search Form */}
-              <form onSubmit={handleZipSearch} className="mb-4">
-                <div className="flex flex-col sm:flex-row gap-4 items-stretch">
-                  <input
-                    type="text"
-                    id="zipCode"
-                    value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
-                    placeholder="Enter Your Zip Code (e.g., 32801)"
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tarawera focus:border-transparent text-lg placeholder-gray-500"
-                    maxLength={5}
-                    autoComplete="postal-code"
-                    inputMode="numeric"
-                    pattern="[0-9]{5}"
-                  />
-                  <select
-                    value={radius}
-                    onChange={e => setRadius(e.target.value)}
-                    className="px-4 py-3 pr-10 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-tarawera focus:border-transparent bg-white text-tarawera"
-                    style={{ width: '140px', minWidth: '100px' }}
-                    aria-label="Search radius in miles"
-                  >
-                    <option value="" disabled>Select miles</option>
-                    {radiusOptions.map(miles => (
-                      <option key={miles} value={miles}>{miles} miles</option>
-                    ))}
-                  </select>
-                  <button
-                    type="submit"
-                    disabled={isSearching || !zipCode.trim()}
-                    className="w-full sm:w-auto bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
-                    style={{ minWidth: '140px' }}
-                  >
-                    {isSearching ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Searching...
-                      </>
-                    ) : (
-                      'Search'
-                    )}
-                  </button>
+          </div>
+        </div>
+      </section>
+      {/* Search Section as Overlap Card */}
+      <section className="relative z-10 -mt-8 mb-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-xl py-8 px-4 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 border border-gray-100 items-center">
+            <div className="col-span-1 md:col-span-3">
+              <div className="flex flex-col items-center">
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                  <Search className="h-6 w-6 text-carwash-blue" />
+                  <span className="text-lg font-medium text-tarawera">Find Self Service Car Washes Near You</span>
                 </div>
-              </form>
-              <button
-                type="button"
-                onClick={handleLocationSearch}
-                className="w-full bg-carwash-light text-tarawera px-8 py-3 rounded-lg font-semibold hover:bg-carwash-blue hover:text-white transition-colors flex items-center justify-center text-lg"
-              >
-                <MapPinIcon className="h-5 w-5 mr-2 text-tarawera" />
-                Use My Location
-              </button>
+                {/* Zip Code Search Form */}
+                <form onSubmit={handleZipSearch} className="mb-4 w-full">
+                  <div className="flex flex-col sm:flex-row gap-4 items-stretch">
+                    <input
+                      type="text"
+                      id="zipCode"
+                      value={zipCode}
+                      onChange={(e) => setZipCode(e.target.value)}
+                      placeholder="Enter Your Zip Code (e.g., 32801)"
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-tarawera focus:border-transparent text-lg placeholder-gray-500"
+                      maxLength={5}
+                      autoComplete="postal-code"
+                      inputMode="numeric"
+                      pattern="[0-9]{5}"
+                    />
+                    <select
+                      value={radius}
+                      onChange={e => setRadius(e.target.value)}
+                      className="px-4 py-3 pr-10 border border-gray-300 rounded-lg text-lg focus:ring-2 focus:ring-tarawera focus:border-transparent bg-white text-tarawera"
+                      style={{ width: '140px', minWidth: '100px' }}
+                      aria-label="Search radius in miles"
+                    >
+                      <option value="" disabled>Select miles</option>
+                      {radiusOptions.map(miles => (
+                        <option key={miles} value={miles}>{miles} miles</option>
+                      ))}
+                    </select>
+                    <button
+                      type="submit"
+                      disabled={isSearching || !zipCode.trim()}
+                      className="w-full sm:w-auto bg-tarawera text-white px-8 py-3 rounded-lg font-semibold shadow-soft hover:bg-tarawera-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg whitespace-nowrap"
+                      style={{ minWidth: '140px' }}
+                    >
+                      {isSearching ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Searching...
+                        </>
+                      ) : (
+                        'Search'
+                      )}
+                    </button>
+                  </div>
+                </form>
+                <button
+                  type="button"
+                  onClick={handleLocationSearch}
+                  className="w-full bg-carwash-light text-tarawera px-8 py-3 rounded-lg font-semibold hover:bg-carwash-blue hover:text-white transition-colors flex items-center justify-center text-lg"
+                >
+                  <MapPinIcon className="h-5 w-5 mr-2 text-tarawera" />
+                  Use My Location
+                </button>
+              </div>
             </div>
           </div>
-        </section>
-        {/* Results Section */}
-        <div className="max-w-3xl mx-auto">
-          {searchError && (
-            <div className="bg-red-100 text-red-800 rounded-lg px-4 py-3 mb-6 text-center font-medium">
-              {searchError}
-            </div>
-          )}
-          {searchResults.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-tarawera mb-4">Results</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {searchResults.map((location: any) => (
-                  <LocationCard
-                    key={location.id}
-                    id={location.id}
-                    name={location.name}
-                    city={location.city}
-                    state={location.state}
-                    slug={location.slug}
-                    description={location.description}
-                    google_rating={location.google_rating}
-                    review_count={location.review_count}
-                    photo_url={location.photo_url}
-                    location_hours={location.location_hours}
-                    business_status={location.business_status}
-                    street_address={location.street_address}
-                    phone={location.phone}
-                    website_url={location.website_url}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-
-        {/* Combined SEO Content Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-12 border border-carwash-light-200">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-carwash-light-100 rounded-full mb-4">
-              <Coffee className="h-8 w-8 text-carwash-blue" />
+      </section>
+      {/* Results Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        {searchError && (
+          <div className="bg-red-100 text-red-800 rounded-lg px-4 py-3 mb-6 text-center font-medium">
+            {searchError}
+          </div>
+        )}
+        {searchResults.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-tarawera mb-4">Results</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {searchResults.map((location: any) => (
+                <LocationCard
+                  key={location.id}
+                  id={location.id}
+                  name={location.name}
+                  city={location.city}
+                  state={location.state}
+                  slug={location.slug}
+                  description={location.description}
+                  google_rating={location.google_rating}
+                  review_count={location.review_count}
+                  photo_url={location.photo_url}
+                  location_hours={location.location_hours}
+                  business_status={location.business_status}
+                  street_address={location.street_address}
+                  phone={location.phone}
+                  website_url={location.website_url}
+                />
+              ))}
             </div>
+          </div>
+        )}
+      </section>
+      {/* SEO/Feature Section - remove card look */}
+      <section className="mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-tarawera mb-4">
               Self Service Car Washes Near Me – Find the Best Self Service Car Washes in Your Area
             </h2>
@@ -273,7 +307,6 @@ export default function NearMeClient() {
               Looking for a self-service car wash near you? Find convenient locations where you can wash your car using professional-grade equipment. Our nationwide self-service car wash directory helps you quickly locate the best spots to clean your vehicle on your own schedule.
             </p>
           </div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left Column - Directory Features */}
             <div className="space-y-6">
@@ -314,7 +347,6 @@ export default function NearMeClient() {
                 </div>
               </div>
             </div>
-
             {/* Right Column - Why Visit */}
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
@@ -330,7 +362,6 @@ export default function NearMeClient() {
                   </p>
                 </div>
               </div>
-
               {/* Highlight Box */}
               <div className="bg-carwash-light-100 rounded-xl p-6 shadow-sm border border-carwash-light-200">
                 <div className="flex items-center space-x-3 mb-3">
@@ -344,33 +375,36 @@ export default function NearMeClient() {
             </div>
           </div>
         </div>
-
-        {/* Featured States Section */}
-        <div className="mb-12">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-carwash-light-100 rounded-full mb-4">
-              <Award className="h-8 w-8 text-carwash-blue" />
+      </section>
+      {/* Top States Section - match Most Popular States on states page */}
+      {topStates.length > 0 && (
+        <section className="bg-carwash-light-100 py-8 pb-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white border border-carwash-light-200 rounded-full mb-4">
+                <Award className="h-8 w-8 text-carwash-blue" />
+              </div>
+              <h2 className="text-3xl font-bold text-tarawera mb-4">
+                Top States with Self Service Car Washes
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Explore the states with the most self-service car washes in our directory
+              </p>
             </div>
-            <h2 className="text-3xl font-bold text-tarawera mb-4">
-              Top States with Self Service Car Washes
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore the states with the most self-service car washes in our directory
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {topStates.map((state) => (
+                <TopStatesCard
+                  key={state.name}
+                  name={state.name}
+                  count={state.count}
+                  rank={state.rank}
+                  href={`/states/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
+                />
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {topStates.map((state) => (
-              <TopStatesCard
-                key={state.name}
-                name={state.name}
-                count={state.count}
-                rank={state.rank}
-                href={`/states/${state.name.toLowerCase().replace(/\s+/g, '-')}`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+        </section>
+      )}
     </div>
   )
 } 
