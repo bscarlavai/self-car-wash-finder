@@ -74,6 +74,14 @@ export interface LocationClaim {
   created_at: string
 }
 
+export interface LocationFeedback {
+  id: string;
+  location_id: string;
+  feedback: string;
+  email?: string | null;
+  created_at?: string | null;
+}
+
 // Common function to get locations with business status filter and optional filters
 export function getLocations(filters?: { state?: string; city?: string; }) {
   const supabase = getSupabaseClient()
