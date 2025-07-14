@@ -295,11 +295,9 @@ export default function LocationPageClient({ location: initialLocation, params }
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hours Section */}
-        {formattedHours.length > 0 && (
-          <div className="mb-8">
-            <OpenStatus hours={location.location_hours || []} state={location.state} businessStatus={location.business_status} />
-          </div>
-        )}
+        <div className="mb-8">
+          <OpenStatus hours={location.location_hours || []} state={location.state} businessStatus={location.business_status} />
+        </div>
 
         {/* Amenities Section */}
         {Object.keys(amenitiesByCategory).length > 0 && (

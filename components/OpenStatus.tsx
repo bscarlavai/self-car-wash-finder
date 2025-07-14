@@ -71,7 +71,26 @@ export default function OpenStatus({ hours, state, businessStatus }: OpenStatusP
   }, [hours, state, businessStatus]);
 
   if (!hours || hours.length === 0) {
-    return null;
+    // No hours means open 24 hours
+    const now = new Date();
+    const timezone = getStateTimezone(state);
+    const businessTime = new Date(now.toLocaleString('en-US', { timeZone: timezone }));
+    const currentTime = businessTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: timezone });
+    return (
+      <div className="bg-white rounded-lg shadow-md p-8 mb-8">
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-600">
+            <CheckCircle className="h-6 w-6" />
+          </div>
+          <div>
+            <div className="text-lg font-bold text-green-700">Open 24 hours</div>
+            <div className="text-sm text-gray-600">
+              Current Local Time: {currentTime} {getTimezoneAbbr(state)}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // Find today's hours
