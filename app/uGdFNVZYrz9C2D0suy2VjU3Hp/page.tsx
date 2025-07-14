@@ -84,12 +84,12 @@ export default function AdminPendingLocations() {
         <>
           <div className="space-y-8">
             {locations.map(loc => (
-              <div key={loc.id} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col md:flex-row gap-6 items-start">
+              <div key={loc.id} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col gap-6 items-start max-w-4xl mx-auto">
                 {loc.photo_url && (
-                  <img src={loc.photo_url} alt={loc.name} className="w-80 h-64 object-cover rounded-lg border border-gray-100" />
+                  <img src={loc.photo_url} alt={loc.name} className="w-full max-w-3xl h-[28rem] object-cover rounded-lg border border-gray-100 mx-auto" />
                 )}
                 {loc.street_view_url && (
-                  <img src={loc.street_view_url} alt={loc.name} className="w-80 h-64 object-cover rounded-lg border border-gray-100" />
+                  <img src={loc.street_view_url} alt={loc.name} className="w-full max-w-3xl h-[28rem] object-cover rounded-lg border border-gray-100 mx-auto" />
                 )}
                 <div className="flex-1">
                   <h2 className="text-xl font-semibold text-tarawera mb-2">{loc.name}</h2>
