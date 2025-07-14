@@ -56,14 +56,16 @@ textarea {
   caret-color: #7BA7BA !important; /* carwash-light */
 }
 
+/*
 input[type="text"]::placeholder,
 input[type="email"]::placeholder,
 input[type="search"]::placeholder,
 input[type="tel"]::placeholder,
 input[type="url"]::placeholder,
 textarea::placeholder {
-  color: #7BA7BA !important; /* carwash-light */
+  color: #7BA7BA !important; 
 }
+*/
 
 /* Utility classes for better UX */
 .line-clamp-2 {

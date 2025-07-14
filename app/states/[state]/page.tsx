@@ -7,6 +7,7 @@ import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 import slugify from '@/lib/slugify';
 import { BreadcrumbStructuredData } from '@/components/StructuredData'
+import JumpToAutocomplete from '@/components/JumpToAutocomplete';
 
 interface PageProps {
   params: {
@@ -201,17 +202,15 @@ export default async function StatePage({ params }: PageProps) {
         {/* City Navigation */}
         {Object.keys(locationsByCity).length > 1 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Jump to City</h2>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(locationsByCity).sort().map(city => (
-                <a
-                  key={city}
-                  href={`#city-${slugify(city)}`}
-                  className="bg-carwash-light-100 text-carwash-blue px-3 py-2 rounded-lg text-sm font-semibold border border-carwash-light-200 hover:bg-carwash-light-200 hover:text-tarawera transition-colors"
-                >
-                  {city} ({locationsByCity[city].length})
-                </a>
-              ))}
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 text-left">Jump to City</h2>
+            <div className="max-w-lg">
+              <JumpToAutocomplete
+                items={Object.keys(locationsByCity).sort().map(city => ({
+                  label: `${city} (${locationsByCity[city].length})`,
+                  anchor: `city-${slugify(city)}`
+                }))}
+                placeholder="Type a city name..."
+              />
             </div>
           </div>
         )}
