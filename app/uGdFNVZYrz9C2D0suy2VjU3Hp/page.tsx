@@ -86,10 +86,10 @@ export default function AdminPendingLocations() {
             {locations.map(loc => (
               <div key={loc.id} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 flex flex-col md:flex-row gap-6 items-start">
                 {loc.photo_url && (
-                  <img src={loc.photo_url} alt={loc.name} className="w-40 h-32 object-cover rounded-lg border border-gray-100" />
+                  <img src={loc.photo_url} alt={loc.name} className="w-56 h-40 object-cover rounded-lg border border-gray-100" />
                 )}
                 {loc.street_view_url && (
-                  <img src={loc.street_view_url} alt={loc.name} className="w-40 h-32 object-cover rounded-lg border border-gray-100" />
+                  <img src={loc.street_view_url} alt={loc.name} className="w-56 h-40 object-cover rounded-lg border border-gray-100" />
                 )}
                 <div className="flex-1">
                   <h2 className="text-xl font-semibold text-tarawera mb-2">{loc.name}</h2>
