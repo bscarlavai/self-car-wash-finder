@@ -18,10 +18,10 @@ interface NearbyLocationsSectionProps {
 
 async function getNearbyLocations(lat: number, lng: number, currentLocationId: string, excludeIds: string[] = []) {
   const locations = await searchLocationsByLatLng(lat, lng, 25)
-  // Exclude the current location and any in excludeIds, limit to 6
+  // Exclude the current location and any in excludeIds, then sort by distance (closest first)
   return (locations || [])
     .filter((location: any) => location.id !== currentLocationId && !excludeIds.includes(location.id))
-    .slice(0, 6)
+    .sort((a: any, b: any) => a.distance - b.distance)
 }
 
 function formatDistance(miles: number) {
