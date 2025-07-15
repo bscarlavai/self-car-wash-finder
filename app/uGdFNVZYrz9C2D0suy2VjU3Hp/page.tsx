@@ -16,6 +16,7 @@ interface Location {
   google_rating?: number;
   location_url?: string;
   business_type?: string;
+  review_status?: 'pending' | 'approved' | 'rejected';
 }
 
 const PAGE_SIZE = 10;
@@ -27,17 +28,24 @@ export default function AdminPendingLocations() {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [reviewStatus, setReviewStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [searchText, setSearchText] = useState('');
 
-  async function fetchPending(pageNum: number) {
+  async function fetchPending(pageNum: number, status: 'pending' | 'approved' | 'rejected', search: string = '') {
     setLoading(true);
     setErrorMsg(null);
     const supabase = getSupabaseClient();
     const from = pageNum * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
-    const { data, error, count } = await supabase
+    let query = supabase
       .from('locations')
       .select('*, location_hours(*), reviews_tags, street_view_url', { count: 'exact' })
-      .eq('review_status', 'pending') as { data: Location[]; error: any; count: number };
+      .eq('review_status', status);
+    if (search && search.trim()) {
+      const searchVal = `%${search.trim()}%`;
+      query = query.or(`name.ilike.${searchVal},description.ilike.${searchVal}`);
+    }
+    const { data, error, count } = await query as { data: Location[]; error: any; count: number };
     if (error) {
       setErrorMsg(error.message || 'Unknown error');
       console.log('Supabase error:', error, data);
@@ -50,9 +58,9 @@ export default function AdminPendingLocations() {
   }
 
   useEffect(() => {
-    fetchPending(page);
+    fetchPending(page, reviewStatus, searchText);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, reviewStatus, searchText]);
 
   async function handleReview(id: string, status: 'approved' | 'rejected') {
     const supabase = getSupabaseClient();
@@ -71,8 +79,30 @@ export default function AdminPendingLocations() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-50 py-10 px-4 w-full">
       <h1 className="text-3xl font-bold mb-8 text-center">Pending Location Reviews</h1>
+      <div className="flex justify-center mb-8">
+        <label htmlFor="reviewStatus" className="mr-2 font-medium text-gray-700">Filter by status:</label>
+        <select
+          id="reviewStatus"
+          value={reviewStatus}
+          onChange={e => { setPage(0); setReviewStatus(e.target.value as any); }}
+          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
+        >
+          <option value="pending">Pending</option>
+          <option value="approved">Accepted</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+      <div className="flex justify-center mb-8">
+        <input
+          type="text"
+          placeholder="Search by name or description..."
+          value={searchText}
+          onChange={e => { setPage(0); setSearchText(e.target.value); }}
+          className="w-full max-w-xl px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
+        />
+      </div>
       {errorMsg && (
         <div className="p-8 text-center text-red-600 font-semibold">Error: {errorMsg}</div>
       )}
@@ -100,12 +130,15 @@ export default function AdminPendingLocations() {
                   {loc.business_status && (
                     <div className="text-xs text-gray-500 mb-1">Status: {loc.business_status}</div>
                   )}
+                  {loc.review_status && (
+                    <div className="text-xs text-gray-500 mb-1">Review Status: <span className="font-semibold">{loc.review_status.charAt(0).toUpperCase() + loc.review_status.slice(1)}</span></div>
+                  )}
                   {typeof loc.google_rating === 'number' && (
                     <div className="text-xs text-gray-500 mb-1">Google Rating: {loc.google_rating}</div>
                   )}
                   {loc.location_url && (
                     <div className="text-xs text-gray-500 mb-1">
-                      <a href={loc.location_url} target="_blank" rel="noopener noreferrer" className="underline text-carwash-blue hover:text-tarawera">View Location</a>
+                      <a href={loc.location_url} target="_blank" rel="noopener noreferrer" className="inline-block px-4 py-2 text-base font-semibold bg-carwash-blue text-white rounded-lg shadow hover:bg-tarawera transition">View Location</a>
                     </div>
                   )}
                   {loc.description && <div className="text-gray-600 mb-2 text-sm">{loc.description}</div>}
