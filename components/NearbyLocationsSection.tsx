@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import { searchLocationsByLatLng } from '@/lib/locationUtils'
 import { getShopCardImage } from '@/lib/imageUtils'
 import { Star } from 'lucide-react'
@@ -33,10 +33,18 @@ function formatDistance(miles: number) {
 export default function NearbyLocationsSection({ latitude, longitude, currentLocationId, city, state, excludeIds = [] }: NearbyLocationsSectionProps) {
   const [nearbyLocations, setNearbyLocations] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
+  // Memoize excludeIds string for stable dependency
+  const excludeIdsString = useMemo(() => JSON.stringify([...excludeIds].sort()), [excludeIds])
 
   React.useEffect(() => {
     let mounted = true
     setLoading(true)
+    // Defensive: only fetch if lat/lng are valid numbers
+    if (typeof latitude !== 'number' || typeof longitude !== 'number' || isNaN(latitude) || isNaN(longitude)) {
+      setNearbyLocations([])
+      setLoading(false)
+      return
+    }
     getNearbyLocations(latitude, longitude, currentLocationId, excludeIds).then(locations => {
       if (mounted) {
         setNearbyLocations(locations)
@@ -44,7 +52,7 @@ export default function NearbyLocationsSection({ latitude, longitude, currentLoc
       }
     })
     return () => { mounted = false }
-  }, [latitude, longitude, currentLocationId, JSON.stringify(excludeIds)])
+  }, [latitude, longitude, currentLocationId, excludeIdsString])
 
   if (loading) return null
   if (!nearbyLocations.length) return null

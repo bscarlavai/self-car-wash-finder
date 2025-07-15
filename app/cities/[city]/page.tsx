@@ -9,9 +9,8 @@ import LocationCard from '@/components/LocationCard'
 // @ts-ignore
 import slugify from '@/lib/slugify'
 import { getSupabaseClient } from '@/lib/supabase'
-import NearbySectionWrapper from '@/components/NearbySectionWrapper';
+import NearbyLocationsSection from '@/components/NearbyLocationsSection';
 import { LocalBusinessStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData'
-import React from 'react';
 
 interface PageProps {
   params: {
@@ -394,7 +393,18 @@ export default async function CityPage({ params }: PageProps) {
           </div>
         </div>
         {/* Self Service Car Washes Near [City] Section - full-width blue background */}
-        <NearbySectionWrapper cityLat={cityLat} cityLng={cityLng} cityName={cityName} state={state} cityLocationIds={Array.from(cityLocationIds)} />
+        <section className="bg-carwash-blue/5 py-12 mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <NearbyLocationsSection
+              latitude={cityLat}
+              longitude={cityLng}
+              currentLocationId={''}
+              city={cityName}
+              state={state}
+              excludeIds={Array.from(cityLocationIds)}
+            />
+          </div>
+        </section>
       </div>
       {/* Back to State Button - always at the bottom, visually separated */}
       <div className="w-full text-center py-6 bg-transparent">
