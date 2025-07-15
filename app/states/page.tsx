@@ -8,8 +8,8 @@ import { getSupabaseClient } from '@/lib/supabase'
 
 export async function generateMetadata(): Promise<Metadata> {
   const social = generateSocialPreview({
-    title: 'Self Service Car Washes by State - Find Self Service Car Washes Near You | Self Service Car Wash Finder',
-    description: `Discover self service and auto washes locations near you.`,
+    title: 'Self Service Car Washes by State | Find Car Washes Near You',
+    description: 'Browse self service car washes by state. Compare amenities, hours, and ratings. Discover the best self service car wash locations near you, open 24/7 in many areas.',
     url: 'https://www.selfcarwashfinder.com/states',
   })
   return {

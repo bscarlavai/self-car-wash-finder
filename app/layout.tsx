@@ -12,8 +12,8 @@ const inter = Inter({ subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
-    description: 'Find the best self service car washes across the U.S. Explore nearby self car wash and self service auto wash locations in your area.',
+    title: 'Find Local Self Service Car Washes Nationwide',
+    description: 'Find the best self service car washes across the U.S. Compare amenities, hours, and ratings. Discover top-rated self service auto wash locations near you, open 24/7 in many areas.',
     keywords: 'self service car wash, self service car wash near me, self serve auto wash, local self serve car wash, self car wash near me',
     authors: [{ name: 'Self Service Car Wash Finder' }],
     creator: 'Self Service Car Wash Finder',
@@ -28,21 +28,20 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       locale: 'en_US',
       url: 'https://www.selfcarwashfinder.com',
-      title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
-      description: 'Find the best self service car washes across the U.S. Explore nearby self car wash and self service auto wash locations in your area.',
+      title: 'Find Local Self Service Car Washes Nationwide',
       siteName: 'Self Service Car Wash Finder',
       images: [
         {
           url: 'https://www.selfcarwashfinder.com/self-car-wash-finder.png',
           width: 1200,
           height: 630,
-          alt: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+          alt: 'Find Local Self Service Car Washes Nationwide',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
+      title: 'Find Local Self Service Car Washes Nationwide',
       description: 'Discover self service and auto washes locations near you.',
       images: ['https://www.selfcarwashfinder.com/self-car-wash-finder.png'],
     },

@@ -9,8 +9,8 @@ import TopStatesSection from '@/components/TopStatesSection';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSocialPreview({
-    title: 'Self Service Car Wash Finder - Find Local Self Service Car Washes Nationwide',
-    description: 'Find the best self service car washes across the U.S. Explore nearby self car wash and self service auto wash locations in your area.',
+    title: 'Find Local Self Service Car Washes Nationwide',
+    description: 'Find the best self service car washes across the U.S. Compare amenities, hours, and ratings. Discover top-rated self service auto wash locations near you, open 24/7 in many areas.',
   })
 }
 
