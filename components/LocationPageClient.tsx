@@ -42,7 +42,7 @@ export default function LocationPageClient({ location: initialLocation, params }
   const [claimMessage, setClaimMessage] = useState('')
   const [copied, setCopied] = useState(false)
   const [location, setLocation] = useState(initialLocation)
-  const { trackCafeButtonClick } = useAnalytics()
+  const { trackLocationButtonClick } = useAnalytics()
   const [showFeedbackModal, setShowFeedbackModal] = useState(false)
   const [feedbackForm, setFeedbackForm] = useState({ feedback: '', email: '' })
   const [feedbackMessage, setFeedbackMessage] = useState('')
@@ -68,7 +68,7 @@ export default function LocationPageClient({ location: initialLocation, params }
     setClaimMessage('')
 
     // Track the submit claim event
-    trackCafeButtonClick('submit_claim', location.name, `${location.city}, ${location.state}`, {
+    trackLocationButtonClick('submit_claim', location.name, `${location.city}, ${location.state}`, {
       claimer_name: claimForm.name,
       claimer_email: claimForm.email
     })
@@ -261,7 +261,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                       href={location.location_url || `https://maps.google.com/?q=${encodeURIComponent(location.name + ' ' + (location.street_address || '') + ' ' + location.city + ' ' + location.state)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      onClick={() => trackCafeButtonClick('get_directions', location.name, `${location.city}, ${location.state}`)}
+                      onClick={() => trackLocationButtonClick('get_directions', location.name, `${location.city}, ${location.state}`)}
                       className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                     >
                       <Navigation className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
@@ -271,7 +271,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                   {location.phone && (
                     <a
                       href={`tel:${location.phone}`}
-                      onClick={() => trackCafeButtonClick('call_now', location.name, `${location.city}, ${location.state}`)}
+                      onClick={() => trackLocationButtonClick('call_now', location.name, `${location.city}, ${location.state}`)}
                       className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-blue shadow-sm hover:shadow-md hover:bg-carwash-blue/90 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                     >
                       <Phone className="h-5 w-5 mr-2.5 text-white transition-transform group-hover:scale-105" />
