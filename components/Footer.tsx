@@ -62,9 +62,13 @@ export default function Footer() {
             cityCounts[key].count++
           }
         }
-        // Sort by count desc and take top 10
+        // Sort by count desc, then city and state alphabetically, and take top 10
         const sortedCities = Object.values(cityCounts)
-          .sort((a, b) => b.count - a.count)
+          .sort((a, b) => {
+            if (b.count !== a.count) return b.count - a.count;
+            if (a.city.toLowerCase() !== b.city.toLowerCase()) return a.city.toLowerCase().localeCompare(b.city.toLowerCase());
+            return a.state.toLowerCase().localeCompare(b.state.toLowerCase());
+          })
           .slice(0, 10)
         setPopularCities(sortedCities)
       }
