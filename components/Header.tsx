@@ -17,9 +17,40 @@ interface HeaderProps {
 
 export default function Header({ states = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
+  const [feedbackForm, setFeedbackForm] = useState({ feedback: '', email: '' })
+  const [feedbackMessage, setFeedbackMessage] = useState('')
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
 
   // Use provided states or fallback to empty array
   const statesList = states.length > 0 ? states.sort((a, b) => a.name.localeCompare(b.name)) : []
+
+  async function handleFeedbackSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setIsSubmittingFeedback(true)
+    setFeedbackMessage('')
+    try {
+      const supabase = (await import('@/lib/supabase')).getSupabaseClient()
+      const { error } = await supabase
+        .from('location_feedbacks')
+        .insert({
+          location_id: null,
+          feedback: feedbackForm.feedback,
+          email: feedbackForm.email || null
+        })
+      if (error) {
+        setFeedbackMessage('Error submitting feedback. Please try again.')
+      } else {
+        setFeedbackMessage('Thank you for your feedback!')
+        setFeedbackForm({ feedback: '', email: '' })
+        setTimeout(() => setShowFeedbackModal(false), 1500)
+      }
+    } catch {
+      setFeedbackMessage('Error submitting feedback. Please try again.')
+    } finally {
+      setIsSubmittingFeedback(false)
+    }
+  }
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -56,6 +87,13 @@ export default function Header({ states = [] }: HeaderProps) {
             >
               Browse States
             </Link>
+            <button
+              onClick={() => setShowFeedbackModal(true)}
+              className="ml-4 px-4 py-2 rounded-lg bg-carwash-blue text-white font-semibold shadow hover:bg-tarawera transition"
+              type="button"
+            >
+              Leave Feedback
+            </button>
           </nav>
 
           {/* Mobile menu button */}
@@ -98,10 +136,84 @@ export default function Header({ states = [] }: HeaderProps) {
               >
                 Browse States
               </Link>
+              <button
+                onClick={() => setShowFeedbackModal(true)}
+                className="mt-2 px-4 py-2 rounded-lg bg-carwash-blue text-white font-semibold shadow hover:bg-tarawera transition"
+                type="button"
+              >
+                Leave Feedback
+              </button>
             </div>
           </div>
         )}
       </div>
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="relative bg-white rounded-xl shadow-xl max-w-lg w-full mx-auto">
+            <div className="sticky top-0 z-10 bg-white px-6 py-4 flex items-center justify-between border-b border-gray-200 rounded-t-xl">
+              <h2 className="text-xl font-bold text-gray-900">Leave Feedback</h2>
+              <button
+                onClick={() => setShowFeedbackModal(false)}
+                className="text-gray-400 hover:text-gray-700 transition-colors"
+                aria-label="Close"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            <form onSubmit={handleFeedbackSubmit} className="px-6 py-6 max-h-[70vh] overflow-y-auto space-y-6">
+              <div>
+                <label htmlFor="feedback" className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Feedback *
+                </label>
+                <textarea
+                  id="feedback"
+                  required
+                  value={feedbackForm.feedback}
+                  onChange={e => setFeedbackForm({ ...feedbackForm, feedback: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent min-h-[100px]"
+                  placeholder="Let us know if something is wrong, missing, or could be improved."
+                />
+              </div>
+              <div>
+                <label htmlFor="feedback-email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email (optional)
+                </label>
+                <input
+                  type="email"
+                  id="feedback-email"
+                  value={feedbackForm.email}
+                  onChange={e => setFeedbackForm({ ...feedbackForm, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
+                  placeholder="If you'd like a reply, enter your email"
+                />
+              </div>
+              {feedbackMessage && (
+                <div className="p-3 rounded-lg text-sm text-center "
+                  style={{ color: feedbackMessage.includes('Thank you') ? '#15803d' : '#dc2626', background: feedbackMessage.includes('Thank you') ? '#f0fdf4' : '#fef2f2' }}>
+                  {feedbackMessage}
+                </div>
+              )}
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowFeedbackModal(false)}
+                  className="border border-gray-300 text-gray-700 px-4 py-2.5 rounded-lg font-medium hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmittingFeedback}
+                  className="bg-carwash-blue text-white px-4 py-2.5 rounded-lg font-medium hover:bg-carwash-blue/90 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
+                >
+                  {isSubmittingFeedback ? 'Submitting...' : 'Submit Feedback'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   )
 } 
