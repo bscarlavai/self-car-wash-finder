@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: 'https://catcafedirectory.com/sitemap.xml',
+    sitemap: 'https://www.selfcarwashfinder.com/sitemap.xml',
   }
 } 

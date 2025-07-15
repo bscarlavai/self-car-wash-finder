@@ -365,7 +365,7 @@ export default async function CityPage({ params }: PageProps) {
           </div>
         </section>
 
-        {/* Cafes Grid */}
+        {/* Locations Grid */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
             Self Service Car Washes in {cityName}
