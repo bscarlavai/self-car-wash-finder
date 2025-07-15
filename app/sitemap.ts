@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase'
 import slugify from '@/lib/slugify'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://catcafedirectory.com'
+  const baseUrl = 'https://www.selfcarwashfinder.com'
 
   // Static pages
   const staticPages = [
