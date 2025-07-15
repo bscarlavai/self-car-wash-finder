@@ -3,7 +3,7 @@
 # Deploy to Cloudflare Workers with environment variables
 # Make sure to set your Supabase credentials before running this script
 
-echo "🚀 Deploying Cat Cafe Directory to Cloudflare Workers..."
+echo "🚀 Deploying Self Car Wash Finder to Cloudflare Workers..."
 
 # Check if .env.local exists and load it
 if [ ! -f ".env.local" ]; then

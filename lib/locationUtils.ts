@@ -154,8 +154,3 @@ export async function searchLocationsByLatLng(lat: number, lng: number, radiusMi
     return []
   }
 }
-
-// Legacy aliases for backward compatibility during transition
-export const searchCafesByZip = searchLocationsByZip
-export const searchCafesByZipForAPI = searchLocationsByZipForAPI
-export const searchCafesByLatLng = searchLocationsByLatLng 

@@ -2,7 +2,7 @@
 
 ## Current Situation
 
-Your cat cafe directory uses images from Google Places API, which presents some optimization challenges. We've implemented a solution using **images.weserv.nl** - a completely free, reliable image proxy service with no limits.
+Your directory uses images from Google Places API, which presents some optimization challenges. We've implemented a solution using **images.weserv.nl** - a completely free, reliable image proxy service with no limits.
 
 ### Issues with Google Places Images:
 - **No size control** - Google serves various sizes
@@ -40,7 +40,7 @@ The code automatically optimizes all Google Places images:
 
 **Image Sizes Used**:
 - **Thumbnails**: 300x200px (list pages)
-- **Hero Images**: 800x400px (cafe detail pages)
+- **Hero Images**: 800x400px (location detail pages)
 - **Social Media**: 1200x630px (Open Graph)
 - **Full Size**: 1200x800px (when needed)
 
@@ -67,7 +67,7 @@ The code automatically optimizes all Google Places images:
 ## Testing Your Setup
 
 ### 1. Check if Optimization is Working
-Visit a cafe page and inspect the image URLs. They should look like:
+Visit a location page and inspect the image URLs. They should look like:
 ```
 https://images.weserv.nl/?url=https%3A//lh3.googleusercontent.com/...&w=800&h=400&q=80&output=jpg&we
 ```

@@ -16,25 +16,25 @@ describe('Analytics', () => {
 
   describe('trackGAEvent', () => {
     it('should call gtag with correct parameters', () => {
-      trackGAEvent('button_click', 'cafe_actions', 'Get Directions - Test Cafe', 1, {
+      trackGAEvent('button_click', 'location_actions', 'Get Directions - Test Location', 1, {
         button_type: 'get_directions',
-        cafe_name: 'Test Cafe'
+        name: 'Test Location'
       })
 
       expect(mockGtag).toHaveBeenCalledWith('event', 'button_click', {
-        event_category: 'cafe_actions',
-        event_label: 'Get Directions - Test Cafe',
+        event_category: 'location_actions',
+        event_label: 'Get Directions - Test Location',
         value: 1,
         button_type: 'get_directions',
-        cafe_name: 'Test Cafe'
+        name: 'Test Location'
       })
     })
 
     it('should handle missing optional parameters', () => {
-      trackGAEvent('button_click', 'cafe_actions')
+      trackGAEvent('button_click', 'location_actions')
 
       expect(mockGtag).toHaveBeenCalledWith('event', 'button_click', {
-        event_category: 'cafe_actions',
+        event_category: 'location_actions',
         event_label: undefined,
         value: undefined
       })

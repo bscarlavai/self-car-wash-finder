@@ -147,7 +147,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Search by Name</h3>
                 <p className="text-gray-600 text-sm">
-                  Search for specific cafe names or keywords like "kitty" or "paws".
+                  Search for specific car wash names or keywords like "car wash" or "auto wash".
                 </p>
               </div>
               <div>

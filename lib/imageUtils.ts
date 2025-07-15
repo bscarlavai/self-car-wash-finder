@@ -53,8 +53,8 @@ export function optimizeGoogleImage(
   return proxyUrl
 }
 
-// Function to generate a dynamic image URL for cafes without photos
-export function generateCafeImageUrl(cafeName: string, city: string, state: string): string {
+// Function to generate a dynamic image URL for locations without photos
+export function generateLocationImageUrl(locationName: string, city: string, state: string): string {
   // You could use a service like Cloudinary, Imgix, or similar to generate dynamic images
   // For now, we'll use the default image
   return '/og-default.jpg'
@@ -91,31 +91,31 @@ export async function getImageDimensions(url: string): Promise<{ width: number; 
 }
 
 // Function to get the best image for shop cards (prioritizes street view for location recognition)
-export function getShopCardImage(cafe: { street_view_url?: string; logo_url?: string; photo_url?: string }): string | null {
+export function getShopCardImage(location: { street_view_url?: string; logo_url?: string; photo_url?: string }): string | null {
   // Priority: street_view_url > photo_url > logo_url
-  if (cafe.street_view_url) {
-    return cafe.street_view_url;
+  if (location.street_view_url) {
+    return location.street_view_url;
   }
-  if (cafe.photo_url) {
-    return cafe.photo_url;
+  if (location.photo_url) {
+    return location.photo_url;
   }
-  if (cafe.logo_url) {
-    return cafe.logo_url;
+  if (location.logo_url) {
+    return location.logo_url;
   }
   return null;
 }
 
 // Function to get the best image for detail pages (prioritizes street view, then interior photos)
-export function getDetailPageImage(cafe: { photo_url?: string; street_view_url?: string; logo_url?: string }): string | null {
+export function getDetailPageImage(location: { photo_url?: string; street_view_url?: string; logo_url?: string }): string | null {
   // Priority: street_view_url > photo_url > logo_url
-  if (cafe.street_view_url) {
-    return cafe.street_view_url;
+  if (location.street_view_url) {
+    return location.street_view_url;
   }
-  if (cafe.photo_url) {
-    return cafe.photo_url;
+  if (location.photo_url) {
+    return location.photo_url;
   }
-  if (cafe.logo_url) {
-    return cafe.logo_url;
+  if (location.logo_url) {
+    return location.logo_url;
   }
   return null;
 } 

@@ -25,11 +25,11 @@ export const useAnalytics = () => {
     }
   };
 
-  // Predefined event tracking functions for cafe page buttons
-  const trackCafeButtonClick = (
+  // Predefined event tracking functions for location page buttons
+  const trackLocationButtonClick = (
     buttonType: 'get_directions' | 'call_now' | 'book_appointment' | 'make_reservation' | 'view_menu' | 'order_online' | 'claim_listing' | 'submit_claim',
-    cafeName: string,
-    cafeLocation: string,
+    name: string,
+    location: string,
     additionalParams?: Record<string, any>
   ) => {
     const buttonLabels = {
@@ -45,14 +45,14 @@ export const useAnalytics = () => {
 
     trackEvent(
       'button_click',
-      'cafe_actions',
-      `${buttonLabels[buttonType]} - ${cafeName}`,
+      'location_actions',
+      `${buttonLabels[buttonType]} - ${name}`,
       undefined,
       {
         button_type: buttonType,
-        cafe_name: cafeName,
-        cafe_location: cafeLocation,
-        page_type: 'cafe_detail',
+        name,
+        location,
+        page_type: 'location_detail',
         ...additionalParams
       }
     );
@@ -60,7 +60,7 @@ export const useAnalytics = () => {
 
   return {
     trackEvent,
-    trackCafeButtonClick,
+    trackLocationButtonClick,
   };
 };
 

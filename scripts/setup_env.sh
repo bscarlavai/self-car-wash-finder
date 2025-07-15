@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Setup environment variables for Cloudflare Workers deployment
-echo "🔧 Setting up environment variables for Cat Cafe Directory..."
+echo "🔧 Setting up environment variables for Self Car Wash Finder..."
 
 # Check if .env.local exists
 if [ ! -f ".env.local" ]; then

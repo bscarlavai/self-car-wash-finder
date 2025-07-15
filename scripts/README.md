@@ -1,6 +1,6 @@
 # Data Import Process
 
-This directory contains scripts to import cat cafe data from CSV into your Supabase database.
+This directory contains scripts to import location data from CSV into your Supabase database.
 
 ## Prerequisites
 
@@ -38,21 +38,21 @@ The `import_data.js` script:
 
 1. **Reads the CSV file** (`sample_data.csv`) from the project root
 2. **Processes each row** and extracts:
-   - Basic cafe information (name, address, contact details)
+   - Basic location information (name, address, contact details)
    - Amenities from the `about` field
    - Working hours from the `working_hours` field
-3. **Creates URL-friendly slugs** for each cafe name
+3. **Creates URL-friendly slugs** for each location name
 4. **Converts time formats** from 12-hour to 24-hour format
 5. **Inserts data** into three tables:
-   - `locations` (main cafe data)
-   - `location_amenities` (amenities for each cafe)
-   - `location_hours` (working hours for each cafe)
+   - `locations` (main location data)
+   - `location_amenities` (amenities for each location)
+   - `location_hours` (working hours for each location)
 
 ## Data Mapping
 
 | CSV Column | Database Field | Notes |
 |------------|----------------|-------|
-| `name` | `name` | Cafe name |
+| `name` | `name` | Location name |
 | `site` | `website_url` | Website URL |
 | `phone` | `phone` | Phone number |
 | `full_address` | `street_address` | Full street address |
@@ -95,7 +95,7 @@ The `import_data.js` script:
 ### Logs
 
 The script provides detailed logging:
-- Number of cafes processed
+- Number of locations processed
 - Number of amenities found
 - Number of hour entries created
 - Success/error messages for each insert operation
