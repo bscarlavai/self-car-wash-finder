@@ -15,7 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/cat-cafe-near-me`,
+      url: `${baseUrl}/self-service-car-wash-near-me`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.9,
@@ -58,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const locationPages = (locations || []).map((location) => ({
       url: `${baseUrl}/states/${slugify(location.state)}/${slugify(location.city)}/${location.slug}`,
       lastModified: new Date(location.updated_at),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.6,
     }))
 
