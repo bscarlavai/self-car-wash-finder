@@ -210,7 +210,7 @@ export default function LocationPageClient({ location: initialLocation, params }
       </section>
 
       {/* Overlap Card for image, rating, address, actions */}
-      <section className="relative z-10 -mt-12 mb-12">
+      <section className="relative z-10 -mt-12 mb-4">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             {/* Hero Image */}
@@ -255,7 +255,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                   )}
                 </div>
                 {/* Action Buttons */}
-                <div className="flex flex-col w-full lg:w-64 flex-shrink-0 space-y-3 mt-4 lg:mt-0">
+                <div className="flex flex-col w-full lg:w-64 flex-shrink-0 space-y-3 mt-4 lg:mt-0 mb-6">
                   {location.latitude && location.longitude && (
                     <a
                       href={location.location_url || `https://maps.google.com/?q=${encodeURIComponent(location.name + ' ' + (location.street_address || '') + ' ' + location.city + ' ' + location.state)}`}
@@ -280,10 +280,11 @@ export default function LocationPageClient({ location: initialLocation, params }
                   )}
                   <button
                     type="button"
-                    className="w-full px-4 py-3 rounded-lg bg-carwash-light-100 text-carwash-blue font-semibold shadow-sm hover:bg-carwash-light-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
+                    className="group flex items-center w-full px-4 py-3 rounded-lg bg-carwash-light-100 text-carwash-blue font-semibold shadow-sm hover:bg-carwash-light-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-carwash-blue focus:ring-offset-2"
                     onClick={() => setShowFeedbackModal(true)}
                   >
-                    Leave Feedback
+                    <svg className="h-5 w-5 mr-2.5 text-carwash-blue transition-transform group-hover:scale-105" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l.8-4A8.96 8.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+                    <span className="font-medium">Leave Feedback</span>
                   </button>
                 </div>
               </div>
@@ -293,7 +294,7 @@ export default function LocationPageClient({ location: initialLocation, params }
       </section>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hours Section */}
         <div className="mb-8">
           <OpenStatus hours={location.location_hours || []} state={location.state} businessStatus={location.business_status} />
