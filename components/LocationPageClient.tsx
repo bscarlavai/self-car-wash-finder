@@ -228,8 +228,8 @@ export default function LocationPageClient({ location: initialLocation, params }
             )}
             {/* Name, Rating, Address, Actions */}
             <div className="px-8 pt-6 pb-2">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div className="min-w-0">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center space-x-4 mb-2">
                     {location.google_rating && (
                       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 flex items-center shadow">
@@ -251,11 +251,11 @@ export default function LocationPageClient({ location: initialLocation, params }
                     </div>
                   )}
                   {location.description && (
-                    <p className="text-gray-700 mb-4 leading-relaxed">{location.description}</p>
+                    <p className="text-gray-700 mb-6 leading-relaxed">{location.description}</p>
                   )}
                 </div>
                 {/* Action Buttons */}
-                <div className="mt-6 lg:mt-0 lg:ml-8 space-y-3 my-6">
+                <div className="flex flex-col w-full lg:w-64 flex-shrink-0 space-y-3 mt-4 lg:mt-0">
                   {location.latitude && location.longitude && (
                     <a
                       href={location.location_url || `https://maps.google.com/?q=${encodeURIComponent(location.name + ' ' + (location.street_address || '') + ' ' + location.city + ' ' + location.state)}`}
