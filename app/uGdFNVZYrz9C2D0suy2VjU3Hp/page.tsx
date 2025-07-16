@@ -43,7 +43,7 @@ export default function AdminPendingLocations() {
       .eq('review_status', status);
     if (search && search.trim()) {
       const searchVal = `%${search.trim()}%`;
-      query = query.or(`name.ilike.${searchVal},description.ilike.${searchVal}`);
+      query = query.or(`name.ilike.${searchVal},description.ilike.${searchVal},state.ilike.${searchVal},city.ilike.${searchVal}`);
     }
     const { data, error, count } = await query as { data: Location[]; error: any; count: number };
     if (error) {
