@@ -67,7 +67,17 @@ async function psqlImport() {
         latitude, longitude, description, business_type, business_status, google_rating, google_verified,
         review_count, working_hours, price_level, photo_url, logo_url, street_view_url, google_id, updated_at, reviews_tags, reservation_urls, order_urls
       ))"`);
-      await execAsync(`psql "${encodedDbUrl}" -c "INSERT INTO locations (
+      // Update slugs to be unique for new locations that would conflict with existing data, but not for true duplicates
+    await execAsync(`psql "${encodedDbUrl}" -c "UPDATE locations_staging ls
+      SET slug = ls.slug || '-' || substr(md5(ls.google_place_id), 1, 8)
+      FROM locations l
+      WHERE
+        ls.slug = l.slug
+        AND ls.state = l.state
+        AND ls.city = l.city
+        AND ls.google_place_id <> l.google_place_id;"`);
+    
+    await execAsync(`psql "${encodedDbUrl}" -c "INSERT INTO locations (
         id, name, slug, city_slug, website_url, phone, email, street_address, city, state, postal_code, country,
         latitude, longitude, description, business_type, business_status, google_rating, review_count, reviews_tags,
         working_hours, price_level, photo_url, logo_url, street_view_url, google_place_id, google_id, google_verified, updated_at,

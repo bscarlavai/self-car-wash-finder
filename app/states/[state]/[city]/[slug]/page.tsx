@@ -103,9 +103,8 @@ async function getLocationBySlugStateAndCity(slug: string, state: string, city: 
     }
     // Find the exact match for this slug, state, and city using city_slug
     const location = data?.find(location => {
-      const locationSlug = slugify(location.name)
       return (
-        locationSlug === slug &&
+        location.slug === slug &&
         slugify(location.state) === stateSlugified &&
         location.city_slug === citySlugified
       )
