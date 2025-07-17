@@ -35,9 +35,10 @@ export async function getOpen24HourLocationCount() {
   const supabase = getSupabaseClient();
   const { count, error } = await supabase
     .from('open_24_hour_locations')
-    .select('location_id', { count: 'exact', head: true });
+    .select('location_id', { count: 'exact', head: true })
+    .eq('review_status', 'approved');
   if (error) {
-    console.error('Error fetching open 24 hour location count:', error);
+    console.error('Error fetching 24-hour location count:', error);
     return 0;
   }
   return count || 0;

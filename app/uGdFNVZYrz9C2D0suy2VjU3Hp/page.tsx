@@ -30,17 +30,26 @@ export default function AdminPendingLocations() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [reviewStatus, setReviewStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');
   const [searchText, setSearchText] = useState('');
+  const [only24Hour, setOnly24Hour] = useState(false);
 
-  async function fetchPending(pageNum: number, status: 'pending' | 'approved' | 'rejected', search: string = '') {
+  async function fetchPending(pageNum: number, status: 'pending' | 'approved' | 'rejected', search: string = '', only24: boolean = false) {
     setLoading(true);
     setErrorMsg(null);
     const supabase = getSupabaseClient();
     const from = pageNum * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
-    let query = supabase
-      .from('locations')
-      .select('*, location_hours(*), reviews_tags, street_view_url', { count: 'exact' })
-      .eq('review_status', status);
+    let query;
+    if (only24) {
+      query = supabase
+        .from('locations')
+        .select('*, location_hours(*), reviews_tags, street_view_url, open_24_hour_locations!inner(location_id, review_status)', { count: 'exact' })
+        .eq('open_24_hour_locations.review_status', status);
+    } else {
+      query = supabase
+        .from('locations')
+        .select('*, location_hours(*), reviews_tags, street_view_url', { count: 'exact' })
+        .eq('review_status', status);
+    }
     if (search && search.trim()) {
       const searchVal = `%${search.trim()}%`;
       query = query.or(`name.ilike.${searchVal},description.ilike.${searchVal},state.ilike.${searchVal},city.ilike.${searchVal}`);
@@ -58,9 +67,9 @@ export default function AdminPendingLocations() {
   }
 
   useEffect(() => {
-    fetchPending(page, reviewStatus, searchText);
+    fetchPending(page, reviewStatus, searchText, only24Hour);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, reviewStatus, searchText]);
+  }, [page, reviewStatus, searchText, only24Hour]);
 
   async function handleReview(id: string, status: 'approved' | 'rejected') {
     const supabase = getSupabaseClient();
@@ -80,19 +89,31 @@ export default function AdminPendingLocations() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4 w-full">
-      <h1 className="text-3xl font-bold mb-8 text-center">Pending Location Reviews</h1>
-      <div className="flex justify-center mb-8">
-        <label htmlFor="reviewStatus" className="mr-2 font-medium text-gray-700">Filter by status:</label>
-        <select
-          id="reviewStatus"
-          value={reviewStatus}
-          onChange={e => { setPage(0); setReviewStatus(e.target.value as any); }}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
-        >
-          <option value="pending">Pending</option>
-          <option value="approved">Accepted</option>
-          <option value="rejected">Rejected</option>
-        </select>
+      <h1 className="text-3xl font-bold mb-8 text-center text-gray-900">Pending Location Reviews</h1>
+      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-8">
+        <div className="flex items-center">
+          <label htmlFor="reviewStatus" className="mr-2 font-semibold text-gray-900">Filter by status:</label>
+          <select
+            id="reviewStatus"
+            value={reviewStatus}
+            onChange={e => { setPage(0); setReviewStatus(e.target.value as any); }}
+            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent text-gray-900"
+          >
+            <option value="pending">Pending</option>
+            <option value="approved">Accepted</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div className="flex items-center ml-4">
+          <input
+            type="checkbox"
+            id="only24Hour"
+            checked={only24Hour}
+            onChange={e => { setPage(0); setOnly24Hour(e.target.checked); }}
+            className="mr-2"
+          />
+          <label htmlFor="only24Hour" className="font-semibold text-gray-900">Show only 24-hour locations</label>
+        </div>
       </div>
       <div className="flex justify-center mb-8">
         <input
@@ -100,7 +121,7 @@ export default function AdminPendingLocations() {
           placeholder="Search by name or description..."
           value={searchText}
           onChange={e => { setPage(0); setSearchText(e.target.value); }}
-          className="w-full max-w-xl px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent"
+          className="w-full max-w-xl px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-carwash-blue focus:border-transparent text-gray-900 placeholder-gray-400"
         />
       </div>
       {errorMsg && (
