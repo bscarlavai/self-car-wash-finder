@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabaseClient } from '@/lib/supabase'
-import { searchLocationsByZipForAPI } from '@/lib/locationUtils'
+import { getSupabaseClient } from '../../../lib/supabase'
+import { searchLocationsByZipForAPI } from '../../../lib/locationUtils'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
