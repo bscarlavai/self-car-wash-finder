@@ -18,59 +18,18 @@ async function getFeaturedLocations() {
   try {
     const supabase = getSupabaseClient()
     
-    // Get all locations with ratings and review counts
-    const { data: locations, error: locationsError } = await supabase
-      .from('locations')
-      .select('*')
-      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('review_status', 'approved')
-      .not('google_rating', 'is', null)
-      .not('review_count', 'is', null)
+    // Use SQL function to get top 6 locations with weighted scoring
+    const { data: topLocations, error: locationsError } = await supabase
+      .rpc('get_featured_locations', { limit_count: 6 })
 
     if (locationsError) {
       console.error('Error fetching featured locations:', locationsError)
       return []
     }
 
-    if (!locations || locations.length === 0) {
+    if (!topLocations || topLocations.length === 0) {
       return []
     }
-
-    // Calculate weighted score for each location
-    // Formula: (rating * 0.7) + (min(review_count/100, 1) * 0.3)
-    // This gives 70% weight to rating and 30% weight to review count (capped at 100 reviews)
-    const locationsWithScores = locations.map(location => {
-      const rating = location.google_rating || 0
-      const reviewCount = location.review_count || 0
-      
-      // Normalize review count (0-100 reviews = 0-1 score)
-      const reviewScore = Math.min(reviewCount / 100, 1)
-      
-      // Calculate weighted score
-      const weightedScore = (rating * 0.7) + (reviewScore * 0.3)
-      
-      return {
-        ...location,
-        weightedScore
-      }
-    })
-
-    // Sort by weighted score and take top 6
-    const topLocations = locationsWithScores
-      .sort((a, b) => {
-        // Primary sort by weighted score
-        if (Math.abs(a.weightedScore - b.weightedScore) > 0.1) {
-          return b.weightedScore - a.weightedScore
-        }
-        // Secondary sort by review count when scores are close
-        return (b.review_count || 0) - (a.review_count || 0)
-      })
-      .slice(0, 6)
-      .map(location => {
-        // Remove the weightedScore from the final object
-        const { weightedScore, ...locationWithoutScore } = location
-        return locationWithoutScore
-      })
 
     // Get hours for all featured locations
     const locationIds = topLocations.map(location => location.id)
