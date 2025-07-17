@@ -1,13 +1,16 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { MapPin, Heart, ArrowRight, Phone, Globe, Navigation, Coffee } from 'lucide-react'
+import { MapPin, Star, Heart, ArrowRight, Phone, Globe, Navigation, ArrowLeft, Coffee, Users, Clock } from 'lucide-react'
 import { getLocations } from '@/lib/supabase'
 import { notFound } from 'next/navigation'
 import { generateSocialPreview } from '@/components/SocialPreview'
+import { getShopCardImage } from '@/lib/imageUtils'
 import LocationCard from '@/components/LocationCard'
-import slugify from '@/lib/slugify';
-import { BreadcrumbStructuredData } from '@/components/StructuredData'
-import JumpToAutocomplete from '@/components/JumpToAutocomplete';
+// @ts-ignore
+import slugify from '@/lib/slugify'
+import { getSupabaseClient } from '@/lib/supabase'
+import JumpToAutocomplete from '@/components/JumpToAutocomplete'
+import { LocalBusinessStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData'
 
 interface PageProps {
   params: {
@@ -82,9 +85,11 @@ async function getLocationsByState(stateSlug: string) {
   try {
     const stateName = slugToStateName(stateSlug)
     
-    const { data, error } = await getLocations()
-      .ilike('state', `%${stateName}%`)
-      .order('google_rating', { ascending: false })
+    // Use SQL function to get locations grouped by city
+    const { data, error } = await getSupabaseClient()
+      .rpc('get_locations_by_state_grouped', { 
+        state_name: stateName 
+      })
 
     if (error) {
       console.error('Error fetching locations:', error)
@@ -102,25 +107,14 @@ export default async function StatePage({ params }: PageProps) {
   const stateSlug = params.state
   const stateName = slugToStateName(stateSlug)
 
-  const locations = await getLocationsByState(stateSlug)
+  const locationsByCity = await getLocationsByState(stateSlug)
 
-  if (locations.length === 0) {
+  if (Object.keys(locationsByCity).length === 0) {
     notFound()
   }
 
-  // Group locations by city
-  const locationsByCity = locations.reduce((acc: { [key: string]: any[] }, location) => {
-    if (!acc[location.city]) {
-      acc[location.city] = []
-    }
-    acc[location.city].push(location)
-    return acc
-  }, {})
-
-  // Sort locations within each city alphabetically
-  Object.keys(locationsByCity).forEach(city => {
-    locationsByCity[city].sort((a, b) => a.name.localeCompare(b.name))
-  })
+  // Get total locations count
+  const totalLocations = Object.values(locationsByCity as Record<string, any[]>).reduce((sum: number, cityLocations: any[]) => sum + cityLocations.length, 0)
 
   // Get top cities for content (sorted alphabetically)
   const sortedCities = Object.keys(locationsByCity).sort()
@@ -155,7 +149,7 @@ export default async function StatePage({ params }: PageProps) {
             Self Service Car Washes in {stateName}
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore {locations.length} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
+            Explore {totalLocations} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
             Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, 
             discover where you can wash your car with professional equipment in the {stateName} self-service car wash scene.
           </p>
@@ -182,7 +176,7 @@ export default async function StatePage({ params }: PageProps) {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Curated Listings</h3>
               <p className="text-gray-600">
-                All {locations.length} self-service car washes have been curated with accurate contact info, hours, and current business details.
+                All {totalLocations} self-service car washes have been curated with accurate contact info, hours, and current business details.
               </p>
             </div>
             <div>
