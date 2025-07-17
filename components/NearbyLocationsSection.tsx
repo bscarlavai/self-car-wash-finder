@@ -17,11 +17,10 @@ interface NearbyLocationsSectionProps {
 }
 
 async function getNearbyLocations(lat: number, lng: number, currentLocationId: string, excludeIds: string[] = []) {
-  const locations = await searchLocationsByLatLng(lat, lng, 25)
-  // Exclude the current location and any in excludeIds, then sort by distance (closest first)
-  return (locations || [])
-    .filter((location: any) => location.id !== currentLocationId && !excludeIds.includes(location.id))
-    .sort((a: any, b: any) => (a.distance_miles || 0) - (b.distance_miles || 0))
+  // Combine currentLocationId with excludeIds for SQL filtering
+  const allExcludeIds = [currentLocationId, ...excludeIds].filter(id => id)
+  const locations = await searchLocationsByLatLng(lat, lng, 25, allExcludeIds)
+  return locations || []
 }
 
 export default function NearbyLocationsSection({ latitude, longitude, currentLocationId, city, state, excludeIds = [], showBackButton = false }: NearbyLocationsSectionProps) {
