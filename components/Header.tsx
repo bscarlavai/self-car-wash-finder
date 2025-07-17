@@ -57,7 +57,7 @@ export default function Header({ states = [] }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
             <img src="/self-car-wash-finder.png" alt="Self Service Car Wash Finder Logo" className="h-16 w-16" />
             <div>
               <h2 className="text-xl font-bold text-carwash-blue">Self Service Car Wash Finder</h2>
@@ -65,34 +65,34 @@ export default function Header({ states = [] }: HeaderProps) {
             </div>
           </Link>
 
-          {/* Desktop Search */}
-          <div className="hidden md:block flex-1 max-w-md mx-8">
+          {/* Desktop Search - Give it more space */}
+          <div className="hidden md:block flex-1 max-w-2xl mx-8">
             <Search />
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Condensed */}
+          <nav className="hidden md:flex items-center space-x-6 flex-shrink-0">
             <Link 
               href="/" 
-              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors"
+              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors text-sm"
             >
               Home
             </Link>
-            <Link href="/self-service-car-wash-near-me" className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors">
-              Self Service Car Washes Near Me
+            <Link href="/self-service-car-wash-near-me" className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors text-sm">
+              Near Me
             </Link>
             <Link 
               href="/states" 
-              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors"
+              className="text-carwash-blue hover:text-carwash-light-600 font-medium transition-colors text-sm"
             >
-              Browse States
+              States
             </Link>
             <button
               onClick={() => setShowFeedbackModal(true)}
-              className="ml-4 px-4 py-2 rounded-lg bg-carwash-blue text-white font-semibold shadow hover:bg-tarawera transition"
+              className="ml-2 px-3 py-2 rounded-lg bg-carwash-blue text-white font-semibold shadow hover:bg-tarawera transition text-sm"
               type="button"
             >
-              Leave Feedback
+              Feedback
             </button>
           </nav>
 
@@ -107,7 +107,7 @@ export default function Header({ states = [] }: HeaderProps) {
         </div>
 
         {/* Mobile Search */}
-        <div className="md:hidden mb-4">
+        <div className="md:hidden mb-4 px-2">
           <Search />
         </div>
 
