@@ -18,27 +18,11 @@ export default function Footer() {
     async function fetchPopularStates() {
       setLoadingStates(true)
       const supabase = getSupabaseClient()
-      // Fetch all visible locations (TODO: optimize with a view or RPC for large datasets)
+      // Use SQL function to get popular states directly
       const { data, error } = await supabase
-        .from('locations')
-        .select('state')
-        .eq('review_status', 'approved')
-        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-        .limit(1000) // safeguard for now
+        .rpc('get_popular_states', { limit_count: 10 })
       if (!error && data) {
-        // Count by state
-        const stateCounts: Record<string, number> = {}
-        for (const row of data) {
-          if (row.state) {
-            stateCounts[row.state] = (stateCounts[row.state] || 0) + 1
-          }
-        }
-        // Sort states by count desc and take top 10
-        const sortedStates = Object.entries(stateCounts)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 10)
-          .map(([state]) => state)
-        setPopularStates(sortedStates)
+        setPopularStates(data.map((row: any) => row.state))
       }
       setLoadingStates(false)
     }
@@ -46,31 +30,15 @@ export default function Footer() {
     async function fetchPopularCities() {
       setLoadingCities(true)
       const supabase = getSupabaseClient()
+      // Use SQL function to get popular cities directly
       const { data, error } = await supabase
-        .from('locations')
-        .select('city, state')
-        .eq('review_status', 'approved')
-        .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-        .limit(1000)
+        .rpc('get_popular_cities', { limit_count: 10 })
       if (!error && data) {
-        // Count by city+state
-        const cityCounts: Record<string, { city: string, state: string, count: number }> = {}
-        for (const row of data) {
-          if (row.city && row.state) {
-            const key = `${row.city},${row.state}`
-            if (!cityCounts[key]) cityCounts[key] = { city: row.city, state: row.state, count: 0 }
-            cityCounts[key].count++
-          }
-        }
-        // Sort by count desc, then city and state alphabetically, and take top 10
-        const sortedCities = Object.values(cityCounts)
-          .sort((a, b) => {
-            if (b.count !== a.count) return b.count - a.count;
-            if (a.city.toLowerCase() !== b.city.toLowerCase()) return a.city.toLowerCase().localeCompare(b.city.toLowerCase());
-            return a.state.toLowerCase().localeCompare(b.state.toLowerCase());
-          })
-          .slice(0, 10)
-        setPopularCities(sortedCities)
+        setPopularCities(data.map((row: any) => ({
+          city: row.city,
+          state: row.state,
+          count: row.location_count
+        })))
       }
       setLoadingCities(false)
     }
