@@ -40,32 +40,18 @@ export async function searchLocationsByZip(zipCode: string, radiusMiles: number 
     const supabase = getSupabaseClient()
     
     const { data, error } = await supabase
-      .from('locations')
-      .select(`
-        *,
-        location_amenities(amenity_name, amenity_category),
-        location_hours(day_of_week, open_time, close_time, is_closed)
-      `)
-      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('review_status', 'approved')
-      .not('latitude', 'is', null)
-      .not('longitude', 'is', null)
+      .rpc('locations_within_radius', {
+        lat: coords.latitude,
+        lng: coords.longitude,
+        radius_miles: radiusMiles
+      })
 
     if (error) {
       console.error('Error fetching locations:', error)
       return []
     }
 
-    // Calculate distances and filter by radius
-    const locationsWithDistance = (data || [])
-      .map((location: any) => ({
-        ...location,
-        distance: calculateDistance(coords.latitude, coords.longitude, location.latitude!, location.longitude!)
-      }))
-      .filter((location: any) => location.distance <= radiusMiles)
-      .sort((a: any, b: any) => a.distance - b.distance)
-
-    return locationsWithDistance
+    return data || []
   } catch (error) {
     console.error('Error searching locations by zip:', error)
     return []
@@ -82,34 +68,24 @@ export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: n
     const supabase = getSupabaseClient()
     
     const { data, error } = await supabase
-      .from('locations')
-      .select('id, name, city, state, slug, google_rating, description, latitude, longitude')
-      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('review_status', 'approved')
-      .not('latitude', 'is', null)
-      .not('longitude', 'is', null)
+      .rpc('locations_within_radius', {
+        lat: coords.latitude,
+        lng: coords.longitude,
+        radius_miles: radiusMiles
+      })
 
     if (error) {
       console.error('Error fetching locations:', error)
       return []
     }
 
-    // Calculate distances and filter by radius
-    const locationsWithDistance = (data || [])
-      .map((location: any) => ({
-        ...location,
-        distance: calculateDistance(coords.latitude, coords.longitude, location.latitude, location.longitude)
-      }))
-      .filter((location: any) => location.distance <= radiusMiles)
-      .sort((a: any, b: any) => a.distance - b.distance)
+    // Return first 10 results and remove coordinates/distance from API response
+    return (data || [])
       .slice(0, 10)
       .map((location: any) => {
-        // Remove coordinates and distance from results
         const { latitude, longitude, distance, ...result } = location
         return result
       })
-
-    return locationsWithDistance
   } catch (error) {
     console.error('Error searching locations by zip:', error)
     return []
@@ -123,34 +99,20 @@ export async function searchLocationsByLatLng(lat: number, lng: number, radiusMi
     const supabase = getSupabaseClient()
     
     const { data, error } = await supabase
-      .from('locations')
-      .select(`
-        *,
-        location_amenities(amenity_name, amenity_category),
-        location_hours(day_of_week, open_time, close_time, is_closed)
-      `)
-      .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
-      .eq('review_status', 'approved')
-      .not('latitude', 'is', null)
-      .not('longitude', 'is', null)
+      .rpc('locations_within_radius', {
+        lat: lat,
+        lng: lng,
+        radius_miles: radiusMiles
+      })
 
     if (error) {
       console.error('Error fetching locations:', error)
       return []
     }
 
-    // Calculate distances and filter by radius
-    const locationsWithDistance = (data || [])
-      .map((location: any) => ({
-        ...location,
-        distance: calculateDistance(lat, lng, location.latitude!, location.longitude!)
-      }))
-      .filter((location: any) => location.distance <= radiusMiles)
-      .sort((a: any, b: any) => a.distance - b.distance)
-
-    return locationsWithDistance
+    return data || []
   } catch (error) {
     console.error('Error searching locations by lat/lng:', error)
     return []
   }
-}
+} 
