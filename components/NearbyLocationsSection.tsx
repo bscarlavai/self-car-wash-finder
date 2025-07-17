@@ -2,10 +2,9 @@
 
 import React, { useMemo } from 'react'
 import { searchLocationsByLatLng } from '@/lib/locationUtils'
-import { getShopCardImage } from '@/lib/imageUtils'
-import { Star } from 'lucide-react'
-// @ts-ignore
-import slugify from '@/lib/slugify'
+import LocationCard from '@/components/LocationCard'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 
 interface NearbyLocationsSectionProps {
   latitude: number
@@ -14,6 +13,7 @@ interface NearbyLocationsSectionProps {
   city: string
   state: string
   excludeIds?: string[]
+  showBackButton?: boolean
 }
 
 async function getNearbyLocations(lat: number, lng: number, currentLocationId: string, excludeIds: string[] = []) {
@@ -21,16 +21,10 @@ async function getNearbyLocations(lat: number, lng: number, currentLocationId: s
   // Exclude the current location and any in excludeIds, then sort by distance (closest first)
   return (locations || [])
     .filter((location: any) => location.id !== currentLocationId && !excludeIds.includes(location.id))
-    .sort((a: any, b: any) => a.distance - b.distance)
+    .sort((a: any, b: any) => (a.distance_miles || 0) - (b.distance_miles || 0))
 }
 
-function formatDistance(miles: number) {
-  if (!miles) return ''
-  if (miles < 1) return `${Math.round(miles * 5280)} ft`
-  return `${miles.toFixed(1)} mi`
-}
-
-export default function NearbyLocationsSection({ latitude, longitude, currentLocationId, city, state, excludeIds = [] }: NearbyLocationsSectionProps) {
+export default function NearbyLocationsSection({ latitude, longitude, currentLocationId, city, state, excludeIds = [], showBackButton = false }: NearbyLocationsSectionProps) {
   const [nearbyLocations, setNearbyLocations] = React.useState<any[]>([])
   const [loading, setLoading] = React.useState(true)
   // Memoize excludeIds string for stable dependency
@@ -55,48 +49,53 @@ export default function NearbyLocationsSection({ latitude, longitude, currentLoc
   }, [latitude, longitude, currentLocationId, excludeIdsString])
 
   if (loading) return null
-  if (!nearbyLocations.length) return null
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-8 mb-8 mt-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-        Self Service Car Washes Near {city}, {state}
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {nearbyLocations.map((location) => (
-          <a
-            key={location.id}
-            href={`/states/${slugify(location.state)}/${slugify(location.city)}/${location.slug}`}
-            className="block bg-gray-50 rounded-lg shadow hover:shadow-lg transition p-4 h-full"
-          >
-            <div className="h-32 w-full bg-gray-200 rounded mb-3 overflow-hidden flex items-center justify-center">
-              {getShopCardImage(location) ? (
-                <img
-                  src={getShopCardImage(location)!}
-                  alt={location.name}
-                  className="object-cover w-full h-full"
-                  width={300}
-                  height={128}
-                  loading="lazy"
-                />
-              ) : (
-                <div className="text-gray-400">No Image</div>
-              )}
-            </div>
-            <div className="font-semibold text-lg text-gray-900 break-words">{location.name}</div>
-            <div className="text-gray-600 text-sm">{location.city}, {location.state}</div>
-            {location.distance && (
-              <div className="text-xs text-gray-500 mt-1">{formatDistance(location.distance)} away</div>
-            )}
-            {location.google_rating && (
-              <div className="flex items-center text-yellow-600 text-sm mt-1">
-                <Star className="h-4 w-4 mr-1 fill-current" />
-                {location.google_rating}
-              </div>
-            )}
-          </a>
-        ))}
+    <section className="w-full bg-carwash-blue-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+          Self Service Car Washes Near {city}, {state}
+        </h2>
+        {nearbyLocations.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {nearbyLocations.map((location) => (
+              <LocationCard
+                key={location.id}
+                id={location.id}
+                name={location.name}
+                city={location.city}
+                state={location.state}
+                slug={location.slug}
+                description={location.description}
+                google_rating={location.google_rating}
+                review_count={location.review_count}
+                photo_url={location.photo_url}
+                location_hours={location.location_hours}
+                business_status={location.business_status}
+                street_address={location.street_address}
+                phone={location.phone}
+                website_url={location.website_url}
+                distance_miles={location.distance_miles}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-600">
+            <p>No additional car washes found nearby.</p>
+          </div>
+        )}
+        {showBackButton && (
+          <div className="w-full text-center pt-8">
+            <Link
+              href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
+              className="inline-flex items-center bg-carwash-blue text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue/90 transition-all duration-300"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to {state} Self Service Car Washes
+            </Link>
+          </div>
+        )}
       </div>
-    </div>
+    </section>
   )
 } 

@@ -324,20 +324,18 @@ export default function LocationPageClient({ location: initialLocation, params }
             </div>
           </div>
         )}
-
-        {/* Nearby Self Service Car Washes Section */}
-        {location.latitude && location.longitude && (
-          <div className="mb-0">
-            <NearbyLocationsSection 
-              latitude={location.latitude} 
-              longitude={location.longitude} 
-              currentLocationId={location.id} 
-              city={location.city} 
-              state={location.state} 
-            />
-          </div>
-        )}
       </div>
+
+      {/* Nearby Self Service Car Washes Section - full width */}
+      {location.latitude && location.longitude && (
+        <NearbyLocationsSection 
+          latitude={location.latitude} 
+          longitude={location.longitude} 
+          currentLocationId={location.id} 
+          city={location.city} 
+          state={location.state} 
+        />
+      )}
 
       {/* Claim Modal */}
       {showClaimModal && (

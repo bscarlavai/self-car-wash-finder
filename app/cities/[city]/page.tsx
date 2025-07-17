@@ -392,30 +392,17 @@ export default async function CityPage({ params }: PageProps) {
             ))}
           </div>
         </div>
-        {/* Self Service Car Washes Near [City] Section - full-width blue background */}
-        <section className="bg-carwash-blue/5 py-12 mt-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <NearbyLocationsSection
-              latitude={cityLat}
-              longitude={cityLng}
-              currentLocationId={''}
-              city={cityName}
-              state={state}
-              excludeIds={Array.from(cityLocationIds)}
-            />
-          </div>
-        </section>
       </div>
-      {/* Back to State Button - always at the bottom, visually separated */}
-      <div className="w-full text-center py-6 bg-transparent">
-        <Link
-          href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`}
-          className="inline-flex items-center bg-carwash-blue text-white px-6 py-3 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue/90 transition-all duration-300"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to {state} Self Service Car Washes
-        </Link>
-      </div>
+      {/* Self Service Car Washes Near [City] Section - full width */}
+      <NearbyLocationsSection
+        latitude={cityLat}
+        longitude={cityLng}
+        currentLocationId={''}
+        city={cityName}
+        state={state}
+        excludeIds={Array.from(cityLocationIds)}
+        showBackButton={true}
+      />
     </div>
   )
 } 
