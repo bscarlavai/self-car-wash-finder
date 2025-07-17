@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight, Star } from 'lucide-react'
-import { getLocations, getSupabaseClient } from '@/lib/supabase'
+import { getLocations, getSupabaseClient, type Location } from '@/lib/supabase'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 import { getOpen24HourLocationCount } from '@/lib/stateUtils'
@@ -32,7 +32,7 @@ async function getFeaturedLocations() {
     }
 
     // Get hours for all featured locations
-    const locationIds = topLocations.map(location => location.id)
+    const locationIds = topLocations.map((location: Location) => location.id)
     const { data: hours, error: hoursError } = await supabase
       .from('location_hours')
       .select('*')
@@ -45,7 +45,7 @@ async function getFeaturedLocations() {
     }
 
     // Attach hours to each location
-    const locationsWithHours = topLocations.map(location => ({
+    const locationsWithHours = topLocations.map((location: Location) => ({
       ...location,
       location_hours: hours?.filter(h => h.location_id === location.id) || []
     }))
@@ -186,7 +186,7 @@ export default async function HomePage() {
                   google_rating={location.google_rating}
                   review_count={location.review_count}
                   photo_url={location.photo_url}
-                  location_hours={location.location_hours}
+                  location_hours={(location as any).location_hours}
                   business_status={location.business_status}
                   street_address={location.street_address}
                   phone={location.phone}
