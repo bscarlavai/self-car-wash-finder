@@ -236,6 +236,7 @@ export default function NearMeClient() {
                   street_address={location.street_address}
                   phone={location.phone}
                   website_url={location.website_url}
+                  distance_miles={location.distance_miles}
                 />
               ))}
             </div>

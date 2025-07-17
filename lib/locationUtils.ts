@@ -30,7 +30,7 @@ export async function getCoordinatesFromZip(zipCode: string): Promise<{latitude:
   }
 }
 
-// Search locations by zip code with distance calculation
+// Search locations by zip code with distance calculation using locations_within_radius RPC
 export async function searchLocationsByZip(zipCode: string, radiusMiles: number = 25) {
   try {
     const coords = await getCoordinatesFromZip(zipCode)
@@ -41,8 +41,8 @@ export async function searchLocationsByZip(zipCode: string, radiusMiles: number 
     
     const { data, error } = await supabase
       .rpc('locations_within_radius', {
-        lat: coords.latitude,
-        lng: coords.longitude,
+        search_lat: coords.latitude,
+        search_lng: coords.longitude,
         radius_miles: radiusMiles
       })
 
@@ -58,7 +58,7 @@ export async function searchLocationsByZip(zipCode: string, radiusMiles: number 
   }
 }
 
-// Search locations by zip code for API responses (returns simplified data)
+// Search locations by zip code for API responses (returns simplified data) using locations_within_radius RPC
 export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: number = 25) {
   try {
     const coords = await getCoordinatesFromZip(zipCode)
@@ -69,8 +69,8 @@ export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: n
     
     const { data, error } = await supabase
       .rpc('locations_within_radius', {
-        lat: coords.latitude,
-        lng: coords.longitude,
+        search_lat: coords.latitude,
+        search_lng: coords.longitude,
         radius_miles: radiusMiles
       })
 
@@ -83,7 +83,7 @@ export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: n
     return (data || [])
       .slice(0, 10)
       .map((location: any) => {
-        const { latitude, longitude, distance, ...result } = location
+        const { latitude, longitude, distance_miles, ...result } = location
         return result
       })
   } catch (error) {
@@ -92,7 +92,7 @@ export async function searchLocationsByZipForAPI(zipCode: string, radiusMiles: n
   }
 }
 
-// Search locations by latitude/longitude with distance calculation
+// Search locations by latitude/longitude with distance calculation using locations_within_radius RPC
 export async function searchLocationsByLatLng(lat: number, lng: number, radiusMiles: number = 25) {
   try {
     const { getSupabaseClient } = await import('./supabase')
@@ -100,8 +100,8 @@ export async function searchLocationsByLatLng(lat: number, lng: number, radiusMi
     
     const { data, error } = await supabase
       .rpc('locations_within_radius', {
-        lat: lat,
-        lng: lng,
+        search_lat: lat,
+        search_lng: lng,
         radius_miles: radiusMiles
       })
 

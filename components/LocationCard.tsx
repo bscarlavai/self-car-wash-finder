@@ -22,6 +22,7 @@ interface LocationCardProps {
   website_url?: string;
   className?: string;
   showContact?: boolean;
+  distance_miles?: number;
 }
 
 function cleanUrl(url: string): string {
@@ -49,6 +50,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   website_url,
   className = '',
   showContact = false,
+  distance_miles,
 }) => {
   const shopImage = getShopCardImage({ photo_url });
   const detailsUrl = `/states/${slugify(state)}/${slugify(city)}/${slug}`;
@@ -150,7 +152,14 @@ const LocationCard: React.FC<LocationCardProps> = ({
           )}
         </div>
         <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200">
-          <span className="text-sm text-gray-600">{openStatus}</span>
+          <span className="flex items-center text-sm text-gray-500">
+            {distance_miles !== undefined && (
+              <>
+                <MapPin className="h-4 w-4 mr-1 text-gray-400" />
+                {distance_miles.toFixed(1)} miles away
+              </>
+            )}
+          </span>
           <span className="flex items-center text-sm text-carwash-blue font-semibold group-hover:text-carwash-light transition-colors">
             View Details <ArrowRight className="ml-1 h-4 w-4" />
           </span>
