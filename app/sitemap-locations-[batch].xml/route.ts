@@ -3,10 +3,12 @@ import slugify from '@/lib/slugify'
 
 export const dynamic = 'force-dynamic';
 
-export default async function GET(req: Request, { params }: { params: { batch: string } }) {
+export async function GET(req: Request) {
   const baseUrl = 'https://www.selfcarwashfinder.com'
   const batchSize = 5000;
-  const batchNum = parseInt(params.batch, 10) || 1;
+  // Get batch number from query param
+  const url = new URL(req.url);
+  const batchNum = parseInt(url.searchParams.get('batch') || '1', 10);
   const from = (batchNum - 1) * batchSize;
   const to = from + batchSize - 1;
   const supabase = getSupabaseClient();

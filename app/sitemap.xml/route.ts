@@ -1,9 +1,10 @@
+export const dynamic = 'force-dynamic';
 import { MetadataRoute } from 'next'
 import { getSupabaseClient } from '@/lib/supabase'
 // @ts-ignore
 import slugify from '@/lib/slugify'
 
-export default async function GET() {
+export async function GET() {
   const baseUrl = 'https://www.selfcarwashfinder.com'
   const batchSize = 5000;
   const supabase = getSupabaseClient();
@@ -17,7 +18,7 @@ export default async function GET() {
   const sitemaps = [
     `${baseUrl}/sitemap-static.xml`,
     `${baseUrl}/sitemap-cities.xml`,
-    ...Array.from({ length: locationSitemapCount }, (_, i) => `${baseUrl}/sitemap-locations-${i + 1}.xml`),
+    ...Array.from({ length: locationSitemapCount }, (_, i) => `${baseUrl}/sitemap-locations-[batch].xml?batch=${i + 1}`),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

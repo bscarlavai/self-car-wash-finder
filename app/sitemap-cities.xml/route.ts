@@ -3,7 +3,7 @@ import slugify from '@/lib/slugify'
 
 export const dynamic = 'force-dynamic';
 
-export default async function GET() {
+export async function GET() {
   const baseUrl = 'https://www.selfcarwashfinder.com'
   const supabase = getSupabaseClient();
   const { data: locations } = await supabase
