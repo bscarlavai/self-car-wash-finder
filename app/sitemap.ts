@@ -51,12 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Get all valid locations (only operational/curated locations)
     const { data: locations } = await supabase
       .from('locations')
-      .select('slug, state, city, updated_at')
+      .select('slug, state, city, city_slug, updated_at')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('review_status', 'approved')
 
     const locationPages = (locations || []).map((location) => ({
-      url: `${baseUrl}/states/${slugify(location.state)}/${slugify(location.city)}/${location.slug}`,
+      url: `${baseUrl}/states/${slugify(location.state)}/${location.city_slug}/${location.slug}`,
       lastModified: new Date(location.updated_at),
       changeFrequency: 'weekly' as const,
       priority: 0.6,
@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Get unique cities for city pages (only from valid locations)
     const uniqueCities = Array.from(new Set(locations?.map(location => {
-      return `${slugify(location.city)}-${slugify(location.state)}`
+      return `${location.city_slug}-${slugify(location.state)}`
     }) || []))
     
     const cityPages = uniqueCities.map((city) => ({
