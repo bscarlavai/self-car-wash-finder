@@ -108,8 +108,8 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-carwash-light-100 pt-20 pb-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-carwash-light-100 pt-20 pb-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-0">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Find A Self Service Car Wash

@@ -251,7 +251,7 @@ export default function LocationPageClient({ location: initialLocation, params }
                     </div>
                   )}
                   {location.description && (
-                    <p className="text-gray-700 mb-6 leading-relaxed">{location.description}</p>
+                    <p className="text-gray-700 mt-6 mb-3 leading-relaxed">{location.description}</p>
                   )}
                 </div>
                 {/* Action Buttons */}

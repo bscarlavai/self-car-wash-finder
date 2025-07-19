@@ -79,8 +79,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-carwash-light-100 pt-16 pb-10">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-carwash-light-100 pt-16 pb-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-0">
           <div className="flex justify-center items-center mb-4">
             <SearchIcon className="h-8 w-8 text-carwash-blue mr-3" />
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900">Find Self Service Car Washes Near You</h1>

@@ -126,8 +126,8 @@ export default async function StatePage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section - full-width, no card, with breadcrumbs inside */}
-      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
-        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
+      <section className="bg-carwash-light-100 pt-12 pb-14 w-full px-4 sm:px-6 lg:px-8">
+        <nav className="max-w-7xl mx-auto w-full px-0 mb-8" aria-label="Breadcrumb">
           <ol className="flex items-center space-x-2 text-sm text-gray-600">
             <li>
               <Link href="/" className="hover:text-lavender-600 transition-colors">
@@ -195,15 +195,16 @@ export default async function StatePage({ params }: PageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* City Navigation */}
         {Object.keys(locationsByCity).length > 1 && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="mb-8">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 text-left">Jump to City</h2>
-            <div className="max-w-lg">
+            <div className="w-full max-w-md">
               <JumpToAutocomplete
                 items={Object.keys(locationsByCity).sort().map(city => ({
                   label: `${city} (${locationsByCity[city].length})`,
                   anchor: `city-${slugify(city)}`
                 }))}
                 placeholder="Type a city name..."
+                className="w-full"
               />
             </div>
           </div>
@@ -215,9 +216,10 @@ export default async function StatePage({ params }: PageProps) {
                 <MapPin className="h-6 w-6 text-lavender-500 mr-2" />
                 <Link
                   href={`/cities/${slugify(city)}-${stateSlug}`}
-                  className="hover:text-carwash-blue focus:text-carwash-blue underline-offset-2 hover:underline focus:underline transition-colors"
+                  className="text-carwash-blue font-semibold hover:underline hover:text-tarawera transition-colors flex items-center gap-1"
                 >
                   {city}
+                  <ArrowRight className="h-4 w-4 text-carwash-blue" />
                 </Link>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
