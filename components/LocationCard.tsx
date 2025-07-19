@@ -92,9 +92,9 @@ const LocationCard: React.FC<LocationCardProps> = ({
       <div className="p-6 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex items-start justify-between mb-3">
-            <h3 className="text-lg font-semibold text-gray-900 break-words group-hover:text-lavender-600 transition-colors">
+            <p className="text-lg font-semibold text-gray-900 break-words group-hover:text-lavender-600 transition-colors">
               {name}
-            </h3>
+            </p>
           </div>
           <div className="flex items-center text-gray-600 mb-3">
             <MapPin className="h-4 w-4 mr-2 text-gray-400" />
