@@ -1,5 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
+export const dynamic = 'force-dynamic';
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 
@@ -43,7 +44,7 @@ function getAccessToken() {
   return null;
 }
 
-export default function AdminPage() {
+function LocationsReviewPageInner() {
   const [user, setUser] = useState<any>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
@@ -317,5 +318,13 @@ export default function AdminPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function LocationsReviewPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+      <LocationsReviewPageInner />
+    </Suspense>
   );
 } 
