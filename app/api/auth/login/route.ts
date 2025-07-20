@@ -3,13 +3,31 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const host = request.headers.get('host') || '';
+  const isProd = host.endsWith('selfcarwashfinder.com');
+  const cookieOptions = isProd
+    ? {
+        domain: '.selfcarwashfinder.com',
+        path: '/',
+        sameSite: 'Lax',
+        secure: true,
+      }
+    : {
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'Lax',
+        secure: false,
+      };
+
+  const supabase = createRouteHandlerClient(
+    { cookies },
+    { cookieOptions }
+  );
   const { email, password } = await request.json();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 401 });
   }
-  // The helper should set the cookie automatically
   if (data.session) {
     return NextResponse.json({ success: true });
   }
