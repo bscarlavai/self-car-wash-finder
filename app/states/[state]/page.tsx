@@ -62,14 +62,13 @@ function truncate(str: string, maxLength: number) {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const stateName = params.state.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   const locations = await getLocations({ state: params.state })
   const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
 
   const social = generateSocialPreview({
-    title: `${stateName} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
-    description: `Explore self-service car washes in ${stateName}. Find locations, hours, reviews, and more on Self Service Car Wash Finder.`,
+    title: `${firstLocation.state} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
+    description: `Explore self-service car washes in ${firstLocation.state}. Find locations, hours, reviews, and more on Self Service Car Wash Finder.`,
     image,
     url: `https://www.selfcarwashfinder.com/states/${params.state}`,
   })
