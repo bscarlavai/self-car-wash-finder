@@ -11,7 +11,9 @@ export async function middleware(req: NextRequest) {
     return res;
   }
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  // Debug logging
+  console.log('Supabase user:', user, 'Error:', error);
 
   if (!user && req.nextUrl.pathname.startsWith('/admin')) {
     const loginUrl = req.nextUrl.clone();
