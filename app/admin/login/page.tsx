@@ -23,7 +23,7 @@ function LoginForm() {
     setLoading(false);
     if (res.ok) {
       const redirectedFrom = searchParams.get('redirectedFrom') || "/admin/locations-review";
-      router.replace(redirectedFrom);
+      window.location.href = redirectedFrom; // Force full reload to send cookie
     } else {
       const data = await res.json();
       setError(data.error || "Login failed");
