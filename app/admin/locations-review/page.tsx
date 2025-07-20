@@ -1,5 +1,11 @@
-'use client'
-import { useEffect, useState } from 'react';
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface Location {
   id: string;
@@ -21,9 +27,27 @@ interface Location {
 const PAGE_SIZE = 10;
 const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-export default function AdminPendingLocations() {
+function getAccessToken() {
+  if (typeof window !== 'undefined') {
+    const session = localStorage.getItem('sb-access-token');
+    if (session) return session;
+    // For supabase-js v2, the key is sb-<project-ref>-auth-token
+    const keys = Object.keys(localStorage).filter(k => k.endsWith('-auth-token'));
+    if (keys.length > 0) {
+      try {
+        const tokenObj = JSON.parse(localStorage.getItem(keys[0]) || '{}');
+        return tokenObj.access_token;
+      } catch {}
+    }
+  }
+  return null;
+}
+
+export default function AdminPage() {
+  const [user, setUser] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
   const [locations, setLocations] = useState<Location[]>([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -31,45 +55,95 @@ export default function AdminPendingLocations() {
   const [searchText, setSearchText] = useState('');
   const [only24Hour, setOnly24Hour] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [dataLoading, setDataLoading] = useState(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  async function fetchPending(pageNum: number, status: 'pending' | 'approved' | 'rejected', search: string = '', only24: boolean = false) {
-    setLoading(true);
-    setErrorMsg(null);
-    try {
-      const params = new URLSearchParams({
-        page: pageNum.toString(),
-        pageSize: PAGE_SIZE.toString(),
-        status,
-        search,
-        only24: only24 ? 'true' : 'false',
-      });
-      const res = await fetch(`/api/admin-locations?${params.toString()}`);
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Unknown error');
-      }
-      const { data, count } = await res.json();
-      setLocations(data || []);
-      setHasMore((count ?? 0) > (pageNum + 1) * PAGE_SIZE);
-      setTotalCount(count ?? 0);
-    } catch (error: any) {
-      setErrorMsg(error.message || 'Unknown error');
-    }
-    setLoading(false);
-  }
-
+  // Auth/session check (JWT in localStorage)
   useEffect(() => {
-    fetchPending(page, reviewStatus, searchText, only24Hour);
+    const token = getAccessToken();
+    if (!token) {
+      setUser(null);
+      setAuthorized(false);
+      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
+      setAuthLoading(false);
+      return;
+    }
+    // Optionally, decode the JWT to get user info (or fetch from API)
+    setUser({});
+    setAuthorized(true);
+    setAuthLoading(false);
+  }, [router]);
+
+  // Data fetching
+  useEffect(() => {
+    if (authLoading || !authorized) return;
+    setDataLoading(true);
+    setErrorMsg(null);
+    const token = getAccessToken();
+    if (!token) {
+      setUser(null);
+      setAuthorized(false);
+      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
+      setDataLoading(false);
+      return;
+    }
+    const fetchPending = async () => {
+      try {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          pageSize: PAGE_SIZE.toString(),
+          status: reviewStatus,
+          search: searchText,
+          only24: only24Hour ? 'true' : 'false',
+        });
+        const res = await fetch(`/api/admin/locations?${params.toString()}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.status === 401) {
+          setUser(null);
+          setAuthorized(false);
+          router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
+          setDataLoading(false);
+          return;
+        }
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Unknown error');
+        }
+        const { data, count } = await res.json();
+        setLocations(data || []);
+        setHasMore((count ?? 0) > (page + 1) * PAGE_SIZE);
+        setTotalCount(count ?? 0);
+      } catch (error: any) {
+        setErrorMsg(error.message || 'Unknown error');
+      }
+      setDataLoading(false);
+    };
+    fetchPending();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, reviewStatus, searchText, only24Hour]);
+  }, [page, reviewStatus, searchText, only24Hour, authorized, authLoading]);
 
   async function handleReview(id: string, status: 'approved' | 'rejected') {
+    const token = getAccessToken();
+    if (!token) {
+      setUser(null);
+      setAuthorized(false);
+      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
+      return;
+    }
     try {
-      const res = await fetch('/api/admin-locations-review', {
+      const res = await fetch('/api/admin/locations-review', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ id, status }),
       });
+      if (res.status === 401) {
+        setUser(null);
+        setAuthorized(false);
+        router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
+        return;
+      }
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || 'Unknown error');
@@ -84,6 +158,14 @@ export default function AdminPendingLocations() {
     } catch (error: any) {
       setErrorMsg(error.message || 'Unknown error');
     }
+  }
+
+  // UI rendering logic
+  if (authLoading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+  if (!user || !authorized) {
+    return null; // Redirecting or unauthorized
   }
 
   return (
@@ -126,8 +208,8 @@ export default function AdminPendingLocations() {
       {errorMsg && (
         <div className="p-8 text-center text-red-600 font-semibold">Error: {errorMsg}</div>
       )}
-      {loading ? (
-        <div className="p-8 text-center">Loading 6hellip;</div>
+      {dataLoading ? (
+        <div className="p-8 text-center">Loading…</div>
       ) : locations.length === 0 && !errorMsg ? (
         <div className="p-8 text-center">No pending locations.</div>
       ) : (
@@ -219,7 +301,7 @@ export default function AdminPendingLocations() {
             <button
               className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold disabled:opacity-50"
               onClick={() => setPage(p => Math.max(0, p - 1))}
-              disabled={page === 0 || loading}
+              disabled={page === 0 || dataLoading}
             >
               Previous
             </button>
@@ -227,7 +309,7 @@ export default function AdminPendingLocations() {
             <button
               className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold disabled:opacity-50"
               onClick={() => setPage(p => p + 1)}
-              disabled={!hasMore || loading}
+              disabled={!hasMore || dataLoading}
             >
               Next
             </button>
