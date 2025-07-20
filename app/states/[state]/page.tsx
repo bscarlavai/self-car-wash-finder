@@ -11,6 +11,7 @@ import slugify from '@/lib/slugify'
 import { getSupabaseClient } from '@/lib/supabase'
 import JumpToAutocomplete from '@/components/JumpToAutocomplete'
 import { LocalBusinessStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData'
+import HeroSection from '@/components/HeroSection';
 
 interface PageProps {
   params: {
@@ -126,35 +127,27 @@ export default async function StatePage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section - full-width, no card, with breadcrumbs inside */}
-      <section className="bg-carwash-light-100 pt-12 pb-14 w-full px-4 sm:px-6 lg:px-8">
-        <nav className="max-w-7xl mx-auto w-full px-0 mb-8" aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li>
-              <Link href="/" className="hover:text-lavender-600 transition-colors">
-                Home
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href="/states" className="hover:text-lavender-600 transition-colors">
-                States
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">{stateName}</li>
-          </ol>
-        </nav>
-        <div className="text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-            Self Service Car Washes in {stateName}
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore {totalLocations} convenient self-service car washes across {stateName} - from neighborhood spots to city locations. 
-            Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, 
-            discover where you can wash your car with professional equipment in the {stateName} self-service car wash scene.
-          </p>
-        </div>
-      </section>
+      <nav className="max-w-7xl mx-auto w-full px-0 mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <li>
+            <Link href="/" className="hover:text-lavender-600 transition-colors">
+              Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/states" className="hover:text-lavender-600 transition-colors">
+              States
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-gray-900 font-medium">{stateName}</li>
+        </ol>
+      </nav>
+      <HeroSection
+        title={`Self Service Car Washes in ${stateName}`}
+        description={`Explore ${totalLocations} convenient self-service car washes across ${stateName} - from neighborhood spots to city locations. Whether you're a local looking for your regular car wash spot or a visitor needing to clean your vehicle, discover where you can wash your car with professional equipment in the ${stateName} self-service car wash scene.`}
+      />
       {/* Overlap Feature Section - like stats overlap on homepage/states */}
       <section className="relative z-10 -mt-8 mb-8">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">

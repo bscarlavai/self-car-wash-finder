@@ -6,6 +6,7 @@ import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 import { getOpen24HourLocationCount } from '@/lib/stateUtils'
 import TopStatesSection from '@/components/TopStatesSection';
+import HeroSection from '@/components/HeroSection';
 
 export async function generateMetadata(): Promise<Metadata> {
   return generateSocialPreview({
@@ -108,36 +109,26 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-carwash-light-100 pt-20 pb-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto px-0">
-          <div className="text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Find A Self Service Car Wash
-              <br />
-              <span className="text-2xl md:text-3xl font-normal text-gray-700">In the United States</span>
-            </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Discover convenient self-service car washes across the United States where you can wash your car 
-              with professional equipment on your own schedule.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
-              <Link
-                href="/states"
-                className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
-              >
-                Explore All States
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-              <Link
-                href="#featured"
-                className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
-              >
-                See Top-Rated Car Washes
-              </Link>
-            </div>
-          </div>
+      <HeroSection
+        title={<><span>Find A Self Service Car Wash</span><br /><span className="text-2xl md:text-3xl font-normal text-gray-700">In the United States</span></>}
+        description={"Discover convenient self-service car washes across the United States where you can wash your car with professional equipment on your own schedule."}
+      >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
+          <Link
+            href="/states"
+            className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
+          >
+            Explore All States
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
+          <Link
+            href="#featured"
+            className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
+          >
+            See Top-Rated Car Washes
+          </Link>
         </div>
-      </section>
+      </HeroSection>
 
       {/* Stats Section with Overlap */}
       <section className="relative z-10 -mt-8">

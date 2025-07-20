@@ -11,6 +11,7 @@ import slugify from '@/lib/slugify'
 import { getSupabaseClient } from '@/lib/supabase'
 import NearbyLocationsSection from '@/components/NearbyLocationsSection';
 import { LocalBusinessStructuredData, BreadcrumbStructuredData } from '@/components/StructuredData'
+import HeroSection from '@/components/HeroSection';
 
 interface PageProps {
   params: {
@@ -287,39 +288,33 @@ export default async function CityPage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section - full-width, no card, with breadcrumbs inside */}
-      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
-        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li>
-              <Link href="/" className="hover:text-lavender-600 transition-colors">
-                Home
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href="/states" className="hover:text-lavender-600 transition-colors">
-                States
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
-                {state}
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">{cityName}</li>
-          </ol>
-        </nav>
-        <div className="text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
-            Self Service Car Washes in {cityName}
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore {locations.length} convenient self-service car washes in {cityName}{state ? `, ${state}` : ''}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in {cityName}.
-          </p>
-        </div>
-      </section>
+      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-sm text-gray-600">
+          <li>
+            <Link href="/" className="hover:text-lavender-600 transition-colors">
+              Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/states" className="hover:text-lavender-600 transition-colors">
+              States
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
+              {state}
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-gray-900 font-medium">{cityName}</li>
+        </ol>
+      </nav>
+      <HeroSection
+        title={`Self Service Car Washes in ${cityName}`}
+        description={`Explore ${locations.length} convenient self-service car washes in ${cityName}${state ? ", " + state : ""}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in ${cityName}.`}
+      />
       <LocalBusinessStructuredData location={{
         name: `Self Service Car Washes in ${cityName}`,
         description: `Find the best self service car washes in ${cityName}, ${state}. Discover ${locations.length} self service car washes.`,
