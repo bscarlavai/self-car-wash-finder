@@ -28,26 +28,7 @@ interface Location {
 const PAGE_SIZE = 10;
 const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-function getAccessToken() {
-  if (typeof window !== 'undefined') {
-    const session = localStorage.getItem('sb-access-token');
-    if (session) return session;
-    // For supabase-js v2, the key is sb-<project-ref>-auth-token
-    const keys = Object.keys(localStorage).filter(k => k.endsWith('-auth-token'));
-    if (keys.length > 0) {
-      try {
-        const tokenObj = JSON.parse(localStorage.getItem(keys[0]) || '{}');
-        return tokenObj.access_token;
-      } catch {}
-    }
-  }
-  return null;
-}
-
 function LocationsReviewPageInner() {
-  const [user, setUser] = useState<any>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
   const [locations, setLocations] = useState<Location[]>([]);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -57,38 +38,11 @@ function LocationsReviewPageInner() {
   const [only24Hour, setOnly24Hour] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [dataLoading, setDataLoading] = useState(true);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  // Auth/session check (JWT in localStorage)
-  useEffect(() => {
-    const token = getAccessToken();
-    if (!token) {
-      setUser(null);
-      setAuthorized(false);
-      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
-      setAuthLoading(false);
-      return;
-    }
-    // Optionally, decode the JWT to get user info (or fetch from API)
-    setUser({});
-    setAuthorized(true);
-    setAuthLoading(false);
-  }, [router]);
 
   // Data fetching
   useEffect(() => {
-    if (authLoading || !authorized) return;
     setDataLoading(true);
     setErrorMsg(null);
-    const token = getAccessToken();
-    if (!token) {
-      setUser(null);
-      setAuthorized(false);
-      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
-      setDataLoading(false);
-      return;
-    }
     const fetchPending = async () => {
       try {
         const params = new URLSearchParams({
@@ -98,16 +52,7 @@ function LocationsReviewPageInner() {
           search: searchText,
           only24: only24Hour ? 'true' : 'false',
         });
-        const res = await fetch(`/api/admin/locations?${params.toString()}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (res.status === 401) {
-          setUser(null);
-          setAuthorized(false);
-          router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
-          setDataLoading(false);
-          return;
-        }
+        const res = await fetch(`/api/admin/locations?${params.toString()}`);
         if (!res.ok) {
           const err = await res.json();
           throw new Error(err.error || 'Unknown error');
@@ -123,28 +68,15 @@ function LocationsReviewPageInner() {
     };
     fetchPending();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, reviewStatus, searchText, only24Hour, authorized, authLoading]);
+  }, [page, reviewStatus, searchText, only24Hour]);
 
   async function handleReview(id: string, status: 'approved' | 'rejected') {
-    const token = getAccessToken();
-    if (!token) {
-      setUser(null);
-      setAuthorized(false);
-      router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
-      return;
-    }
     try {
       const res = await fetch('/api/admin/locations-review', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status }),
       });
-      if (res.status === 401) {
-        setUser(null);
-        setAuthorized(false);
-        router.replace(`/admin/login?redirectedFrom=${encodeURIComponent('/admin/locations-review')}`);
-        return;
-      }
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || 'Unknown error');
@@ -159,14 +91,6 @@ function LocationsReviewPageInner() {
     } catch (error: any) {
       setErrorMsg(error.message || 'Unknown error');
     }
-  }
-
-  // UI rendering logic
-  if (authLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
-  if (!user || !authorized) {
-    return null; // Redirecting or unauthorized
   }
 
   return (

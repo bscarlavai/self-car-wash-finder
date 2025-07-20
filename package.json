@@ -20,8 +20,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.2",
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/auth-helpers-shared": "^0.7.0",
+    "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.38.4",
     "critters": "^0.0.25",
     "csv-parser": "^3.0.0",
