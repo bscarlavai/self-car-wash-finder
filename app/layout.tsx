@@ -7,6 +7,7 @@ import { WebsiteStructuredData, OrganizationStructuredData } from '@/components/
 import PerformanceMonitor from "@/components/PerformanceMonitor";
 import Script from 'next/script'
 import { getStatesWithLocations } from '@/lib/stateUtils'
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -67,6 +68,19 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// Use a Client Component wrapper for layout to access usePathname
+function LayoutClient({ children, states }: { children: React.ReactNode, states: any }) {
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const isAdmin = pathname.startsWith('/uGdFNVZYrz9C2D0suy2VjU3Hp');
+  return (
+    <div className="min-h-screen flex flex-col">
+      {!isAdmin && <Header states={states} />}
+      <main className="flex-grow">{children}</main>
+      {!isAdmin && <Footer />}
+    </div>
+  );
+}
+
 export default async function RootLayout({
   children,
 }: {
@@ -105,13 +119,7 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
-          <Header states={states} />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <LayoutClient states={states}>{children}</LayoutClient>
       </body>
     </html>
   )
