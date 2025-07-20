@@ -1,9 +1,11 @@
 "use client";
 export const dynamic = 'force-dynamic';
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function LoginForm() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,6 +31,10 @@ function LoginForm() {
       setError(data.error || "Login failed");
     }
   };
+
+  if (!mounted) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
