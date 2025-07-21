@@ -12,6 +12,8 @@ import React from 'react'
 import dynamic from 'next/dynamic'
 import AmenitiesSummaryAndDetails from '@/components/AmenitiesSummaryAndDetails'
 import { useAnalytics } from '@/lib/analytics'
+import HeroSection from '@/components/HeroSection'
+import slugify from '@/lib/slugify'
 
 const NearbyLocationsSection = dynamic(() => import('@/components/NearbyLocationsSection'), { ssr: false })
 
@@ -179,35 +181,45 @@ export default function LocationPageClient({ location: initialLocation, params }
     { name: location.name, url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}` }
   ]
 
+  const citySlug = location.city_slug
+  const stateSlug = slugify(location.state)
+
+  const breadcrumbs = (
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600">
+        <li className="break-words">
+          <Link href="/" className="hover:text-carwash-blue">Home</Link>
+        </li>
+        <li>/</li>
+        <li className="break-words">
+          <Link href="/states" className="hover:text-carwash-blue">States</Link>
+        </li>
+        <li>/</li>
+        <li className="break-words">
+          <Link href={`/states/${params.state}`} className="hover:text-carwash-blue">{location.state}</Link>
+        </li>
+        <li>/</li>
+        <li className="break-words">
+          <Link href={`/cities/${citySlug}-${stateSlug}`} className="hover:text-carwash-blue">{location.city}</Link>
+        </li>
+        <li>/</li>
+        <li className="text-gray-900 font-medium break-words">{location.name}</li>
+      </ol>
+    </nav>
+  )
+
   return (
     <div className="min-h-screen bg-gray-50">
       <LocalBusinessStructuredData location={location} />
       <BreadcrumbStructuredData items={breadcrumbItems} />
 
-      {/* Hero Section - full-width blue with breadcrumbs and name */}
-      <section className="bg-carwash-light-100 pt-12 pb-14 w-full">
-        <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
-          <ol className="flex items-center space-x-2 text-sm text-gray-600">
-            <li>
-              <Link href="/" className="hover:text-carwash-blue">Home</Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href="/states" className="hover:text-carwash-blue">States</Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link href={`/states/${params.state}`} className="hover:text-carwash-blue">{location.state}</Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">{location.name}</li>
-          </ol>
-        </nav>
-        <div className="text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2 break-words">{location.name}</h1>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto">Self Service Car Wash in {location.city}, {location.state}</p>
-        </div>
-      </section>
+      <HeroSection
+        title={<span className="break-words">{location.name}</span>}
+        description={<span>Self Service Car Wash in {location.city}, {location.state}</span>}
+        breadcrumbs={
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">{breadcrumbs}</div>
+        }
+      />
 
       {/* Overlap Card for image, rating, address, actions */}
       <section className="relative z-10 -mt-12 mb-4">
