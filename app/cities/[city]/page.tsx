@@ -288,32 +288,32 @@ export default async function CityPage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Hero Section - full-width, no card, with breadcrumbs inside */}
-      <nav className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 mb-8" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-sm text-gray-600">
-          <li>
-            <Link href="/" className="hover:text-lavender-600 transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href="/states" className="hover:text-lavender-600 transition-colors">
-              States
-            </Link>
-          </li>
-          <li>/</li>
-          <li>
-            <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
-              {state}
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-gray-900 font-medium">{cityName}</li>
-        </ol>
-      </nav>
       <HeroSection
         title={`Self Service Car Washes in ${cityName}`}
         description={`Explore ${locations.length} convenient self-service car washes in ${cityName}${state ? ", " + state : ""}. Whether you're a local or a visitor, discover where you can wash your car with professional equipment in ${cityName}.`}
+        breadcrumbs={
+          <ol className="flex items-center space-x-2 text-sm text-gray-600">
+            <li>
+              <Link href="/" className="hover:text-lavender-600 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link href="/states" className="hover:text-lavender-600 transition-colors">
+                States
+              </Link>
+            </li>
+            <li>/</li>
+            <li>
+              <Link href={`/states/${state.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-lavender-600 transition-colors">
+                {state}
+              </Link>
+            </li>
+            <li>/</li>
+            <li className="text-gray-900 font-medium">{cityName}</li>
+          </ol>
+        }
       />
       <LocalBusinessStructuredData location={{
         name: `Self Service Car Washes in ${cityName}`,

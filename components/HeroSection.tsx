@@ -5,11 +5,19 @@ interface HeroSectionProps {
   description: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
+  breadcrumbs?: React.ReactNode;
 }
 
-export default function HeroSection({ title, description, children, className = '' }: HeroSectionProps) {
+export default function HeroSection({ title, description, children, className = '', breadcrumbs }: HeroSectionProps) {
+  const topPadding = breadcrumbs ? 'pt-6' : 'pt-12';
+  const breadcrumbsMargin = breadcrumbs ? 'mb-4' : 'mb-8';
   return (
-    <section className={`bg-carwash-light-100 pt-12 pb-14 w-full ${className}`}>
+    <section className={`bg-carwash-light-100 ${topPadding} pb-14 w-full ${className}`}>
+      {breadcrumbs && (
+        <div className={`max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 ${breadcrumbsMargin}`} aria-label="Breadcrumb">
+          {breadcrumbs}
+        </div>
+      )}
       <div className="text-center">
         <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-4">
           {title}

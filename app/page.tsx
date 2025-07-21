@@ -113,20 +113,22 @@ export default async function HomePage() {
         title={<><span>Find A Self Service Car Wash</span><br /><span className="text-2xl md:text-3xl font-normal text-gray-700">In the United States</span></>}
         description={"Discover convenient self-service car washes across the United States where you can wash your car with professional equipment on your own schedule."}
       >
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
-          <Link
-            href="/states"
-            className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
-          >
-            Explore All States
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-          <Link
-            href="#featured"
-            className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
-          >
-            See Top-Rated Car Washes
-          </Link>
+        <div className="px-4 sm:px-0">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
+            <Link
+              href="/states"
+              className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
+            >
+              Explore All States
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+            <Link
+              href="#featured"
+              className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
+            >
+              See Top-Rated Car Washes
+            </Link>
+          </div>
         </div>
       </HeroSection>
 

@@ -532,19 +532,6 @@ export default function LocationPageClient({ location: initialLocation, params }
           </div>
         </div>
       )}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="bg-white rounded-lg shadow-md p-8 mt-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            More Self Service Car Washes in {location.state}
-          </h2>
-          <Link
-            href={`/states/${params.state}`}
-            className="inline-block px-6 py-3 bg-carwash-blue text-white rounded-lg font-semibold shadow hover:bg-tarawera transition"
-          >
-            Browse all car washes in {location.state}
-          </Link>
-        </div>
-      </div>
     </div>
   )
 } 
