@@ -12,6 +12,7 @@ interface SearchResult {
   city: string
   state: string
   slug: string
+  city_slug?: string
   google_rating?: number
   description?: string
 }
@@ -21,6 +22,7 @@ export default function Search() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [showResults, setShowResults] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     const searchLocations = async () => {
@@ -46,6 +48,14 @@ export default function Search() {
     return () => clearTimeout(debounce)
   }, [query])
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && query.trim()) {
+      e.preventDefault()
+      setShowResults(false)
+      router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+    }
+  }
+
   return (
     <div className="relative max-w-2xl mx-auto">
       <div className="relative z-10">
@@ -61,6 +71,7 @@ export default function Search() {
             setShowResults(true)
           }}
           onFocus={() => setShowResults(true)}
+          onKeyDown={handleKeyDown}
           className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-lavender-500 focus:border-lavender-500 relative z-10"
         />
       </div>
@@ -75,7 +86,7 @@ export default function Search() {
               {results.map((result) => (
                 <Link
                   key={result.id}
-                  href={`/states/${slugify(result.state)}/${slugify(result.city)}/${result.slug}`}
+                  href={`/states/${slugify(result.state)}/${result.city_slug || slugify(result.city)}/${result.slug}`}
                   onClick={() => {
                     setShowResults(false)
                     setQuery('')

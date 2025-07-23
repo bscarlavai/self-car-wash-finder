@@ -227,6 +227,7 @@ export default function NearMeClient() {
                   city={location.city}
                   state={location.state}
                   slug={location.slug}
+                  city_slug={location.city_slug}
                   description={location.description}
                   google_rating={location.google_rating}
                   review_count={location.review_count}

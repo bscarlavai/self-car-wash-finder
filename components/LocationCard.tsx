@@ -11,6 +11,7 @@ interface LocationCardProps {
   city: string;
   state: string;
   slug: string;
+  city_slug?: string;
   description?: string;
   google_rating?: number;
   review_count?: number;
@@ -39,6 +40,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   city,
   state,
   slug,
+  city_slug,
   description,
   google_rating,
   review_count,
@@ -53,7 +55,7 @@ const LocationCard: React.FC<LocationCardProps> = ({
   distance_miles,
 }) => {
   const shopImage = getShopCardImage({ photo_url });
-  const detailsUrl = `/states/${slugify(state)}/${slugify(city)}/${slug}`;
+  const detailsUrl = `/states/${slugify(state)}/${city_slug || slugify(city)}/${slug}`;
   let openStatus: React.ReactNode = null;
   // TODO: Let's not show this for now
   // if (business_status === 'CLOSED_TEMPORARILY') {

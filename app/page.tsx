@@ -116,17 +116,17 @@ export default async function HomePage() {
         <div className="px-4 sm:px-0">
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-2">
             <Link
-              href="/states"
+              href="/self-service-car-wash-near-me"
               className="bg-tarawera text-white px-8 py-4 rounded-lg font-semibold shadow-soft hover:shadow-soft-hover hover:bg-carwash-blue transition-all duration-300 flex justify-center items-center"
             >
-              Explore All States
+              Find Near Me
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
-              href="#featured"
+              href="/states"
               className="bg-white border-2 border-tarawera text-tarawera px-8 py-4 rounded-lg font-semibold hover:bg-tarawera hover:text-white transition-colors shadow-soft"
             >
-              See Top-Rated Car Washes
+              Explore All States
             </Link>
           </div>
         </div>
@@ -175,6 +175,7 @@ export default async function HomePage() {
                   city={location.city}
                   state={location.state}
                   slug={location.slug}
+                  city_slug={location.city_slug}
                   description={location.description}
                   google_rating={location.google_rating}
                   review_count={location.review_count}

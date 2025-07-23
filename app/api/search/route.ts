@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     // Use SQL to sort by review_count descending with nulls last, then limit to 10
     const { data, error } = await supabase
       .from('locations')
-      .select('id, name, city, state, slug, google_rating, description, review_count')
+      .select('id, name, city, state, slug, city_slug, google_rating, description, review_count')
       .in('business_status', ['OPERATIONAL', 'CLOSED_TEMPORARILY'])
       .eq('review_status', 'approved')
       .or(`name.ilike.%${query}%,city.ilike.%${query}%,state.ilike.%${query}%,description.ilike.%${query}%`)
