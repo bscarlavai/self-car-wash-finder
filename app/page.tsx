@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { MapPin, DollarSign, Bubbles, Calendar, ToolCase, ArrowRight, Star } from 'lucide-react'
-import { getLocations, getSupabaseClient, type Location } from '@/lib/supabase'
+import { getSupabaseClient, type Location } from '@/lib/supabase'
 import { generateSocialPreview } from '@/components/SocialPreview'
 import LocationCard from '@/components/LocationCard'
 import { getOpen24HourLocationCount } from '@/lib/stateUtils'
@@ -11,7 +11,7 @@ import HeroSection from '@/components/HeroSection';
 export async function generateMetadata(): Promise<Metadata> {
   return generateSocialPreview({
     title: 'Find Local Self Service Car Washes Nationwide',
-    description: 'Find the best self service car washes across the U.S. Compare amenities, hours, and ratings. Discover top-rated self service auto wash locations near you, open 24/7 in many areas.',
+    description: 'Find self service car washes across the U.S. Compare amenities, hours, and ratings. Discover top-rated self service auto wash locations near you, open 24/7 in many areas.',
   })
 }
 

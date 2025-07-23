@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const social = generateSocialPreview({
     title: `${location.name} – Self Service Car Wash in ${location.city}, ${location.state}`,
-    description: `Find ${location.name} self service car wash in ${location.city}, ${location.state}. ${location.description || 'Get your car cleaned at this local self service car wash.'} Get directions, hours, and contact information.`,
+    description: `${location.name} self service car wash in ${location.city}, ${location.state}. Get the location's hours, reviews, amenities, directions, and contact information.`,
     image: location.photo_url,
     url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}`,
     type: 'article',
