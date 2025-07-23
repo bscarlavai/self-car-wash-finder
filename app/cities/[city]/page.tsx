@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
 
   const social = generateSocialPreview({
-    title: `${cityName} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
+    title: `${cityName} Self Service Car Washes`,
     description: `Discover self service car washes and auto wash stations in ${cityName}. Find the perfect self service car wash near you.`,
     image,
     url: `https://www.selfcarwashfinder.com/cities/${params.city}`,

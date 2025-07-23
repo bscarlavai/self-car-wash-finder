@@ -65,10 +65,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locations = await getLocations({ state: params.state })
   const firstLocation = locations && Array.isArray(locations.data) && locations.data.length > 0 ? locations.data[0] : null
   const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
+  const stateName = firstLocation ? firstLocation.state : params.state;
 
   const social = generateSocialPreview({
-    title: `${firstLocation.state} Self Service Car Washes - Find Local Self Service Car Washes | Self Service Car Wash Finder`,
-    description: `Explore self-service car washes in ${firstLocation.state}. Find locations, hours, reviews, and more on Self Service Car Wash Finder.`,
+    title: `${stateName} Self Service Car Washes`,
+    description: `Explore self-service car washes in ${stateName}. Find locations, hours, reviews, and more.`,
     image,
     url: `https://www.selfcarwashfinder.com/states/${params.state}`,
   })

@@ -17,7 +17,7 @@ interface PageProps {
 
 export async function generateMetadata(): Promise<Metadata> {
   const social = generateSocialPreview({
-    title: 'Search Self Service Car Washes | Self Car Wash Finder',
+    title: 'Search Results | Self Service Car Wash Finder',
     description: 'Search for self service car washes by name, city, or state. Compare amenities, hours, and ratings. Find the perfect self service car wash near you, open 24/7 in many areas.',
   })
   return {
@@ -205,7 +205,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Explore State Directory</h3>
               <p className="text-gray-600 text-base">
-                Can't find what you're looking for? <a href="/states" className="text-tarawera font-semibold hover:underline">Browse our complete directory by state -></a>.
+                Can't find what you're looking for? <a href="/states" className="text-tarawera font-semibold hover:underline">Browse our complete directory by state {'>'}</a>.
               </p>
             </div>
           </div>

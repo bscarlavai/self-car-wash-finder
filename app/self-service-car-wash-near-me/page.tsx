@@ -21,7 +21,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
       const image = firstLocation && firstLocation.photo_url ? firstLocation.photo_url : null
       
       const social = generateSocialPreview({
-        title: `Self Service Car Washes Near ${zip} | Find Local Self Service Car Washes`,
+        title: `Self Service Car Washes Near ${zip} | Self Service Car Wash Finder`,
         description: `Explore self-service car washes and auto wash stations near ${zip}. Get directions, hours, and contact details for local self-serve car wash locations.`,
         image,
         url: `https://www.selfcarwashfinder.com/self-service-car-wash-near-me?zip=${zip}`,
@@ -38,7 +38,7 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
   // Default metadata for self-service-car-wash-near-me page
   const social = generateSocialPreview({
-    title: 'Self Service Car Wash Near Me | Find Local Self Service Car Washes',
+    title: 'Self Service Car Wash Near Me | Self Service Car Wash Finder',
     description: 'Explore self-service car washes and auto wash stations in your area. Compare amenities, hours, and ratings. Find top-rated self-serve car wash locations open 24/7 near you.',
     url: 'https://www.selfcarwashfinder.com/self-service-car-wash-near-me',
   })

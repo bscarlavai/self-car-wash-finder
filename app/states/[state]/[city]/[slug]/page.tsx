@@ -20,13 +20,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   
   if (!location) {
     return generateSocialPreview({
-      title: 'Self Service Car Wash Not Found | Self Service Car Wash Finder',
+      title: 'Self Service Car Wash Not Found',
       description: 'The requested self service car wash could not be found.',
     })
   }
 
   const social = generateSocialPreview({
-    title: `${location.name} - Self Service Car Wash in ${location.city}, ${location.state} | Self Service Car Wash Finder`,
+    title: `${location.name} – Self Service Car Wash in ${location.city}, ${location.state}`,
     description: `Find ${location.name} self service car wash in ${location.city}, ${location.state}. ${location.description || 'Get your car cleaned at this local self service car wash.'} Get directions, hours, and contact information.`,
     image: location.photo_url,
     url: `https://www.selfcarwashfinder.com/states/${params.state}/${params.city}/${params.slug}`,
